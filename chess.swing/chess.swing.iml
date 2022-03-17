@@ -9,5 +9,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="chess.core" />
     <orderEntry type="module" module-name="chess.ui" />
+    <orderEntry type="library" name="batik-swing-1.14" level="project" />
   </component>
 </module>
