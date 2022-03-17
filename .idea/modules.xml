@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/chess.core/chess.core.iml" filepath="$PROJECT_DIR$/chess.core/chess.core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/chess.swing/chess.swing.iml" filepath="$PROJECT_DIR$/chess.swing/chess.swing.iml" />
+      <module fileurl="file://$PROJECT_DIR$/chess.ui/chess.ui.iml" filepath="$PROJECT_DIR$/chess.ui/chess.ui.iml" />
+    </modules>
+  </component>
+</project>
