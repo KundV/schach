@@ -1,4 +1,5 @@
 package chess.core;
-public class TestCore {
+public class TestCore
+{
 
 }
