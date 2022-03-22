@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="batik-swing-1.14">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/chess.swing/libs/batik-1.14/lib/batik-swing-1.14.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

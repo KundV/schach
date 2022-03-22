@@ -16,7 +16,7 @@ public class ChessBoard extends JPanel
         {
             for (int c = 0; c < layout.getColumns(); c++)
             {
-                this.add(createBox(isWhite(r,c) ? Color.white : Color.black, r,c)).setLocation(r,c);
+                this.add(createBox(isWhite(r, c) ? Color.white : Color.black, r, c)).setLocation(r, c);
             }
         }
 
