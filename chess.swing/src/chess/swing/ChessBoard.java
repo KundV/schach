@@ -25,7 +25,7 @@ public class ChessBoard extends JPanel
     private static boolean isWhite(int row, int col)
     {
         //return row + (column % 2) % 2 == 0;
-        return (row + col) % 2 == 1;
+        return (row + col) % 2 == 0;
     }
 
     private static JPanel createBox(Color color, int row, int col)

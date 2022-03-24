@@ -39,9 +39,11 @@ public class JChessPiece extends JPanel
             // Correspond to the files in resources/ka-hu/chess_kaneo/
             return switch (id)
                     {
-                        case KING -> "K";
-                        case QUEEN -> "Q";
-                        case ROOK -> "R";
+                        case KÖNIG -> "K";
+                        case KÖNIGIN -> "Q";
+                        case TURM -> "R";
+
+
                         case BISHOP -> "B";
                         case KNIGHT -> "N";
                         case PAWN -> "P";
