@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://kundv.github.io/schach/sitemap.xml.gz
