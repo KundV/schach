@@ -1,8 +1,8 @@
 ## Welcome to Projekt Schach
 
-### Markdown
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+### Q11 Informaktik Projekt Schach
+Schach ist ein Informatikprojekt erstellt von drei Schülern der Q11 des Gymnasium Neutraubling aus dem Kurs 1inf1
 
 ```markdownunder
 Syntax highlighted code block
@@ -21,3 +21,4 @@ Syntax highlighted code block
 
 [Link](url) and ![Image](src)
 ```
+Markdownunder
