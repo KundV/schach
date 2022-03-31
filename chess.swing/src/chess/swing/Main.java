@@ -1,10 +1,6 @@
 package chess.swing;
 
-import chess.core.ChessPieceId;
-
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Main
 {

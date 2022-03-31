@@ -15,7 +15,6 @@ Das Projekt besteht aus 3 Modulen:
 | Name        | Funktion                                |
 |-------------|-----------------------------------------|
 | chess.core  | Logik des Schachspiels                  |
-| chess.swing | Swing Komponenten und Klassen zu Schach |
 | chess.ui    | Spielanwendung in Swing geschrieben     |
 
 Die Module haben folgende Abhängigkeiten:
@@ -23,9 +22,7 @@ Die Module haben folgende Abhängigkeiten:
 ```mermaid
 %%{init: { 'theme': 'forest' } }%%
 graph TD
-    chess.swing --> chess.core
-    chess.ui --> chess.swing
-    chess.ui --> chess.core 
+    chess.ui --> chess.core
 ```
 
 Wie man sieht, hat das Logik-Modul **keine** Referenz auf die UI-Module (gegenseitige Referenzen währen auch nicht

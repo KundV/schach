@@ -8,5 +8,6 @@
     <orderEntry type="jdk" jdkName="17" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="chess.core" />
+    <orderEntry type="library" name="batik" level="project" />
   </component>
 </module>

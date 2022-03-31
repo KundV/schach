@@ -1,15 +1,27 @@
-package chess.swing;
-
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class ChessBoard extends JPanel
 {
 
     GridLayout layout;
 
+    Dimension getPreferredSize()
+    {
+        // Relies on being the only component
+        // in a layout that will center it without
+        // expanding it to fill all the space.
+        Dimension d = this.getParent().getSize();
+        int newSize = d.width > d.height ? d.height : d.width;
+        newSize = newSize == 0 ? 100 : newSize;
+        return new Dimension(newSize, newSize);
+
+    }
+
     public ChessBoard()
     {
+
         layout = new GridLayout(10, 10, 10, 10);
         this.setLayout(layout);
         for (int r = 0; r < layout.getRows(); r++)

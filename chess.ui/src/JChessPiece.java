@@ -1,5 +1,3 @@
-package chess.swing;
-
 import chess.core.ChessPieceId;
 import org.apache.batik.swing.JSVGCanvas;
 
@@ -24,6 +22,9 @@ public class JChessPiece extends JPanel
         {
             throw new RuntimeException(e);
         }
+
+
+
 
         svg = new JSVGCanvas();
 

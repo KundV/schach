@@ -1,4 +1,3 @@
-package chess.swing;// This is an example from https://xmlgraphics.apache.org/batik/using/swing.html
 // because their syntax highlighting is non-existent
 
 import java.awt.*;
