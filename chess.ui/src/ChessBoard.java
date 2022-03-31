@@ -49,4 +49,5 @@ public class ChessBoard extends JPanel
         r.add(l);
         return r;
     }
+
 }
