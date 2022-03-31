@@ -27,11 +27,11 @@
 
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="/resources/css/retype.css?v=2.2.702035941390" rel="stylesheet" data-turbo-track="reload" />
+    <link href="/resources/css/retype.css?v=2.2.702038161204" rel="stylesheet" data-turbo-track="reload" />
 
-    <script type="text/javascript" src="/resources/js/config.js?v=2.2.702035941390" defer data-turbo-track="reload"></script>
+    <script type="text/javascript" src="/resources/js/config.js?v=2.2.702038161204" defer data-turbo-track="reload"></script>
     <script type="text/javascript" src="/resources/js/retype.js?v=2.2" defer data-turbo-track="reload"></script>
-    <script id="lunr-js" type="text/javascript" src="/resources/js/lunr.js?v=2.2.702035941390" defer></script>
+    <script id="lunr-js" type="text/javascript" src="/resources/js/lunr.js?v=2.2.702038161204" defer></script>
     <script id="mermaid-js" type="text/javascript" src="/resources/js/mermaid.js?v=2.2" defer></script>
 </head>
 <body>
@@ -226,10 +226,6 @@
 <td>Logik des Schachspiels</td>
 </tr>
 <tr>
-<td>chess.swing</td>
-<td>Swing Komponenten und Klassen zu Schach</td>
-</tr>
-<tr>
 <td>chess.ui</td>
 <td>Spielanwendung in Swing geschrieben</td>
 </tr>
@@ -239,9 +235,7 @@
 <p>Die Module haben folgende Abhängigkeiten:</p>
 <div class="overflow-hidden mb-6 py-4 dark:px-5 dark:bg-white rounded-md"><pre class="mermaid w-full">%%{init: { 'theme': 'forest' } }%%
 graph TD
-    chess.swing --&gt; chess.core
-    chess.ui --&gt; chess.swing
-    chess.ui --&gt; chess.core </pre></div>
+    chess.ui --&gt; chess.core</pre></div>
 <p>Wie man sieht, hat das Logik-Modul <strong>keine</strong> Referenz auf die UI-Module (gegenseitige Referenzen währen auch nicht
 möglich), denn sie wird strikt von der UI getrennt. Es soll dadurch auch von einer GUI-losen Serveranwendung
 konsumierbar sein.</p>
