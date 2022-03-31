@@ -1,11 +1,11 @@
 input: .
 output: .retype
-url: # Add your website address here
+url: schach.ksv21.de/
 branding:
-  title: Chess
+  title: Schach
   label: Bleeding Edge
 links:
 - text: GitHub
-  link: https://github.com/DavidBeh/chess
+  link: https://github.com/KundV/schach
 footer:
   copyright: "&copy; Copyright {{ year }}. All rights reserved."
