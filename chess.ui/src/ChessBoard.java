@@ -1,24 +1,67 @@
+import chess.core.ChessPieceId;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 
 public class ChessBoard extends JPanel
 {
 
     GridLayout layout;
 
-    private ChessBoard self;
+    private JChessPiece[][] jChessPieces = new JChessPiece[8][8];
+
+    public void onResize() {
+
+        for (int r = 0; r < 8; r++)
+        {
+            for (int c = 0; c < 8; c++)
+            {
+                var p = jChessPieces[r][c];
+                if (p != null) {
+                    p.setSize(getWidth() / 8, getHeight() / 8);
+                    p.setLocation(r * getWidth() / 8, c * getHeight() / 8);
+                }
+            }
+        }
 
 
-    private java.time.LocalDateTime lastRedraw = null;
+    }
 
+    private void addPieces() {
+        for (int r = 0; r < 8; r++)
+        {
+            for (int c = 0; c < 8; c++)
+            {
+                var p = jChessPieces[r][c];
+                if (p != null) {
+                    this.add(p);
+                }
+            }
+        }
+    }
 
     public ChessBoard()
     {
+        this.setLayout(null);
+        jChessPieces[0][0] = new JChessPiece(ChessPieceId.BISHOP, false);
+        jChessPieces[0][2] = new JChessPiece(ChessPieceId.BISHOP, false);
+        jChessPieces[0][1] = new JChessPiece(ChessPieceId.BISHOP, false);
 
-        this.add(new JLabel("Chess Board"));
+        addPieces();
+
+
+        this.addComponentListener(new ComponentAdapter()
+        {
+            @Override
+            public void componentResized(ComponentEvent e)
+            {
+                onResize();
+            }
+        });
 /*
         layout = new GridLayout(10, 10, 0, 0);
         this.setLayout(layout);
@@ -50,13 +93,15 @@ public class ChessBoard extends JPanel
     }
 
     @Override
-    public void paint(Graphics g)
+    public void paintComponent(Graphics g)
     {
-        super.paint(g);
+        super.paintComponent(g);
 
-        drawBoard(g);
-        lastRedraw = java.time.LocalDateTime.now();
+        //drawBoard(g);
+
+
     }
+
 
     private BufferedImage createBufferedBox(int height, int width, Color color)
     {
@@ -70,6 +115,7 @@ public class ChessBoard extends JPanel
     @Override
     public Dimension getPreferredSize()
     {
+
         // Relies on being the only component
         // in a layout that will center it without
         // expanding it to fill all the space.

@@ -2,6 +2,9 @@ import chess.core.ChessPieceId;
 import org.apache.batik.swing.JSVGCanvas;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -11,8 +14,12 @@ public class JChessPiece extends JPanel
 
     private final JSVGCanvas svg;
 
+
+
     public JChessPiece(ChessPieceId id, Boolean isBlack)
     {
+        this.setLayout(null);
+        setBackground(new Color(0,0,0,0));
 
         URI uri;
         try
@@ -24,13 +31,21 @@ public class JChessPiece extends JPanel
         }
 
 
-
-
         svg = new JSVGCanvas();
-
         svg.setURI(uri.toString());
+
         add(svg);
+
+        this.addComponentListener(new ComponentAdapter()
+        {
+            @Override
+            public void componentResized(ComponentEvent e)
+            {
+                svg.setSize(getWidth(), getHeight());
+            }
+        });
     }
+
 
 
     public static class ResourceHelper
