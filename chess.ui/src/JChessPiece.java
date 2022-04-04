@@ -15,11 +15,12 @@ public class JChessPiece extends JPanel
     private final JSVGCanvas svg;
 
 
-
     public JChessPiece(ChessPieceId id, Boolean isBlack)
     {
-        this.setLayout(null);
-        setBackground(new Color(0,0,0,0));
+        this.setOpaque(false);
+
+        //this.setLayout(null);
+        //setBackground(new Color(0, 0, 0, 0));
 
         URI uri;
         try
@@ -30,20 +31,34 @@ public class JChessPiece extends JPanel
             throw new RuntimeException(e);
         }
 
-
         svg = new JSVGCanvas();
         svg.setURI(uri.toString());
 
+
+        svg.setOpaque(false);
+        svg.setBackground(new Color(0, 0, 0, 0));
+
+        //this.setLayout(new BorderLayout());
+
+        //this.add(svg, BorderLayout.CENTER);
         add(svg);
+
 
         this.addComponentListener(new ComponentAdapter()
         {
             @Override
             public void componentResized(ComponentEvent e)
             {
+                svg.setLocation(0, 0);
                 svg.setSize(getWidth(), getHeight());
+                //svg.repaint();
+                //EventQueue.invokeLater(() -> revalidate());
             }
+
+
         });
+
+
     }
 
 
@@ -55,13 +70,13 @@ public class JChessPiece extends JPanel
             // Correspond to the files in resources/ka-hu/chess_kaneo/
             return switch (id)
                     {
-                        case KÖNIG -> "K";
-                        case KÖNIGIN -> "Q";
-                        case TURM -> "R";
+                        case KING -> "K";
+                        case QUEEN -> "Q";
+                        case TOWER -> "R";
 
 
                         case BISHOP -> "B";
-                        case KNIGHT -> "N";
+                        case HORSE -> "N";
                         case PAWN -> "P";
                     };
         }

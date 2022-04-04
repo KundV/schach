@@ -29,6 +29,10 @@ public class ChessBoard extends JPanel
         }
 
 
+
+
+
+
     }
 
     private void addPieces() {
@@ -96,8 +100,7 @@ public class ChessBoard extends JPanel
     public void paintComponent(Graphics g)
     {
         super.paintComponent(g);
-
-        //drawBoard(g);
+        drawBoard(g);
 
 
     }
