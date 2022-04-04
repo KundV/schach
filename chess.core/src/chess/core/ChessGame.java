@@ -12,6 +12,10 @@ public class ChessGame
         StartAufstellung();
     }
 
+    public boolean setMove(ChessGame move)
+    {
+        return true;
+    }
     public ArrayList<ChessMove> getPossibleMoves(int x, int y)
     {
         ArrayList<ChessMove> possibleMoves = new ArrayList<>();
