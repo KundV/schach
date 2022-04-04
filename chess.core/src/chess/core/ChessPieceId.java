@@ -1,20 +1,19 @@
 package chess.core;
 //TODO Vielleicht auf Deutsch übersetzen?
-@SuppressWarnings("NonAsciiCharacters")
 public enum ChessPieceId
 {
     /**
      * König
      */
-    KÖNIG,
+    KING,
     /**
      * Königin
      */
-    KÖNIGIN,
+    QUEEN,
     /**
      * Turm
      */
-    TURM,
+    TOWER,
     /**
      * Läufer
      */
@@ -22,7 +21,7 @@ public enum ChessPieceId
     /**
      * Pferd
      */
-    KNIGHT,
+    HORSE,
     /**
      * Frau Bauer
      */
