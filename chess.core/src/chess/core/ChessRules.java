@@ -8,41 +8,56 @@ public class ChessRules
     {
 
     }
+
     public ArrayList<ChessMove> CheckMoves(ChessPiece Piece)
     {
-        switch(Piece)
+        switch (Piece.chessPieceId)
         {
-            case(Piece.chessPieceId==ChessPieceId.PAWN)     -> RulesPawn(Piece);
-            case(Piece.chessPieceId==ChessPieceId.TOWER)    -> RulesTower(Piece);
-            case(Piece.chessPieceId==ChessPieceId.BISHOP)   -> RulesBishop(Piece);
-            case(Piece.chessPieceId==ChessPieceId.HORSE)    -> RulesHorse(Piece);
-            case(Piece.chessPieceId==ChessPieceId.KING)     -> RulesKing(Piece);
-            case(Piece.chessPieceId==ChessPieceId.QUEEN)    -> RulesQueen(Piece);
+            case PAWN   -> {return RulesPawn(Piece);}
+            case TOWER  -> {return RulesTower(Piece);}
+            case BISHOP -> {return RulesBishop(Piece);}
+            case HORSE  -> {return RulesHorse(Piece);}
+            case KING   -> {return RulesKing(Piece);}
+            case QUEEN  -> {return RulesQueen(Piece);}
         }
+        return null;
     }
+
     public ArrayList<ChessMove> RulesPawn(ChessPiece Piece)
     {
-
+        ArrayList<ChessMove> possibleMoves = new ArrayList<>();
+        possibleMoves.add(new ChessMove(1,1,1,1));
+        return possibleMoves;
     }
     public ArrayList<ChessMove> RulesTower(ChessPiece Piece)
     {
-
+        ArrayList<ChessMove> possibleMoves = new ArrayList<>();
+        possibleMoves.add(new ChessMove(1,1,1,1));
+        return possibleMoves;
     }
     public ArrayList<ChessMove> RulesBishop(ChessPiece Piece)
     {
-
+        ArrayList<ChessMove> possibleMoves = new ArrayList<>();
+        possibleMoves.add(new ChessMove(1,1,1,1));
+        return possibleMoves;
     }
     public ArrayList<ChessMove> RulesHorse(ChessPiece Piece)
     {
-
+        ArrayList<ChessMove> possibleMoves = new ArrayList<>();
+        possibleMoves.add(new ChessMove(1,1,1,1));
+        return possibleMoves;
     }
     public ArrayList<ChessMove> RulesKing(ChessPiece Piece)
     {
-
+        ArrayList<ChessMove> possibleMoves = new ArrayList<>();
+        possibleMoves.add(new ChessMove(1,1,1,1));
+        return possibleMoves;
     }
     public ArrayList<ChessMove> RulesQueen(ChessPiece Piece)
     {
-
+        ArrayList<ChessMove> possibleMoves = new ArrayList<>();
+        possibleMoves.add(new ChessMove(1,1,1,1));
+        return possibleMoves;
     }
 }
 
