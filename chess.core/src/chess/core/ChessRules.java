@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class ChessRules
 {
+
     public ChessRules()
     {
 
@@ -11,7 +12,7 @@ public class ChessRules
 
     public ArrayList<ChessMove> CheckMoves(ChessPiece Piece)
     {
-        switch (Piece.chessPieceId)
+        switch (Piece.getChessPieceId())
         {
             case PAWN   -> {return RulesPawn(Piece);}
             case TOWER  -> {return RulesTower(Piece);}
@@ -26,8 +27,16 @@ public class ChessRules
     public ArrayList<ChessMove> RulesPawn(ChessPiece Piece)
     {
         ArrayList<ChessMove> possibleMoves = new ArrayList<>();
-        if(Piece.isBlack)
-        possibleMoves.add(new ChessMove(1,1,1,1));
+        for(int i = 0; i < 8; i++)
+        {
+            for (int j = 0; j < 8; j++)
+            {
+                if(Piece.isBlack())
+                {
+
+                }
+            }
+        }
         return possibleMoves;
     }
 
