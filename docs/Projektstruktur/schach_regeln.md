@@ -2,13 +2,9 @@
 Diese Konzepte sind noch nicht final und können sich ändern
 !!!
 
-## Hautptmodule
+## REGELEN
 
-!!!info Mehrdeutigkeit<br>
-Unter Module versteht man hier [IntelliJ Module](https://www.jetbrains.com/help/idea/creating-and-managing-modules.html)
-, nicht
-[Java 9 Module :link:](https://en.wikipedia.org/wiki/Java_Platform_Module_System)
-!!!
+DOWN UNDER RELGEN
 
 Das Projekt besteht aus 2 Modulen:
 
