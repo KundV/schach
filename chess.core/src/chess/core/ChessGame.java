@@ -16,17 +16,20 @@ public class ChessGame
     {
         return true;
     }
+
     public ArrayList<ChessMove> getPossibleMoves(int x, int y)
     {
         ArrayList<ChessMove> possibleMoves = new ArrayList<>();
         possibleMoves.add(new ChessMove(x,y,1,1));
         return possibleMoves;
     }
+
     public void StartAufstellung()
     {
         for(int i = 0; i<8; i++)
         {
-            for (int j = 0; j <= 7; j++) {
+            for (int j = 0; j <= 7; j++)
+            {
                 if(i==1 || i == 6)
                 {
                     Spielbrett[i][j] = new ChessPiece(ChessPieceId.PAWN,i < 2);

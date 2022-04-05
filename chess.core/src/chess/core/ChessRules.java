@@ -29,35 +29,41 @@ public class ChessRules
         possibleMoves.add(new ChessMove(1,1,1,1));
         return possibleMoves;
     }
+
     public ArrayList<ChessMove> RulesTower(ChessPiece Piece)
     {
         ArrayList<ChessMove> possibleMoves = new ArrayList<>();
         possibleMoves.add(new ChessMove(1,1,1,1));
         return possibleMoves;
     }
+
     public ArrayList<ChessMove> RulesBishop(ChessPiece Piece)
     {
         ArrayList<ChessMove> possibleMoves = new ArrayList<>();
         possibleMoves.add(new ChessMove(1,1,1,1));
         return possibleMoves;
     }
+
     public ArrayList<ChessMove> RulesHorse(ChessPiece Piece)
     {
         ArrayList<ChessMove> possibleMoves = new ArrayList<>();
         possibleMoves.add(new ChessMove(1,1,1,1));
         return possibleMoves;
     }
+
     public ArrayList<ChessMove> RulesKing(ChessPiece Piece)
     {
         ArrayList<ChessMove> possibleMoves = new ArrayList<>();
         possibleMoves.add(new ChessMove(1,1,1,1));
         return possibleMoves;
     }
+
     public ArrayList<ChessMove> RulesQueen(ChessPiece Piece)
     {
         ArrayList<ChessMove> possibleMoves = new ArrayList<>();
         possibleMoves.add(new ChessMove(1,1,1,1));
         return possibleMoves;
     }
+
 }
 
