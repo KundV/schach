@@ -37,6 +37,7 @@ public class JChessPiece extends JPanel
 
         svg.setOpaque(false);
         svg.setBackground(new Color(0, 0, 0, 0));
+        svg.setLocation(0, 0);
 
         //this.setLayout(new BorderLayout());
 
@@ -49,10 +50,16 @@ public class JChessPiece extends JPanel
             @Override
             public void componentResized(ComponentEvent e)
             {
-                svg.setLocation(0, 0);
-                svg.setSize(getWidth(), getHeight());
+               // svg.setSize(getWidth(), getHeight());
+                svg.setPreferredSize(new Dimension(getWidth(), getHeight()));
+                repaint();
+                revalidate();
                 //svg.repaint();
                 //EventQueue.invokeLater(() -> revalidate());
+            }
+
+            public void componentShown(ComponentEvent e) {
+                svg.setSize(getWidth(), getHeight());
             }
 
 

@@ -28,8 +28,8 @@ public class ChessBoard extends JPanel
             }
         }
 
-
-
+        revalidate();
+        repaint();
 
 
 
@@ -125,9 +125,28 @@ public class ChessBoard extends JPanel
         Dimension d = this.getParent().getSize();
         int newSize = Math.min(d.width, d.height);
         newSize = newSize == 0 ? 100 : newSize;
+
+        // print newSize to console
+
+
         return new Dimension(newSize, newSize);
 
 
+
+    }
+
+    // Override getMinimumSize() to return the preferred size
+    @Override
+    public Dimension getMinimumSize()
+    {
+        return getPreferredSize();
+    }
+
+    // Override getMaximumSize() to return the preferred size
+    @Override
+    public Dimension getMaximumSize()
+    {
+        return getPreferredSize();
     }
 
     private void drawBoard(Graphics g)
