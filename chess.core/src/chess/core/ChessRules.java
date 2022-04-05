@@ -26,6 +26,7 @@ public class ChessRules
     public ArrayList<ChessMove> RulesPawn(ChessPiece Piece)
     {
         ArrayList<ChessMove> possibleMoves = new ArrayList<>();
+        if(Piece.isBlack)
         possibleMoves.add(new ChessMove(1,1,1,1));
         return possibleMoves;
     }
@@ -50,15 +51,13 @@ public class ChessRules
         possibleMoves.add(new ChessMove(1,1,1,1));
         return possibleMoves;
     }
-
-    public ArrayList<ChessMove> RulesKing(ChessPiece Piece)
+    public ArrayList<ChessMove> RulesQueen(ChessPiece Piece)
     {
         ArrayList<ChessMove> possibleMoves = new ArrayList<>();
         possibleMoves.add(new ChessMove(1,1,1,1));
         return possibleMoves;
     }
-
-    public ArrayList<ChessMove> RulesQueen(ChessPiece Piece)
+    public ArrayList<ChessMove> RulesKing(ChessPiece Piece)
     {
         ArrayList<ChessMove> possibleMoves = new ArrayList<>();
         possibleMoves.add(new ChessMove(1,1,1,1));
