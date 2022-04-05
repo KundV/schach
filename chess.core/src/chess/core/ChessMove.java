@@ -1,6 +1,7 @@
 package chess.core;
 
-public class ChessMove {
+public class ChessMove
+{
     int xStart;
     int yStart;
     int xTarget;
