@@ -14,7 +14,8 @@ public class ChessBoard extends JPanel
 
     private JChessPiece[][] jChessPieces = new JChessPiece[8][8];
 
-    public void onResize() {
+    public void onResize()
+    {
 
         for (int r = 0; r < 8; r++)
         {
@@ -35,7 +36,8 @@ public class ChessBoard extends JPanel
 
     }
 
-    private void addPieces() {
+    private void addPieces()
+    {
         for (int r = 0; r < 8; r++)
         {
             for (int c = 0; c < 8; c++)
