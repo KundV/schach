@@ -7,7 +7,7 @@ public class Queue {
         first = new End();
     }
 
-    public void insert(Dataelement content){
+    public void add(Dataelement content){
         first=first.insert(content);
     }
 
@@ -15,6 +15,9 @@ public class Queue {
         Listelement oldFirst = first;
         first = first.get_next();
         return oldFirst;
+    }
+    public Dataelement getByIndex(int index){
+        return first.get_contentById(index);
     }
 
     public int count_nodes() {

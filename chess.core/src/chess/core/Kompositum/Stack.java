@@ -1,4 +1,4 @@
-package chess.core.Kompositum;
+/**package chess.core.Kompositum;
 
 public class Stack {
     private Listelement first;
@@ -25,3 +25,4 @@ public class Stack {
         return first.count_nodes();
     }
 }
+**/

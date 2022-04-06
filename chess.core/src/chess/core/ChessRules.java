@@ -1,5 +1,7 @@
 package chess.core;
 
+import chess.core.Kompositum.Queue;
+
 import java.util.ArrayList;
 
 public class ChessRules
@@ -22,7 +24,7 @@ public class ChessRules
         StartPosition();
     }
 
-    public ArrayList<ChessMove> CheckMoves(ChessPiece Piece)
+    public Queue CheckMoves(ChessPiece Piece)
     {
 
         switch (Piece.getChessPieceId())
@@ -37,9 +39,9 @@ public class ChessRules
         return null;
     }
 
-    public ArrayList<ChessMove> RulesPawn(ChessPiece Piece)
+    public Queue RulesPawn(ChessPiece Piece)
     {
-        ArrayList<ChessMove> possibleMoves = new ArrayList<>();
+        Queue possibleMoves = new Queue();
         for(int i = 0; i < 8; i++)
         {
             for (int j = 0; j < 8; j++)
@@ -52,38 +54,36 @@ public class ChessRules
         }
         return possibleMoves;
     }
-    public ArrayList<ChessMove> RulesTower(ChessPiece Piece)
+    public Queue RulesTower(ChessPiece Piece)
     {
-        ArrayList<ChessMove> possibleMoves = new ArrayList<>();
+        Queue possibleMoves = new Queue();
         possibleMoves.add(new ChessMove(1,1,1,1,true));
         return possibleMoves;
     }
 
-    public ArrayList<ChessMove> RulesBishop(ChessPiece Piece)
+    public Queue RulesBishop(ChessPiece Piece)
     {
-        ArrayList<ChessMove> possibleMoves = new ArrayList<>();
-
+        Queue possibleMoves = new Queue();
         return possibleMoves;
     }
 
-    public ArrayList<ChessMove> RulesHorse(ChessPiece Piece)
+    public Queue RulesHorse(ChessPiece Piece)
     {
-        ArrayList<ChessMove> possibleMoves = new ArrayList<>();
-
+        Queue possibleMoves = new Queue();
         return possibleMoves;
     }
-    public ArrayList<ChessMove> RulesQueen(ChessPiece Piece)
-    {
-        ArrayList<ChessMove> possibleMoves = new ArrayList<>();
 
+    public Queue RulesQueen(ChessPiece Piece)
+    {
+        Queue possibleMoves = new Queue();
         return possibleMoves;
     }
-    public ArrayList<ChessMove> RulesKing(ChessPiece Piece)
+    public Queue RulesKing(ChessPiece Piece)
     {
-        ArrayList<ChessMove> possibleMoves = new ArrayList<>();
-
+        Queue possibleMoves = new Queue();
         return possibleMoves;
     }
+
     public void StartPosition()
     {
         for(int i = 0; i<8; i++)

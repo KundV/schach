@@ -1,12 +1,11 @@
 package chess.core.Kompositum;
 
 public class End extends Listelement{
+    private int index;
 
     public End(){
-
+        index = 0;
     }
-
-
     public int count_nodes() {
         return 0;
     }
@@ -16,10 +15,15 @@ public class End extends Listelement{
     }
 
     public Datanode insert(Dataelement in) {
-        return new Datanode(this, in);
+        index++;
+        return new Datanode(this, in, index);
     }
 
     public Dataelement get_content() {
+        return null;
+    }
+
+    public Dataelement get_contentById(int index) {
         return null;
     }
 
