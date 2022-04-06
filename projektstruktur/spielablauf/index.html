@@ -27,11 +27,11 @@
 
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="/resources/css/retype.css?v=2.2.702507823897" rel="stylesheet" data-turbo-track="reload" />
+    <link href="/resources/css/retype.css?v=2.2.702548857747" rel="stylesheet" data-turbo-track="reload" />
 
-    <script type="text/javascript" src="/resources/js/config.js?v=2.2.702507823897" defer data-turbo-track="reload"></script>
+    <script type="text/javascript" src="/resources/js/config.js?v=2.2.702548857747" defer data-turbo-track="reload"></script>
     <script type="text/javascript" src="/resources/js/retype.js?v=2.2" defer data-turbo-track="reload"></script>
-    <script id="lunr-js" type="text/javascript" src="/resources/js/lunr.js?v=2.2.702507823897" defer></script>
+    <script id="lunr-js" type="text/javascript" src="/resources/js/lunr.js?v=2.2.702548857747" defer></script>
     <script id="mermaid-js" type="text/javascript" src="/resources/js/mermaid.js?v=2.2" defer></script>
 </head>
 <body>
@@ -178,6 +178,51 @@
     S --&gt;|Ja| SM[Schachmatt]
     S --&gt;|Nein| P[Patt]
     Warte --&gt; Z</pre></div>
+<doc-anchor-target id="zugberechnung">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#zugberechnung">#</doc-anchor-trigger>
+        <span>Zugberechnung</span>
+    </h2>
+</doc-anchor-target>
+<p>Bei der Zugberechnung gibt es beim Schach unterschiedliche Ebenen der Berechnung</p>
+<doc-panels>
+   <doc-panel id="1-unmittelbare-züge-br">
+       <template #title>1. Unmittelbare Züge<br></template>
+<p>Zunächst werden alle unmittelbare Züge der Figuren anhand der allgemeinen Zugmuster berechnet.<br>
+Hierbei wird folgendes beachtet:</p>
+<ul>
+<li>Felder die von eigenen Figuren besetzt werden</li>
+<li>Felder die hinter einer gegnerischen Figur stehen und somit den Zug der Figur blockieren</li>
+<li>Sonderregeln wie En Passant, Rochade...</li>
+</ul>
+   </doc-panel>
+   <doc-panel id="2-vom-gegner-gefährdete-figuren-br">
+       <template #title>2. Vom Gegner gefährdete Figuren<br></template>
+<p>Beim Schach sind Züge ungültig, die zur Bedrohung des eigenen Königs führen.<br>
+Somit ist ein Zug ungültig, wenn er zu einem Zustand führt, der diese Eigenschaften erfüllt:<br></p>
+<ul>
+<li>Der Gegner ist am Zug</li>
+<li>Der Gegner bedroht den König des Spielers
+<ul>
+<li>Hierbei müssen lediglich die unmittelbaren Züge (Ebene 1) des Gegners geprüft werden</li>
+</ul>
+</li>
+</ul>
+   </doc-panel>
+</doc-panels>
+<div class="overflow-hidden mb-6 py-4 dark:px-5 dark:bg-white rounded-md"><pre class="mermaid w-full">flowchart TB
+    U(Unmittelbare Züge berechnen)
+    U --&gt;|Züge testen| Simulation
+    
+    subgraph Simulation
+        direction TB    
+        U2(Unmittelbare Züge berechnen) --&gt; F
+        F{König bedroht?} --&gt;|Ja| Ung
+        F --&gt;|Nein| Gültig
+        Ung(Ungültig)
+
+    end
+</pre></div>
 
                                 
                                 <!-- Required only on API pages -->
