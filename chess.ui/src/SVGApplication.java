@@ -14,9 +14,11 @@ import org.apache.batik.swing.svg.SVGDocumentLoaderEvent;
 import org.apache.batik.swing.svg.GVTTreeBuilderAdapter;
 import org.apache.batik.swing.svg.GVTTreeBuilderEvent;
 
-public class SVGApplication {
+public class SVGApplication
+{
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         // Create a new JFrame.
         JFrame f = new JFrame("Batik");
         SVGApplication app = new SVGApplication(f);
@@ -25,8 +27,10 @@ public class SVGApplication {
         f.getContentPane().add(app.createComponents());
 
         // Display the frame.
-        f.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
+        f.addWindowListener(new WindowAdapter()
+        {
+            public void windowClosing(WindowEvent e)
+            {
                 System.exit(0);
             }
         });
@@ -50,7 +54,8 @@ public class SVGApplication {
         frame = f;
     }
 
-    public JComponent createComponents() {
+    public JComponent createComponents()
+    {
         // Create a panel and add the button, status label and the SVG canvas.
         final JPanel panel = new JPanel(new BorderLayout());
 
@@ -62,15 +67,21 @@ public class SVGApplication {
         panel.add("Center", svgCanvas);
 
         // Set the button action.
-        button.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent ae) {
+        button.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent ae)
+            {
                 JFileChooser fc = new JFileChooser(".");
                 int choice = fc.showOpenDialog(panel);
-                if (choice == JFileChooser.APPROVE_OPTION) {
+                if (choice == JFileChooser.APPROVE_OPTION)
+                {
                     File f = fc.getSelectedFile();
-                    try {
+                    try
+                    {
                         svgCanvas.setURI(f.toURL().toString());
-                    } catch (IOException ex) {
+                    }
+                    catch (IOException ex)
+                    {
                         ex.printStackTrace();
                     }
                 }
@@ -78,30 +89,39 @@ public class SVGApplication {
         });
 
         // Set the JSVGCanvas listeners.
-        svgCanvas.addSVGDocumentLoaderListener(new SVGDocumentLoaderAdapter() {
-            public void documentLoadingStarted(SVGDocumentLoaderEvent e) {
+        svgCanvas.addSVGDocumentLoaderListener(new SVGDocumentLoaderAdapter()
+        {
+            public void documentLoadingStarted(SVGDocumentLoaderEvent e)
+            {
                 label.setText("Document Loading...");
             }
-            public void documentLoadingCompleted(SVGDocumentLoaderEvent e) {
+            public void documentLoadingCompleted(SVGDocumentLoaderEvent e)
+            {
                 label.setText("Document Loaded.");
             }
         });
 
-        svgCanvas.addGVTTreeBuilderListener(new GVTTreeBuilderAdapter() {
-            public void gvtBuildStarted(GVTTreeBuilderEvent e) {
+        svgCanvas.addGVTTreeBuilderListener(new GVTTreeBuilderAdapter()
+        {
+            public void gvtBuildStarted(GVTTreeBuilderEvent e)
+            {
                 label.setText("Build Started...");
             }
-            public void gvtBuildCompleted(GVTTreeBuilderEvent e) {
+            public void gvtBuildCompleted(GVTTreeBuilderEvent e)
+            {
                 label.setText("Build Done.");
                 frame.pack();
             }
         });
 
-        svgCanvas.addGVTTreeRendererListener(new GVTTreeRendererAdapter() {
-            public void gvtRenderingPrepare(GVTTreeRendererEvent e) {
+        svgCanvas.addGVTTreeRendererListener(new GVTTreeRendererAdapter()
+        {
+            public void gvtRenderingPrepare(GVTTreeRendererEvent e)
+            {
                 label.setText("Rendering Started...");
             }
-            public void gvtRenderingCompleted(GVTTreeRendererEvent e) {
+            public void gvtRenderingCompleted(GVTTreeRendererEvent e)
+            {
                 label.setText("");
             }
         });

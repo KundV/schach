@@ -100,7 +100,8 @@ public class JChessPiece extends JPanel
         try
         {
             return res.toURI();
-        } catch (URISyntaxException e)
+        }
+        catch (URISyntaxException e)
         {
             throw new RuntimeException(e);
         }

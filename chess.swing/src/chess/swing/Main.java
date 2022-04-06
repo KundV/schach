@@ -16,38 +16,45 @@ public class Main
         f.setSize(700, 700);
         f.setVisible(true);
     }
+
 }
 
 /*
 
-class ChessSnapshot {
+class ChessSnapshot
+{
     ChessPieceId[][] board;
 
-    ChessSnapshot applyAction() {
+    ChessSnapshot applyAction()
+    {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
-
 }
 
-class ChessGame {
+class ChessGame
+{
 
     private final List<ChessAction> gameHistory = new ArrayList<>();
-    void addAction(ChessAction action) {
+    void addAction(ChessAction action)
+    {
 
     }
 
-    bool itsBlacksTurn() {
+    bool itsBlacksTurn()
+    {
 
     }
 
-    List<ChessAction> getValidActions() {
+    List<ChessAction> getValidActions()
+    {
         // Gibt mögliche Funktionen zurück
     }
 
 }
 
-class ChessAction {
+class ChessAction
+{
     int xStart; //Startposition der Figur
     int yStart;
     int xMove; //Bewegung
