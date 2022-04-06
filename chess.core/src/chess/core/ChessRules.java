@@ -13,18 +13,13 @@ public class ChessRules
     private int player; // the current player
 
 
-
-
-
-
-
     public ChessRules(ChessPiece[][] chessBoard)
     {
         this.chessBoard = chessBoard;
         StartPosition();
     }
 
-    public Queue CheckMoves(ChessPiece Piece)
+    public Queue CheckAllMoves(ChessPiece Piece)
     {
 
         switch (Piece.getChessPieceId())

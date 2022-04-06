@@ -26,8 +26,5 @@ public enum ChessPieceId
      * Frau Bauer
      */
     PAWN,
-    /**
-     * Leer
-     */
-    EMPTY
+
 }

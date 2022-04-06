@@ -16,7 +16,6 @@ public class Datanode extends Listelement{
     public int count_nodes() {
         return next.count_nodes() + 1;
     }
-
     public Dataelement get_contentById(int index) {
         if (index == this.index)
         {
