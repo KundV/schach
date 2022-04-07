@@ -11,6 +11,7 @@ public class ChessMove extends Dataelement
     private int yStart;
     private int xTarget;
     private int yTarget;
+    public Dataelement this
     //Event event;
     public ChessMove(int xStart,int yStart,int xTarget,int yTarget,boolean isBlackMove)
     {
