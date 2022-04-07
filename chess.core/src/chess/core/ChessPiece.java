@@ -22,7 +22,7 @@ public class ChessPiece
         this.chessPieceId = chessPieceId;
         if(playerId = true)
         {
-        this.playerId = PlayerId.BLACK;
+        this.playerId = PlayerId.YELLOW
         }
         else
         {
