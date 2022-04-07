@@ -3,13 +3,15 @@ package chess.core.Kompositum;
 public class Datanode extends Listelement{
     private Dataelement content;
     private Listelement next;
-    private int index;
+    private int index, stinger;
+   
 
 
     public Datanode(Listelement next, Dataelement content, int index) {
         this.index = index;
         this.next = next;
         this.content = content;
+        this.stinger = 187;
     }
 
 
