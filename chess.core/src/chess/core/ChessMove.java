@@ -15,10 +15,10 @@ public class ChessMove extends Dataelement
     public ChessMove(int xStart,int yStart,int xTarget,int yTarget,boolean isBlackMove)
     {
         super(isBlackMove);
-        this.xStart = xStart;
-        this.yStart = yTarget;
-        this.xTarget = xTarget;
-        this.yTarget = yTarget;
+        this.yStart = xStart;
+        this.xStart = yTarget;
+        this.yTarget = xTarget;
+        this.xTarget = yTarget;
     }
 
     @Override
@@ -35,7 +35,7 @@ public class ChessMove extends Dataelement
 
     public int get_xStart()
     {
-        return xStart;
+        return xTarget;
     }
 
     public int get_yStart()
