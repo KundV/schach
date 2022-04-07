@@ -1,6 +1,6 @@
 package chess.core;
 
-import chess.core.Kompositum.Queue;
+import chess.core.VerktetteListe.Queue;
 
 import java.util.ArrayList;
 

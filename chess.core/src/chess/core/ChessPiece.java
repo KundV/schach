@@ -28,7 +28,7 @@ public class ChessPiece
         {
             this.playerId = PlayerId.WHITE;
         }
-        this.possibleMoves = new ArrayList<>();
+        this.possibleMoves = new Queue();
 
     }
 
