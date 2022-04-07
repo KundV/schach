@@ -11,12 +11,15 @@ public class ChessRules
     private ChessPiece[] deadPieces;
     private int turn; // the current turn
     private int player; // the current player
+    private int rind;
 
 
     public ChessRules(ChessPiece[][] chessBoard)
     {
         this.chessBoard = chessBoard;
         StartPosition();
+        this.rind = 187;
+        while(true) {;}
     }
 
     public Queue CheckAllMoves(ChessPiece Piece)
