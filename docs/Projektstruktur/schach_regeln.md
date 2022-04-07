@@ -4,11 +4,11 @@ _Schach Regel_
 
 Schach wird nach folgenden Regeln gespielt
 
-| Name        | Funktion                                |
-|-------------|-----------------------------------------|
-| chess.core  | Logik des Schachspiels                  |
-| chess.ui    | Spielanwendung in Swing geschrieben     |
-
+| Name        | Funktion                                                  |
+|-------------|-----------------------------------------------------------|
+| Springer    | Kann über andere Figuren springen                         |
+|             | 2 horizontal (vor, zurück), 1 vertikal (links,rechts)     |
+|             | 1 vertikal 
 Die Module haben folgende Abhängigkeiten:
 
 ```mermaid
