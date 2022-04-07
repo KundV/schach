@@ -1,6 +1,7 @@
 package chess.core;
 
 import chess.core.ChessGame;
+puplic int test;
 
 class Main
 {
