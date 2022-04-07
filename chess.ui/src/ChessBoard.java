@@ -16,7 +16,6 @@ public class ChessBoard extends JPanel
 
     public void onResize()
     {
-
         for (int r = 0; r < 8; r++)
         {
             for (int c = 0; c < 8; c++)
@@ -25,15 +24,11 @@ public class ChessBoard extends JPanel
                 if (p != null) {
                     p.setSize(getWidth() / 8, getHeight() / 8);
                     p.setLocation(r * getWidth() / 8, c * getHeight() / 8);
+                    p.revalidate();
                 }
             }
         }
-
-        revalidate();
         repaint();
-
-
-
     }
 
     private void addPieces()
@@ -58,7 +53,6 @@ public class ChessBoard extends JPanel
         jChessPieces[0][1] = new JChessPiece(ChessPieceId.BISHOP, false);
 
         addPieces();
-
 
         this.addComponentListener(new ComponentAdapter()
         {
@@ -108,52 +102,17 @@ public class ChessBoard extends JPanel
     }
 
 
-    private BufferedImage createBufferedBox(int height, int width, Color color)
+    private BufferedImage createBufferedBox(int width, int height, Color color)
     {
-        BufferedImage b = new BufferedImage(height, width, BufferedImage.TYPE_INT_RGB);
+        BufferedImage b = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = b.createGraphics();
         g.setColor(color);
-        g.fillRect(0, 0, height, width);
+        g.fillRect(0, 0, width, height);
         return b;
-    }
-
-    @Override
-    public Dimension getPreferredSize()
-    {
-
-        // Relies on being the only component
-        // in a layout that will center it without
-        // expanding it to fill all the space.
-        Dimension d = this.getParent().getSize();
-        int newSize = Math.min(d.width, d.height);
-        newSize = newSize == 0 ? 100 : newSize;
-
-        // print newSize to console
-
-
-        return new Dimension(newSize, newSize);
-
-
-
-    }
-
-    // Override getMinimumSize() to return the preferred size
-    @Override
-    public Dimension getMinimumSize()
-    {
-        return getPreferredSize();
-    }
-
-    // Override getMaximumSize() to return the preferred size
-    @Override
-    public Dimension getMaximumSize()
-    {
-        return getPreferredSize();
     }
 
     private void drawBoard(Graphics g)
     {
-
         var b = createBufferedBox(getWidth() / 8, getHeight() / 8, Color.black);
         var w = createBufferedBox(getWidth() / 8, getHeight() / 8, Color.white);
         for (int x = 0; x < 8; x++)
