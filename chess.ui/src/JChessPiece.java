@@ -81,7 +81,6 @@ public class JChessPiece extends JPanel
                         case QUEEN -> "Q";
                         case TOWER -> "R";
 
-
                         case BISHOP -> "B";
                         case HORSE -> "N";
                         case PAWN -> "P";
