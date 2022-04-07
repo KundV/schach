@@ -41,7 +41,7 @@ public class ChessRules
         {
             for (int j = 0; j < 8; j++)
             {
-                if(Piece.isBlack())
+                if(Piece.getPlayerId() == PlayerId.BLACK)
                 {
 
                 }

@@ -48,8 +48,6 @@ public class ChessBoardTile
         TagetingMoves.add(move);
     }
 
-
-
     public boolean hasTargetingMoves()
     {
         return (TagetingMoves != null);
@@ -60,12 +58,12 @@ public class ChessBoardTile
         return (piece != null);
     }
 
-    public boolean isOccupiedBy()
+    public PlayerId isOccupiedBy()
     {
-        return (this.piece.isBlack());
+        return (this.piece.getPlayerId());
     }
 
-    public voidd
+
 
 
 
