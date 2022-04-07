@@ -1,4 +1,4 @@
-package chess.core.Kompositum;
+package chess.core.VerktetteListe;
 
 public abstract class Dataelement {
     public boolean isBlackMove;
