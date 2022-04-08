@@ -1,4 +1,4 @@
-// because their syntax highlighting is non-existent
+package chess.ui;// because their syntax highlighting is non-existent
 
 import java.awt.*;
 import java.awt.event.*;
@@ -76,14 +76,7 @@ public class SVGApplication
                 if (choice == JFileChooser.APPROVE_OPTION)
                 {
                     File f = fc.getSelectedFile();
-                    try
-                    {
-                        svgCanvas.setURI(f.toURL().toString());
-                    }
-                    catch (IOException ex)
-                    {
-                        ex.printStackTrace();
-                    }
+                    svgCanvas.setURI(f.toURI().toString());
                 }
             }
         });

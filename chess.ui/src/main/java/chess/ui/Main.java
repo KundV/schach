@@ -1,5 +1,4 @@
-import javax.swing.*;
-import java.awt.*;
+package chess.ui;
 
 public class Main
 {

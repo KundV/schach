@@ -1,3 +1,5 @@
+package chess.ui;
+
 import chess.core.ChessPieceId;
 import org.apache.batik.swing.JSVGCanvas;
 
@@ -85,10 +87,15 @@ public class JChessPiece extends JPanel
 
     }
 
+
+
     static URI loadUri(ChessPieceId id, Boolean isBlack) throws IOException
     {
         var c = (isBlack ? "b" : "w") + ResourceHelper.IdToKaHu(id) + ".svg";
+
         var res = ClassLoader.getSystemClassLoader().getResource("./ka-hu/chess_kaneo/" + c);
+
+
         if (res == null)
             throw new IOException("Could not find a SVG-ressource for " + id.toString() + " in " + (isBlack ? "black" : "white") + " color");
         try

@@ -2,8 +2,6 @@ package chess.core;
 
 import chess.core.VerktetteListe.Queue;
 
-import java.util.ArrayList;
-
 public class ChessRules
 {
 

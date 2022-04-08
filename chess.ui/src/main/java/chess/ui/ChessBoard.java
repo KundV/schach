@@ -1,3 +1,5 @@
+package chess.ui;
+
 import chess.core.ChessPieceId;
 
 import javax.swing.*;
@@ -5,7 +7,6 @@ import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
 
 public class ChessBoard extends JPanel
 {

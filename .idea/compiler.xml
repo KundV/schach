@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="schach.chess.ui" target="18" />
+      <module name="schach.chess.ui.main" target="18" />
+      <module name="schach.chess.ui.test" target="18" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
