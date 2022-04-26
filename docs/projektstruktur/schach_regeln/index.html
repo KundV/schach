@@ -27,11 +27,11 @@
 
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="/resources/css/retype.css?v=2.2.704268555015" rel="stylesheet" data-turbo-track="reload" />
+    <link href="/resources/css/retype.css?v=2.2.704268796917" rel="stylesheet" data-turbo-track="reload" />
 
-    <script type="text/javascript" src="/resources/js/config.js?v=2.2.704268555015" defer data-turbo-track="reload"></script>
+    <script type="text/javascript" src="/resources/js/config.js?v=2.2.704268796917" defer data-turbo-track="reload"></script>
     <script type="text/javascript" src="/resources/js/retype.js?v=2.2" defer data-turbo-track="reload"></script>
-    <script id="lunr-js" type="text/javascript" src="/resources/js/lunr.js?v=2.2.704268555015" defer></script>
+    <script id="lunr-js" type="text/javascript" src="/resources/js/lunr.js?v=2.2.704268796917" defer></script>
     <script id="mermaid-js" type="text/javascript" src="/resources/js/mermaid.js?v=2.2" defer></script>
 </head>
 <body>
@@ -183,11 +183,15 @@
 Die Module haben folgende Abhängigkeiten:</p>
 <div class="overflow-hidden mb-6 py-4 dark:px-5 dark:bg-white rounded-md"><pre class="mermaid w-full">%%{init: { 'theme': 'forest' } }%%
 graph TD
-    chess.ui --&gt; chess.core</pre></div>
-<p>Wie man sieht, hat das Logik-Modul  Referenz auf die UI-Module (gegenseitige Referenzen währen auch nicht
+    chess.ui --&gt; che
+
+Wie man sieht, hat das Logik-Modul  Referenz auf die UI-Module (gegenseitige Referenzen währen auch nicht
 möglich), denn sie wird strikt von der UI getrennt. Es soll dadurch auch von einer GUI-losen Serveranwendung
-konsumierbar sein.</p>
-<p>Als Buildsystem wird IntelliJ IDEA verwendet</p>
+konsumierbar sein.
+
+Als Buildsystem wird IntelliJ IDEA verwendet
+
+</pre></div>
 
                                 
                                 <!-- Required only on API pages -->
