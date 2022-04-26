@@ -1,18 +1,15 @@
 package chess.core;
 
 import chess.core.VerktetteListe.Queue;
+import org.jetbrains.annotations.NotNull;
 
 public class ChessMechanics
 {
 
     private ChessBoardTile[][] chessBoard; // the chess board
-    private ChessPiece[] deadPieces;
-    private int turn; // the current turn
-    private int player; // the current player
-    private int enPassant; // the en passant square
-    private int castling; // the castling rights
-    private int fiftyMove; // the fifty move rule
-
+    private ChessPiece[] deadPieces;       // the dead pieces
+    private int turn;                      // the current turn
+    private PlayerId player = PlayerId.WHITE; // the current player
 
     public ChessMechanics(ChessBoardTile[][] chessBoard)
     {
@@ -20,64 +17,71 @@ public class ChessMechanics
         StartPosition();
     }
 
-    public Queue CheckAllMoves(ChessPiece Piece)
+    public void getAllMoves(ChessBoardTile[][] chessBoard)
     {
-
-        switch (Piece.getChessPieceId())
-        {
-            case PAWN   -> {return RulesPawn(Piece);}
-            case TOWER  -> {return RulesTower(Piece);}
-            case BISHOP -> {return RulesBishop(Piece);}
-            case HORSE  -> {return RulesHorse(Piece);}
-            case KING   -> {return RulesKing(Piece);}
-            case QUEEN  -> {return RulesQueen(Piece);}
-        }
-        return null;
-    }
-
-    public Queue RulesPawn(ChessPiece Piece)
-    {
-        Queue possibleMoves = new Queue();
-        for(int i = 0; i < 8; i++)
+        for(int i = 0; i<8; i++)
         {
             for (int j = 0; j < 8; j++)
             {
-                if(Piece.getPlayerId() == PlayerId.WHITE)
+                if(chessBoard[i][j].getPiece() != null)
                 {
-
+                   CheckMoves(i,j);
                 }
             }
         }
-        return possibleMoves;
     }
-    public Queue RulesTower(ChessPiece Piece)
+
+    public void CheckMoves(int x, int y)
+    {
+
+        switch (chessBoard[x][y].getPiece().getChessPieceId())  // switch statement for the piece
+        {
+            case PAWN   -> { RulesPawn(x,y);}
+            case TOWER  -> { RulesTower(chessBoard[x][y].getPiece());}
+            case BISHOP -> { RulesBishop(chessBoard[x][y].getPiece());}
+            case HORSE  -> { RulesHorse(chessBoard[x][y].getPiece());}
+            case KING   -> { RulesKing(chessBoard[x][y].getPiece());}
+            case QUEEN  -> { RulesQueen(chessBoard[x][y].getPiece());}
+        }
+    }
+
+    public void RulesPawn(int x, int y)
+    {
+        if(chessBoard[x][y+1].getPiece() == null)
+        {
+            ChessMove move = new ChessMove(x,y,x,y+1,true);
+            chessBoard[x][y].getPiece().addPossibleMove(move);
+            chessBoard[x][y+1].addTargetingMove();
+        }
+        if(chessBoard[x][y].getPiece().isFirstMove())
+        {
+
+        }
+
+    }
+    public void RulesTower(ChessPiece Piece)
     {
         Queue possibleMoves = new Queue();
         possibleMoves.add(new ChessMove(1,1,1,1,true));
-        return possibleMoves;
     }
 
-    public Queue RulesBishop(ChessPiece Piece)
+    public void RulesBishop(ChessPiece Piece)
     {
         Queue possibleMoves = new Queue();
-        return possibleMoves;
     }
 
     public Queue RulesHorse(ChessPiece Piece)
     {
         Queue possibleMoves = new Queue();
-        return possibleMoves;
     }
 
     public Queue RulesQueen(ChessPiece Piece)
     {
         Queue possibleMoves = new Queue();
-        return possibleMoves;
     }
     public Queue RulesKing(ChessPiece Piece)
     {
         Queue possibleMoves = new Queue();
-        return possibleMoves;
     }
 
     public void StartPosition()
