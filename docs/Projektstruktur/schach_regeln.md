@@ -2,11 +2,12 @@
 
 Schach wird nach folgenden Regeln gespielt
 
-| Name        | Funktion                                                  |
-|-------------|-----------------------------------------------------------|
-| Springer    | Kann über andere Figuren springen                         |
-|             | 2 horizontal (vor, zurück), 1 vertikal (links,rechts)     |
-|             | 1 vertikal 
+| Name     | Funktion                                              |
+|----------|-------------------------------------------------------|
+| Springer | Kann über andere Figuren springen                     |
+|          | 2 horizontal (vor, zurück), 1 vertikal (links,rechts) |
+|          | 1 vertikal                                            |
+
 Die Module haben folgende Abhängigkeiten:
 
 ```mermaid
