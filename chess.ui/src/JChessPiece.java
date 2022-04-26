@@ -15,13 +15,17 @@ public class JChessPiece extends JPanel
     private final JSVGCanvas svg;
 
 
+    private void updateSvg() {
+        svg.setSize(new Dimension(getWidth(), getHeight()));
+        svg.setLocation(0,0);
+        svg.revalidate();
+
+        repaint();
+    }
+
     public JChessPiece(ChessPieceId id, Boolean isBlack)
     {
         this.setOpaque(false);
-
-        //this.setLayout(null);
-        //setBackground(new Color(0, 0, 0, 0));
-
         URI uri;
         try
         {
@@ -31,38 +35,29 @@ public class JChessPiece extends JPanel
             throw new RuntimeException(e);
         }
 
+        setLayout(null);
         svg = new JSVGCanvas();
         svg.setURI(uri.toString());
 
 
+
         svg.setOpaque(false);
         svg.setBackground(new Color(0, 0, 0, 0));
-        svg.setLocation(0, 0);
 
-        //this.setLayout(new BorderLayout());
-
-        //this.add(svg, BorderLayout.CENTER);
         add(svg);
-
 
         this.addComponentListener(new ComponentAdapter()
         {
             @Override
             public void componentResized(ComponentEvent e)
             {
-               // svg.setSize(getWidth(), getHeight());
-                svg.setPreferredSize(new Dimension(getWidth(), getHeight()));
-                repaint();
-                revalidate();
-                //svg.repaint();
-                //EventQueue.invokeLater(() -> revalidate());
+                updateSvg();
             }
 
-            public void componentShown(ComponentEvent e) {
-                svg.setSize(getWidth(), getHeight());
+            public void componentShown(ComponentEvent e)
+            {
+                updateSvg();
             }
-
-
         });
 
 
@@ -80,7 +75,6 @@ public class JChessPiece extends JPanel
                         case KING -> "K";
                         case QUEEN -> "Q";
                         case TOWER -> "R";
-
 
                         case BISHOP -> "B";
                         case HORSE -> "N";
@@ -100,8 +94,7 @@ public class JChessPiece extends JPanel
         try
         {
             return res.toURI();
-        }
-        catch (URISyntaxException e)
+        } catch (URISyntaxException e)
         {
             throw new RuntimeException(e);
         }

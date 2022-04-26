@@ -7,33 +7,35 @@ import java.awt.event.ComponentEvent;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
-public class ChessBoard extends JPanel
+public class ChessBoard extends JLayeredPane
 {
 
     GridLayout layout;
 
     private JChessPiece[][] jChessPieces = new JChessPiece[8][8];
+    private JPanel[][] boardFields = new JPanel[8][8];
 
     public void onResize()
     {
-
         for (int r = 0; r < 8; r++)
         {
             for (int c = 0; c < 8; c++)
             {
                 var p = jChessPieces[r][c];
-                if (p != null) {
+                if (p != null)
+                {
                     p.setSize(getWidth() / 8, getHeight() / 8);
                     p.setLocation(r * getWidth() / 8, c * getHeight() / 8);
+                    p.revalidate();
                 }
+
+                var f = boardFields[r][c];
+                f.setSize(getWidth() / 8, getHeight() / 8);
+                f.setLocation(r * getWidth() / 8, c * getHeight() / 8);
+                f.revalidate();
             }
         }
-
-        revalidate();
         repaint();
-
-
-
     }
 
     private void addPieces()
@@ -43,23 +45,40 @@ public class ChessBoard extends JPanel
             for (int c = 0; c < 8; c++)
             {
                 var p = jChessPieces[r][c];
-                if (p != null) {
-                    this.add(p);
+                if (p != null)
+                {
+                    this.add(p, new Integer(3));
                 }
+            }
+        }
+    }
+
+    private void addFields()
+    {
+        for (int r = 0; r < 8; r++)
+        {
+            for (int c = 0; c < 8; c++)
+            {
+                var p = new JPanel();
+                p.setBackground(isWhite(r, c) ? Color.white : Color.black);
+                boardFields[r][c] = p;
+
+                this.add(p, new Integer(0));
             }
         }
     }
 
     public ChessBoard()
     {
+        //this.setDoubleBuffered(true);
+
         this.setLayout(null);
         jChessPieces[0][0] = new JChessPiece(ChessPieceId.BISHOP, false);
         jChessPieces[0][2] = new JChessPiece(ChessPieceId.BISHOP, false);
         jChessPieces[0][1] = new JChessPiece(ChessPieceId.BISHOP, false);
 
         addPieces();
-
-
+        addFields();
         this.addComponentListener(new ComponentAdapter()
         {
             @Override
@@ -68,18 +87,6 @@ public class ChessBoard extends JPanel
                 onResize();
             }
         });
-/*
-        layout = new GridLayout(10, 10, 0, 0);
-        this.setLayout(layout);
-        for (int r = 0; r < layout.getRows(); r++)
-        {
-            for (int c = 0; c < layout.getColumns(); c++)
-            {
-                this.add(createBox(isWhite(r, c) ? Color.white : Color.black, r, c)).setLocation(r, c);
-            }
-        }
-*/
-
     }
 
     private static boolean isWhite(int row, int col)
@@ -88,13 +95,10 @@ public class ChessBoard extends JPanel
         return (row + col) % 2 == 0;
     }
 
-    private static JPanel createBox(Color color, int row, int col)
+    private static JPanel createBox(boolean isBlack, int row, int col)
     {
         var r = new JPanel();
-        r.setBackground(color);
-        var l = new JLabel("" + row + " " + col);
-        l.setForeground(Color.red);
-        r.add(l);
+        r.setBackground(isBlack ? Color.black : Color.white);
         return r;
     }
 
@@ -102,53 +106,19 @@ public class ChessBoard extends JPanel
     public void paintComponent(Graphics g)
     {
         super.paintComponent(g);
-        drawBoard(g);
+        //drawBoard(g);
 
 
     }
 
 
-    private BufferedImage createBufferedBox(int height, int width, Color color)
+    private BufferedImage createBufferedBox(int width, int height, Color color)
     {
-        BufferedImage b = new BufferedImage(height, width, BufferedImage.TYPE_INT_RGB);
+        BufferedImage b = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = b.createGraphics();
         g.setColor(color);
-        g.fillRect(0, 0, height, width);
+        g.fillRect(0, 0, width, height);
         return b;
-    }
-
-    @Override
-    public Dimension getPreferredSize()
-    {
-
-        // Relies on being the only component
-        // in a layout that will center it without
-        // expanding it to fill all the space.
-        Dimension d = this.getParent().getSize();
-        int newSize = Math.min(d.width, d.height);
-        newSize = newSize == 0 ? 100 : newSize;
-
-        // print newSize to console
-
-
-        return new Dimension(newSize, newSize);
-
-
-
-    }
-
-    // Override getMinimumSize() to return the preferred size
-    @Override
-    public Dimension getMinimumSize()
-    {
-        return getPreferredSize();
-    }
-
-    // Override getMaximumSize() to return the preferred size
-    @Override
-    public Dimension getMaximumSize()
-    {
-        return getPreferredSize();
     }
 
     private void drawBoard(Graphics g)
