@@ -2,18 +2,19 @@ package chess.core;
 
 import chess.core.VerktetteListe.Queue;
 
-import java.util.ArrayList;
-
-public class ChessRules
+public class ChessMechanics
 {
 
-    private ChessPiece[][] chessBoard; // the chess board
+    private ChessBoardTile[][] chessBoard; // the chess board
     private ChessPiece[] deadPieces;
     private int turn; // the current turn
     private int player; // the current player
+    private int enPassant; // the en passant square
+    private int castling; // the castling rights
+    private int fiftyMove; // the fifty move rule
 
 
-    public ChessRules(ChessPiece[][] chessBoard)
+    public ChessMechanics(ChessBoardTile[][] chessBoard)
     {
         this.chessBoard = chessBoard;
         StartPosition();
@@ -41,7 +42,7 @@ public class ChessRules
         {
             for (int j = 0; j < 8; j++)
             {
-                if(Piece.getPlayerId() == PlayerId.BLACK)
+                if(Piece.getPlayerId() == PlayerId.WHITE)
                 {
 
                 }
@@ -87,20 +88,20 @@ public class ChessRules
             {
                 if(i==1 || i == 6)
                 {
-                    chessBoard[i][j] = new ChessPiece(ChessPieceId.PAWN,i < 2,i);
+                    chessBoard[i][j].setPiece(new ChessPiece(ChessPieceId.PAWN,i < 2,i));
                 }
 
                 else if(i == 0 || i == 7)
                 {
                     switch (j) {
-                        case 0 -> chessBoard[i][j] = new ChessPiece(ChessPieceId.TOWER,i < 2,i);
-                        case 1 -> chessBoard[i][j] = new ChessPiece(ChessPieceId.HORSE,i < 2,i);
-                        case 2 -> chessBoard[i][j] = new ChessPiece(ChessPieceId.BISHOP,i < 2,i);
-                        case 3 -> chessBoard[i][j] = new ChessPiece(ChessPieceId.QUEEN,i < 2,i);
-                        case 4 -> chessBoard[i][j] = new ChessPiece(ChessPieceId.KING,i < 2 ,i);
-                        case 5 -> chessBoard[i][j] = new ChessPiece(ChessPieceId.BISHOP,i < 2 ,i);
-                        case 6 -> chessBoard[i][j] = new ChessPiece(ChessPieceId.HORSE,i < 2 ,i);
-                        case 7 -> chessBoard[i][j] = new ChessPiece(ChessPieceId.TOWER,i < 2 ,i);
+                        case 0 -> chessBoard[i][j].setPiece(new ChessPiece(ChessPieceId.TOWER,i < 2,i));
+                        case 1 -> chessBoard[i][j].setPiece(new ChessPiece(ChessPieceId.HORSE,i < 2,i));
+                        case 2 -> chessBoard[i][j].setPiece(new ChessPiece(ChessPieceId.BISHOP,i < 2,i));
+                        case 3 -> chessBoard[i][j].setPiece(new ChessPiece(ChessPieceId.QUEEN,i < 2,i));
+                        case 4 -> chessBoard[i][j].setPiece(new ChessPiece(ChessPieceId.KING,i < 2,i));
+                        case 5 -> chessBoard[i][j].setPiece(new ChessPiece(ChessPieceId.BISHOP,i < 2,i));
+                        case 6 -> chessBoard[i][j].setPiece(new ChessPiece(ChessPieceId.HORSE,i < 2,i));
+                        case 7 -> chessBoard[i][j].setPiece(new ChessPiece(ChessPieceId.TOWER,i < 2,i));
                     }
 
                 }
@@ -115,7 +116,7 @@ public class ChessRules
     {
         return true;
     }
-    public ChessPiece[][] getPossibleMoves(int x, int y)
+    public ChessBoardTile[][] getPossibleMoves(int x, int y)
     {
         return chessBoard;
     }

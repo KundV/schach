@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>docs</OriginalElement>
+  <nodes>
+    <node x="195.5" y="304.5">docs.ChessInput</node>
+    <node x="363.5" y="171.0">docs.ChessMoveEvent</node>
+    <node x="36.875" y="431.0">docs.ChessBoard</node>
+    <node x="570.5" y="0.0">docs.ChessEvent</node>
+    <node x="380.5" y="0.0">docs.Vector</node>
+    <node x="0.0" y="0.0">docs.ChessPieceId</node>
+    <node x="54.875" y="581.0">docs.ChessGame</node>
+    <node x="26.5" y="282.0">docs.ChessField</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="docs.ChessMoveEvent" target="docs.Vector" relationship="TO_ONE">
+      <point x="15.0" y="-49.5" />
+      <point x="15.0" y="60.5" />
+    </edge>
+    <edge source="docs.ChessBoard" target="docs.ChessField" relationship="TO_ONE">
+      <point x="0.0" y="-50.0" />
+      <point x="59.375" y="49.5" />
+    </edge>
+    <edge source="docs.ChessBoard" target="docs.ChessInput" relationship="DEPENDENCY">
+      <point x="96.625" y="-50.0" />
+      <point x="0.0" y="27.0" />
+    </edge>
+    <edge source="docs.ChessGame" target="docs.ChessBoard" relationship="DEPENDENCY">
+      <point x="0.0" y="-38.5" />
+      <point x="0.0" y="50.0" />
+    </edge>
+    <edge source="docs.ChessField" target="docs.ChessPieceId" relationship="TO_ONE">
+      <point x="0.0" y="-49.5" />
+      <point x="0.0" y="116.0" />
+    </edge>
+    <edge source="docs.ChessBoard" target="docs.ChessField" relationship="DEPENDENCY">
+      <point x="-59.375" y="-50.0" />
+      <point x="0.0" y="49.5" />
+    </edge>
+    <edge source="docs.ChessField" target="docs.ChessPieceId" relationship="DEPENDENCY">
+      <point x="15.0" y="-49.5" />
+      <point x="15.0" y="116.0" />
+    </edge>
+    <edge source="docs.ChessMoveEvent" target="docs.Vector" relationship="DEPENDENCY">
+      <point x="0.0" y="-49.5" />
+      <point x="0.0" y="60.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.7920353982300885" showDependencies="true" x="348.0" y="329.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Constructors</Category>
+    <Category>Fields</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>public</VISIBILITY>
+</Diagram>
+

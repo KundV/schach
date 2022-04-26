@@ -1,4 +1,4 @@
-package chess.core.Kompositum;
+package chess.core.VerktetteListe;
 
 public class Queue {
     private Listelement first;
@@ -22,5 +22,8 @@ public class Queue {
 
     public int count_nodes() {
         return first.count_nodes();
+    }
+    public void clear(){
+        first = new End();
     }
 }

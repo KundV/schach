@@ -1,4 +1,4 @@
-package chess.core.Kompositum;
+package chess.core.VerktetteListe;
 
 public class End extends Listelement{
     private int index;

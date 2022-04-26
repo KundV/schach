@@ -1,8 +1,9 @@
 package chess.core;
 
-import chess.core.Kompositum.Dataelement;
+import chess.core.VerktetteListe.Queue;
 
 import java.util.ArrayList;
+
 
 public class ChessPiece
 {
@@ -11,16 +12,23 @@ public class ChessPiece
     //after the piece is created, it is added to the board.
     //after a move is made, all possible moves are calculated.
     private ChessPieceId chessPieceId;
-    private boolean isBlack;
-    private ArrayList<ChessMove> possibleMoves;
+    private PlayerId playerId;
+    private Queue possibleMoves;
     private int ID;
 
 
-    public ChessPiece(ChessPieceId chessPieceId, boolean isBlack, int ID)
+    public ChessPiece(ChessPieceId chessPieceId,boolean playerId, int ID)
     {
         this.chessPieceId = chessPieceId;
-        this.isBlack = isBlack;
-        this.possibleMoves = new ArrayList<>();
+        if(playerId = true)
+        {
+        this.playerId = PlayerId.BLACK;
+        }
+        else
+        {
+            this.playerId = PlayerId.WHITE;
+        }
+        this.possibleMoves = new Queue();
 
     }
 
@@ -29,23 +37,12 @@ public class ChessPiece
         return chessPieceId;
     }
 
-    public void setChessPieceId(ChessPieceId chessPieceId)
+    public PlayerId getPlayerId()
     {
-        this.chessPieceId = chessPieceId;
+        return playerId;
     }
 
-    public boolean isBlack()
-    {
-        return isBlack;
-    }
-
-    public void setBlack(boolean black)
-    {
-        isBlack = black;
-    }
-
-
-    public void setPossibleMoves(ArrayList<ChessMove> possibleMoves)
+    public void setPossibleMoves(Queue possibleMoves)
     {
         this.possibleMoves = possibleMoves;
     }
@@ -60,7 +57,7 @@ public class ChessPiece
         this.ID = ID;
     }
 
-    public ArrayList<ChessMove> getPossibleMoves()
+    public Queue getPossibleMoves()
     {
         return possibleMoves;
     }
