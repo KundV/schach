@@ -1,6 +1,4 @@
-_Schach Regel_
-
-## REGELN
+### REGELN
 
 Schach wird nach folgenden Regeln gespielt
 
