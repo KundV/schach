@@ -11,12 +11,21 @@ public class ChessMove extends Dataelement
     private int yStart;
     private int xTarget;
     private int yTarget;
-    //Event event;
-    public ChessMove(int xStart,int yStart,int xTarget,int yTarget,boolean isBlackMove)
+    private Event event;
+    public ChessMove(int xStart,int yStart,int xTarget,int yTarget,PlayerId Player,Event event)
     {
-        super(isBlackMove);
+        super(Player);
         this.xStart = xStart;
         this.yStart = yTarget;
+        this.xTarget = xTarget;
+        this.yTarget = yTarget;
+    }
+
+    public ChessMove(int xStart, int yStart, int xTarget, int yTarget, PlayerId player)
+    {
+        super(player);
+        this.xStart = xStart;
+        this.yStart = yStart;
         this.xTarget = xTarget;
         this.yTarget = yTarget;
     }
@@ -24,13 +33,19 @@ public class ChessMove extends Dataelement
     @Override
     public boolean equals(Dataelement de)
     {
-        return false;
+       /** if(de instanceof ChessMove)
+        {
+            ChessMove cm = (ChessMove)de;
+            return (cm.xStart == xStart && cm.yStart == yStart && cm.xTarget == xTarget && cm.yTarget == yTarget);
+        }
+        return false;**/
+       return this == de;
     }
 
     @Override
-    public boolean get_color()
+    public PlayerId getPlayerId()
     {
-        return isBlackMove;
+        return Player;
     }
 
     public int get_xStart()
