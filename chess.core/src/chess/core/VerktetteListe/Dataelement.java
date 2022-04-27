@@ -1,5 +1,6 @@
 package chess.core.VerktetteListe;
 
+import chess.core.ChessMove;
 import chess.core.PlayerId;
 
 public abstract class Dataelement {
@@ -10,7 +11,8 @@ public abstract class Dataelement {
     {
         this.Player = Player;
     }
-    public abstract boolean equals(Dataelement de);
+
+    public abstract boolean equals(ChessMove cm);
 
     public abstract PlayerId getPlayerId();
 

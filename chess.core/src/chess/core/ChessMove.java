@@ -12,29 +12,29 @@ public class ChessMove extends Dataelement
     private int xTarget;
     private int yTarget;
     private Event event;
+
     public ChessMove(int xStart,int yStart,int xTarget,int yTarget,PlayerId Player,Event event)
     {
         super(Player);
         this.event = event;
         this.xStart = xStart;
-        this.yStart = yTarget;
+        this.yStart = yStart;
         this.xTarget = xTarget;
         this.yTarget = yTarget;
     }
 
-
-
     @Override
-    public boolean equals(Dataelement de)
+    public boolean equals(ChessMove cm)
     {
-       /** if(de instanceof ChessMove)
-        {
-            ChessMove cm = (ChessMove)de;
-            return (cm.xStart == xStart && cm.yStart == yStart && cm.xTarget == xTarget && cm.yTarget == yTarget);
-        }
-        return false;**/
-       return this == de;
-    }
+    /** if(de instanceof ChessMove)
+     {
+     ChessMove cm = (ChessMove)de;
+     return (cm.xStart == xStart && cm.yStart == yStart && cm.xTarget == xTarget && cm.yTarget == yTarget);
+     }
+     return false;**/
+        return this == cm || (cm.xStart == xStart && cm.yStart == yStart && cm.xTarget == xTarget && cm.yTarget == yTarget);
+}
+
 
     @Override
     public PlayerId getPlayerId()

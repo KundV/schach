@@ -56,7 +56,6 @@ public class ChessBoardTile
         return piece.getPlayerId();
     }
 
-
     public boolean hasTargetingMoves()
     {
         return (TargetingMoves != null);
@@ -67,15 +66,12 @@ public class ChessBoardTile
         return (piece != null);
     }
 
-    public PlayerId isOccupiedBy()
-    {
-        return (this.piece.getPlayerId());
-    }
-
     public void clearTargetingMoves()
     {
         TargetingMoves.clear();
     }
+
+
 
 
 

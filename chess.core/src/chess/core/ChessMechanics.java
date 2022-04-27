@@ -16,6 +16,7 @@ public class ChessMechanics
     {
         this.chessBoard = chessBoard;
         StartPosition();
+        getAllMoves();
     }
     public ChessMechanics()
     {
@@ -54,11 +55,15 @@ public class ChessMechanics
 
     public void RulesPawn(int x, int y)
     {
-            TestMovePiece( x, y, x,y+1);
-        if(chessBoard[x][y].getPiece().isFirstMove())
-        {
-            TestMovePiece(x,y,x,y+2);
-        }
+        int a = chessBoard[x][y].getPiece().getPlayerId() == PlayerId.BLACK ? 1 : -1;
+
+            TestMovePiece( x, y, x+a,y);
+            if(chessBoard[x][y].getPiece().isFirstMove())
+            {
+            TestMovePiece(x,y,x+(2*a),y);
+            }
+
+
 
     }
     public void RulesTower(int x,int y)
@@ -88,22 +93,22 @@ public class ChessMechanics
     public void RulesBishop(int x, int y)
     {
         boolean notBlocked = true;
-        for(int i = x, j = y; i<8 && j<8 && notBlocked; i++, j++)
+        for(int i = x+1, j = y+1; i<8 && j<8 && notBlocked; i++, j++)
         {
             notBlocked= TestMovePiece(x,y,i,j);
         }
         notBlocked = true;
-        for(int i = x, j = y; i>=0 && j>=0 && notBlocked; i--, j--)
+        for(int i = x-1, j = y-1; i>=0 && j>=0 && notBlocked; i--, j--)
         {
             notBlocked= TestMovePiece(x,y,i,j);
         }
         notBlocked = true;
-        for(int i = x, j = y; i<8 && j>=0 && notBlocked; i++, j--)
+        for(int i = x+1, j = y-1; i<8 && j>=0 && notBlocked; i++, j--)
         {
             notBlocked= TestMovePiece(x,y,i,j);
         }
         notBlocked = true;
-        for(int i = x, j = y; i>=0 && j<8 && notBlocked; i--, j++)
+        for(int i = x-1, j = y+1; i>=0 && j<8 && notBlocked; i--, j++)
         {
             notBlocked= TestMovePiece(x,y,i,j);
         }
@@ -152,14 +157,14 @@ public class ChessMechanics
             chessBoard[x2][y2].addTargetingMove(move);
             return true;
         }
-        else if(chessBoard[x2][y2].getPiece().getPlayerId() == chessBoard[x][y].getPiece().getPlayerId().opposite())           // if the tile is occupied by an enemy piece
+        else if(chessBoard[x2][y2].getPlayerId() == chessBoard[x][y].getPlayerId().opposite())           // if the tile is occupied by an enemy piece
         {
             ChessMove move = new ChessMove(x,y,x2,y2,chessBoard[x][y].getPlayerId(),new Event(EventID.Capture));
             chessBoard[x][y].getPiece().addPossibleMove(move);
             chessBoard[x2][y2].addTargetingMove(move);
             return true;
         }
-        else if(chessBoard[x2][y2].getPiece().getPlayerId() == chessBoard[x][y].getPiece().getPlayerId())                      // if the tile is occupied by a friendly piece
+        else if(chessBoard[x2][y2].getPlayerId() == chessBoard[x][y].getPlayerId())                      // if the tile is occupied by a friendly piece
         {
             ChessMove move = new ChessMove(x,y,x2,y2,chessBoard[x][y].getPlayerId(),new Event(EventID.Blocked));
             chessBoard[x][y].getPiece().addPossibleMove(move);
@@ -172,24 +177,25 @@ public class ChessMechanics
     {
         for(int i = 0; i<8; i++)
         {
-            for (int j = 0; j <= 7; j++)
+            for (int j = 0; j < 8; j++)
             {
+                PlayerId player = i > 2 ? PlayerId.WHITE : PlayerId.BLACK;
                 if(i==1 || i == 6)
                 {
-                    chessBoard[i][j].setPiece(new ChessPiece(ChessPieceId.PAWN,i < 2,i));
+                    chessBoard[i][j].setPiece(new ChessPiece(ChessPieceId.PAWN,player,i));
                 }
 
                 else if(i == 0 || i == 7)
                 {
                     switch (j) {
-                        case 0 -> chessBoard[i][j].setPiece(new ChessPiece(ChessPieceId.TOWER,i < 2,i));
-                        case 1 -> chessBoard[i][j].setPiece(new ChessPiece(ChessPieceId.HORSE,i < 2,i));
-                        case 2 -> chessBoard[i][j].setPiece(new ChessPiece(ChessPieceId.BISHOP,i < 2,i));
-                        case 3 -> chessBoard[i][j].setPiece(new ChessPiece(ChessPieceId.QUEEN,i < 2,i));
-                        case 4 -> chessBoard[i][j].setPiece(new ChessPiece(ChessPieceId.KING,i < 2,i));
-                        case 5 -> chessBoard[i][j].setPiece(new ChessPiece(ChessPieceId.BISHOP,i < 2,i));
-                        case 6 -> chessBoard[i][j].setPiece(new ChessPiece(ChessPieceId.HORSE,i < 2,i));
-                        case 7 -> chessBoard[i][j].setPiece(new ChessPiece(ChessPieceId.TOWER,i < 2,i));
+                        case 0 -> chessBoard[i][j].setPiece(new ChessPiece(ChessPieceId.TOWER,player,i));
+                        case 1 -> chessBoard[i][j].setPiece(new ChessPiece(ChessPieceId.HORSE,player,i));
+                        case 2 -> chessBoard[i][j].setPiece(new ChessPiece(ChessPieceId.BISHOP,player,i));
+                        case 3 -> chessBoard[i][j].setPiece(new ChessPiece(ChessPieceId.QUEEN,player,i));
+                        case 4 -> chessBoard[i][j].setPiece(new ChessPiece(ChessPieceId.KING,player,i));
+                        case 5 -> chessBoard[i][j].setPiece(new ChessPiece(ChessPieceId.BISHOP,player,i));
+                        case 6 -> chessBoard[i][j].setPiece(new ChessPiece(ChessPieceId.HORSE,player,i));
+                        case 7 -> chessBoard[i][j].setPiece(new ChessPiece(ChessPieceId.TOWER,player,i));
                     }
 
                 }
@@ -212,13 +218,15 @@ public class ChessMechanics
 
         }
     }
-    public boolean setMove(ChessMove setMove)
-    {
-        return true;
-    }
-    public ChessBoardTile[][] getPossibleMoves(int x, int y)
+
+    public ChessBoardTile[][] getChessBoard()
     {
         return chessBoard;
+    }
+    public PlayerId executeMove(int x, int y, int x2, int y2)
+    {
+        chessBoard[x][y].getPiece().removePossibleMove(x,y,x2,y2);
+        chessBoard[x2][y2].setPiece(chessBoard[x][y].removePiece());
     }
 }
 

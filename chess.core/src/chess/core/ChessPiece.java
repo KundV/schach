@@ -17,17 +17,10 @@ public class ChessPiece
     private int ID;
 
 
-    public ChessPiece(ChessPieceId chessPieceId,boolean playerId, int ID)
+    public ChessPiece(ChessPieceId chessPieceId,PlayerId playerId, int ID)
     {
         this.chessPieceId = chessPieceId;
-        if(playerId = true)
-        {
-        this.playerId = PlayerId.BLACK;
-        }
-        else
-        {
-            this.playerId = PlayerId.WHITE;
-        }
+        this.playerId = playerId;
         this.possibleMoves = new Queue();
 
     }
@@ -59,6 +52,8 @@ public class ChessPiece
 
     public Queue getPossibleMoves()
     {
+        Queue temp = possibleMoves;
+        possibleMoves = new Queue();
         return possibleMoves;
     }
 
