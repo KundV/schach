@@ -54,7 +54,7 @@ public class ChessMechanics
 
     public void RulesPawn(int x, int y)
     {
-            TestMovePiece(x,y,x,y+1);
+            TestMovePiece( x, y, x,y+1);
         if(chessBoard[x][y].getPiece().isFirstMove())
         {
             TestMovePiece(x,y,x,y+2);
@@ -64,22 +64,22 @@ public class ChessMechanics
     public void RulesTower(int x,int y)
     {
         boolean notBlocked = true;
-        for(int i = x; i<8 && notBlocked; i++)
+        for(int i = x+1; i<8 && notBlocked; i++)
         {
             notBlocked= TestMovePiece(x,y,i,y);
         }
         notBlocked = true;
-        for(int i = x; i>=0 && notBlocked; i--)
+        for(int i = x-1; i>=0 && notBlocked; i--)
         {
             notBlocked= TestMovePiece(x,y,i,y);
         }
         notBlocked = true;
-        for(int i = y; i<8 && notBlocked; i++)
+        for(int i = y+1; i<8 && notBlocked; i++)
         {
             notBlocked= TestMovePiece(x,y,x,i);
         }
         notBlocked = true;
-        for(int i = y; i>=0 && notBlocked; i--)
+        for(int i = y-1; i>=0 && notBlocked; i--)
         {
             notBlocked= TestMovePiece(x,y,x,i);
         }
@@ -145,23 +145,23 @@ public class ChessMechanics
         {
             return false;
         }
-        else if(!chessBoard[x2][y2].hasPiece())
+         else if(!chessBoard[x2][y2].hasPiece())
         {
-            ChessMove move = new ChessMove(x,y,x2,y2,chessBoard[x][y].getPiece().getPlayerId());                               // if the tile is empty
+            ChessMove move = new ChessMove(x,y,x2,y2,chessBoard[x][y].getPlayerId(),new Event(EventID.Move));                               // if the tile is empty
             chessBoard[x][y].getPiece().addPossibleMove(move);
             chessBoard[x2][y2].addTargetingMove(move);
             return true;
         }
         else if(chessBoard[x2][y2].getPiece().getPlayerId() == chessBoard[x][y].getPiece().getPlayerId().opposite())           // if the tile is occupied by an enemy piece
         {
-            ChessMove move = new ChessMove(x,y,x2,y2,chessBoard[x][y].getPiece().getPlayerId(),new Event(EventID.Capture));
+            ChessMove move = new ChessMove(x,y,x2,y2,chessBoard[x][y].getPlayerId(),new Event(EventID.Capture));
             chessBoard[x][y].getPiece().addPossibleMove(move);
             chessBoard[x2][y2].addTargetingMove(move);
             return true;
         }
         else if(chessBoard[x2][y2].getPiece().getPlayerId() == chessBoard[x][y].getPiece().getPlayerId())                      // if the tile is occupied by a friendly piece
         {
-            ChessMove move = new ChessMove(x,y,x2,y2,chessBoard[x][y].getPiece().getPlayerId(),new Event(EventID.Blocked));
+            ChessMove move = new ChessMove(x,y,x2,y2,chessBoard[x][y].getPlayerId(),new Event(EventID.Blocked));
             chessBoard[x][y].getPiece().addPossibleMove(move);
             chessBoard[x2][y2].addTargetingMove(move);
             return false;

@@ -15,20 +15,14 @@ public class ChessMove extends Dataelement
     public ChessMove(int xStart,int yStart,int xTarget,int yTarget,PlayerId Player,Event event)
     {
         super(Player);
+        this.event = event;
         this.xStart = xStart;
         this.yStart = yTarget;
         this.xTarget = xTarget;
         this.yTarget = yTarget;
     }
 
-    public ChessMove(int xStart, int yStart, int xTarget, int yTarget, PlayerId player)
-    {
-        super(player);
-        this.xStart = xStart;
-        this.yStart = yStart;
-        this.xTarget = xTarget;
-        this.yTarget = yTarget;
-    }
+
 
     @Override
     public boolean equals(Dataelement de)

@@ -51,7 +51,10 @@ public class ChessBoardTile
         }
         TargetingMoves.add(move);
     }
-
+    public PlayerId getPlayerId()
+    {
+        return piece.getPlayerId();
+    }
 
 
     public boolean hasTargetingMoves()
