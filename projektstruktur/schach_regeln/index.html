@@ -27,12 +27,11 @@
 
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="/resources/css/retype.css?v=2.2.704454075969" rel="stylesheet" data-turbo-track="reload" />
+    <link href="/resources/css/retype.css?v=2.2.704454139087" rel="stylesheet" data-turbo-track="reload" />
 
-    <script type="text/javascript" src="/resources/js/config.js?v=2.2.704454075969" defer data-turbo-track="reload"></script>
+    <script type="text/javascript" src="/resources/js/config.js?v=2.2.704454139087" defer data-turbo-track="reload"></script>
     <script type="text/javascript" src="/resources/js/retype.js?v=2.2" defer data-turbo-track="reload"></script>
-    <script id="lunr-js" type="text/javascript" src="/resources/js/lunr.js?v=2.2.704454075969" defer></script>
-    <script id="mermaid-js" type="text/javascript" src="/resources/js/mermaid.js?v=2.2" defer></script>
+    <script id="lunr-js" type="text/javascript" src="/resources/js/lunr.js?v=2.2.704454139087" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -175,42 +174,17 @@
     </h3>
 </doc-anchor-target>
 <p>Schach wird nach folgenden Regeln gespielt</p>
-<div class="table-wrapper scrollbar overflow-hidden">
-<table class="comfortable">
-<thead>
-<tr>
-<th>Name</th>
-<th>Funktion</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Springer</td>
-<td>Kann über andere Figuren springen</td>
-</tr>
-<tr>
-<td></td>
-<td>2 horizontal (vor, zurück), 1 vertikal (links,rechts)</td>
-</tr>
-<tr>
-<td></td>
-<td>1 vertikal</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>Die Module haben folgende Abhängigkeiten:</p>
-<div class="overflow-hidden mb-6 py-4 dark:px-5 dark:bg-white rounded-md"><pre class="mermaid w-full">%%{init: { 'theme': 'forest' } }%%
-graph TD
-    chess.ui --&gt; che
-
-Wie man sieht, hat das Logik-Modul  Referenz auf die UI-Module (gegenseitige Referenzen währen auch nicht
-möglich), denn sie wird strikt von der UI getrennt. Es soll dadurch auch von einer GUI-losen Serveranwendung
-konsumierbar sein.
-
-Als Buildsystem wird IntelliJ IDEA verwendet
-
-</pre></div>
+<p>| Name      | Funktion                                              |
+|-----------|-------------------------------------------------------|
+|Grundaufbau| 8x8 Feld, Weiss unten - Schwarz Oben                  |
+Weiss beginnt<br />
+| Springer  | Kann über andere Figuren springen                     |
+|           | 2 horizontal (vor, zurück), 1 vertikal (links,rechts) |
+|           | 1 vertikal                                            |
+|           | 1 vertikal                                            |
+|           | 1 vertikal                                            |
+|           | 1 vertikal                                            |
+|           | 1 vertikal                                            |</p>
 
                                 
                                 <!-- Required only on API pages -->
@@ -277,6 +251,6 @@ Als Buildsystem wird IntelliJ IDEA verwendet
 
     <div id="docs-overlay-target"></div>
 
-    <script>window.__DOCS__ = { "title": "Schach regeln", icon: "file", hasPrism: false, hasMermaid: true, hasMath: false }</script>
+    <script>window.__DOCS__ = { "title": "Schach regeln", icon: "file", hasPrism: false, hasMermaid: false, hasMath: false }</script>
 </body>
 </html>
