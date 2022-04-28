@@ -40,7 +40,9 @@ public class ChessBoardTile
 
     public Queue getTargetingMoves()
     {
-        return TargetingMoves;
+        Queue temp = TargetingMoves;
+        TargetingMoves = null;
+        return temp;
     }
 
     public void addTargetingMove(ChessMove move)

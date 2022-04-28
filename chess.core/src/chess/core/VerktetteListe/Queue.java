@@ -26,4 +26,8 @@ public class Queue {
     public void clear(){
         first = new End();
     }
+
+    public boolean isEmpty(){
+        return first.get_next() == null;
+    }
 }

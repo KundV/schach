@@ -67,7 +67,12 @@ public class ChessPiece
         return isFirstMove;
     }
 
-    public void resetPossibleMoves(ChessMove move)
+    //public void resetPossibleMove(ChessMove move)
+    {
+        this.possibleMoves.clear();
+    }
+
+    public void resetAllPossibleMove()
     {
         this.possibleMoves.clear();
     }
