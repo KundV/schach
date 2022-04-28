@@ -27,11 +27,11 @@
 
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="/resources/css/retype.css?v=2.2.704454139087" rel="stylesheet" data-turbo-track="reload" />
+    <link href="/resources/css/retype.css?v=2.2.704457176818" rel="stylesheet" data-turbo-track="reload" />
 
-    <script type="text/javascript" src="/resources/js/config.js?v=2.2.704454139087" defer data-turbo-track="reload"></script>
+    <script type="text/javascript" src="/resources/js/config.js?v=2.2.704457176818" defer data-turbo-track="reload"></script>
     <script type="text/javascript" src="/resources/js/retype.js?v=2.2" defer data-turbo-track="reload"></script>
-    <script id="lunr-js" type="text/javascript" src="/resources/js/lunr.js?v=2.2.704454139087" defer></script>
+    <script id="lunr-js" type="text/javascript" src="/resources/js/lunr.js?v=2.2.704457176818" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -174,17 +174,50 @@
     </h3>
 </doc-anchor-target>
 <p>Schach wird nach folgenden Regeln gespielt</p>
-<p>| Name      | Funktion                                              |
-|-----------|-------------------------------------------------------|
-|Grundaufbau| 8x8 Feld, Weiss unten - Schwarz Oben                  |
-Weiss beginnt<br />
-| Springer  | Kann über andere Figuren springen                     |
-|           | 2 horizontal (vor, zurück), 1 vertikal (links,rechts) |
-|           | 1 vertikal                                            |
-|           | 1 vertikal                                            |
-|           | 1 vertikal                                            |
-|           | 1 vertikal                                            |
-|           | 1 vertikal                                            |</p>
+<div class="table-wrapper scrollbar overflow-hidden">
+<table class="comfortable">
+<thead>
+<tr>
+<th>Name</th>
+<th>Funktion</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Grundaufbau</td>
+<td>8x8 Feld, Weiss unten - Schwarz Oben <br>Weiss beginnt</td>
+</tr>
+<tr>
+<td>Springer</td>
+<td>Kann über andere Figuren springen <br>2 horizontal (vor, zurück), 1 vertikal (links,rechts)</td>
+</tr>
+<tr>
+<td>Läufer</td>
+<td>Kann nur diagonal zeihen</td>
+</tr>
+<tr>
+<td>Turm</td>
+<td>Kann nur horizontal bzw vertikal ziehen</td>
+</tr>
+<tr>
+<td>Dame</td>
+<td>Kann horizontal, vertikal oder diagonal ziehen</td>
+</tr>
+<tr>
+<td>Bauer</td>
+<td>Kann ein Feld nach vorn ziehen <br>Wenn ein Bauer die Grundlienie des Gengers erreicht muss er in Springer, Läufer, Turm oder eine Dame umgewandelt werden</td>
+</tr>
+<tr>
+<td>König</td>
+<td>Zeiht wei die Dame jedoch nur 1 Feld (ausser Rocahde)</td>
+</tr>
+<tr>
+<td>Rochade</td>
+<td><a href="https://schach.de/de/page/schachregeln-die-rochade">https://schach.de/de/page/schachregeln-die-rochade</a></td>
+</tr>
+</tbody>
+</table>
+</div>
 
                                 
                                 <!-- Required only on API pages -->
