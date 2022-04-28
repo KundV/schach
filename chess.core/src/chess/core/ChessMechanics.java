@@ -55,14 +55,17 @@ public class ChessMechanics
 
     public void RulesPawn(int x, int y)
     {
-        int a = chessBoard[x][y].getPiece().getPlayerId() == PlayerId.BLACK ? 1 : -1;
+            int a = chessBoard[x][y].getPiece().getPlayerId() == PlayerId.BLACK ? 1 : -1;
 
             TestMovePiece( x, y, x+a,y);
             if(chessBoard[x][y].getPiece().isFirstMove())
             {
             TestMovePiece(x,y,x+(2*a),y);
             }
-
+            if(chessBoard[x][y].getPiece() == chessBoard[x+1][y+1].getPiece())
+            {
+                TestMovePiece(x,y,x+(2*a),y);
+            }
 
 
     }
@@ -225,8 +228,9 @@ public class ChessMechanics
     }
     public PlayerId executeMove(int x, int y, int x2, int y2)
     {
-        chessBoard[x][y].getPiece().removePossibleMove(x,y,x2,y2);
+        //chessBoard[x][y].getPiece().removePossibleMove(x,y,x2,y2);
         chessBoard[x2][y2].setPiece(chessBoard[x][y].removePiece());
+        return null;
     }
 }
 
