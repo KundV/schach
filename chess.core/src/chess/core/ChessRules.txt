@@ -52,7 +52,7 @@ public class ChessRules
     public Queue RulesTower(ChessPiece Piece)
     {
         Queue possibleMoves = new Queue();
-        possibleMoves.add(new ChessMove(1,1,1,1,true));
+        possibleMoves.add(new ChessMove(1,1,1,1,player));
         return possibleMoves;
     }
 

@@ -7,27 +7,20 @@ import java.util.ArrayList;
 
 public class ChessPiece
 {
-    //ChessPiece class is a dataelement.
     //It contains the information about the chess piece.
     //after the piece is created, it is added to the board.
     //after a move is made, all possible moves are calculated.
     private ChessPieceId chessPieceId;
     private PlayerId playerId;
     private Queue possibleMoves;
+    private boolean isFirstMove = true;
     private int ID;
 
 
-    public ChessPiece(ChessPieceId chessPieceId,boolean playerId, int ID)
+    public ChessPiece(ChessPieceId chessPieceId,PlayerId playerId, int ID)
     {
         this.chessPieceId = chessPieceId;
-        if(playerId = true)
-        {
-        this.playerId = PlayerId.BLACK;
-        }
-        else
-        {
-            this.playerId = PlayerId.WHITE;
-        }
+        this.playerId = playerId;
         this.possibleMoves = new Queue();
 
     }
@@ -59,12 +52,19 @@ public class ChessPiece
 
     public Queue getPossibleMoves()
     {
+        Queue temp = possibleMoves;
+        possibleMoves = new Queue();
         return possibleMoves;
     }
 
     public void addPossibleMove(ChessMove move)
     {
         this.possibleMoves.add(move);
+    }
+
+    public boolean isFirstMove()
+    {
+        return isFirstMove;
     }
 
     public void resetPossibleMoves(ChessMove move)

@@ -6,10 +6,11 @@ import java.awt.event.ComponentEvent;
 public class GameWindow extends JFrame
 {
     @SuppressWarnings("FieldCanBeLocal")
-    private ChessBoard _b = new ChessBoard();
 
-    private JPanel _layout;
+    private JPanel _content;
+    private GridBagLayout _layout;
     private JPanel _sidebar;
+    private ChessBoard _board;
     public GameWindow()
     {
         setTitle("CHESS");
@@ -17,42 +18,54 @@ public class GameWindow extends JFrame
         setMinimumSize(new Dimension(400, 300));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setVisible(true);
 
 
 
-        _b = new ChessBoard();
-        _layout = new JPanel();
+
+
+        _board = new ChessBoard();
+        _content = new JPanel();
         // Set _layout to BoxLayout
-        _layout.setLayout(new BoxLayout(_layout, BoxLayout.X_AXIS));
+        _layout = new GridBagLayout();
+        _content.setLayout(_layout);
 
+        var c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 0;
+        _content.add(_board, c);
 
         _sidebar = new JPanel();
+        _sidebar.setLayout(new BoxLayout(_sidebar, BoxLayout.Y_AXIS));
         _sidebar.add(new JLabel("Sidebar"));
-        _layout.add(_sidebar);
-        {
-            var _p = new JPanel();
-            _p.add(_b);
-            _p.setLayout(null);
-            _layout.add(_p);
-        }
-        _layout.add(_b);
-        getContentPane().add(_layout);
-        pack();
+        _sidebar.add(new JLabel("Very looooong text"));
+        _sidebar.add(new JLabel("1"));
+        c.gridx = 1;
+        c.gridy = 0;
+
+        _content.add(_sidebar, c);
+        // Add _content to JFrame
+
+        getContentPane().add(_content, BorderLayout.CENTER);
 
         this.getContentPane().addComponentListener(new ComponentAdapter()
         {
             @Override public void componentResized(ComponentEvent e) {
-                var maxW = _layout.getMaximumSize().width;
-                var sidebarWidth = _sidebar.getMinimumSize();
-                var rightW = maxW - sidebarWidth.width;
-                var boardSize = Math.max(rightW, _layout.getMinimumSize().height);
-                _b.setSize(new Dimension(boardSize,boardSize));
 
-                _b.revalidate();
+                var maxW = _content.getSize().width - _sidebar.getMinimumSize().width;
+                var maxH = _content.getSize().height;
+                var fitSize = Math.min(maxW, maxH);
+                if (fitSize <= 0) return;
+
+
+                //_board.setSize(fitSize, fitSize);
+                _board.setPreferredSize(new Dimension(fitSize, fitSize));
+                _board.revalidate();
                 repaint();
             }
         });
+
+        pack();
+        setVisible(true);
     }
 
 

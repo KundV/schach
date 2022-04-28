@@ -1,16 +1,19 @@
 package chess.core.VerktetteListe;
 
+import chess.core.ChessMove;
+import chess.core.PlayerId;
+
 public abstract class Dataelement {
-    public boolean isBlackMove;
+    public PlayerId Player;
 
 
-    public Dataelement(boolean isBlackMove)
+    public Dataelement(PlayerId Player)
     {
-        this.isBlackMove = isBlackMove;
+        this.Player = Player;
     }
 
+    public abstract boolean equals(ChessMove cm);
 
-    public abstract boolean equals(Dataelement de);
-    public abstract boolean get_color();
+    public abstract PlayerId getPlayerId();
 
 }

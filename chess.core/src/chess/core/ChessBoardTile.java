@@ -6,16 +6,19 @@ public class ChessBoardTile
 {
 
     private ChessPiece piece;
-    private Queue TagetingMoves;
+
+    private Queue TargetingMoves;
 
     public ChessBoardTile()
     {
         piece = null;
+        this.TargetingMoves = new Queue();
     }
 
     public ChessBoardTile(ChessPiece piece)
     {
         this.piece = piece;
+
     }
 
     public ChessPiece getPiece()
@@ -30,27 +33,32 @@ public class ChessBoardTile
 
     public ChessPiece removePiece()
     {
+        ChessPiece temp = piece;
         piece = null;
-        return piece;
+        return temp;
     }
 
-    public Queue getTagetingMoves()
+    public Queue getTargetingMoves()
     {
-        return TagetingMoves;
+        return TargetingMoves;
     }
 
     public void addTargetingMove(ChessMove move)
     {
-        if (TagetingMoves == null)
+        if (TargetingMoves == null)
         {
-            TagetingMoves = new Queue();
+            TargetingMoves = new Queue();
         }
-        TagetingMoves.add(move);
+        TargetingMoves.add(move);
+    }
+    public PlayerId getPlayerId()
+    {
+        return piece.getPlayerId();
     }
 
     public boolean hasTargetingMoves()
     {
-        return (TagetingMoves != null);
+        return (TargetingMoves != null);
     }
 
     public boolean hasPiece()
@@ -58,9 +66,9 @@ public class ChessBoardTile
         return (piece != null);
     }
 
-    public PlayerId isOccupiedBy()
+    public void clearTargetingMoves()
     {
-        return (this.piece.getPlayerId());
+        TargetingMoves.clear();
     }
 
 
