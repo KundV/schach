@@ -2,23 +2,13 @@
 
 Schach wird nach folgenden Regeln gespielt
 
-| Name     | Funktion                                              |
-|----------|-------------------------------------------------------|
-| Springer | Kann über andere Figuren springen                     |
-|          | 2 horizontal (vor, zurück), 1 vertikal (links,rechts) |
-|          | 1 vertikal                                            |
-
-Die Module haben folgende Abhängigkeiten:
-
-```mermaid
-%%{init: { 'theme': 'forest' } }%%
-graph TD
-    chess.ui --> che
-
-Wie man sieht, hat das Logik-Modul  Referenz auf die UI-Module (gegenseitige Referenzen währen auch nicht
-möglich), denn sie wird strikt von der UI getrennt. Es soll dadurch auch von einer GUI-losen Serveranwendung
-konsumierbar sein.
-
-Als Buildsystem wird IntelliJ IDEA verwendet
-
-
+| Name      | Funktion                                              |
+|-----------|-------------------------------------------------------|
+|Grundaufbau| 8x8 Feld, Weiss unten - Schwarz Oben <br>Weiss beginnt |                                      
+|Springer   | Kann über andere Figuren springen <br>2 horizontal (vor, zurück), 1 vertikal (links,rechts) |
+|Läufer     | Kann nur diagonal zeihen |
+|Turm       | Kann nur horizontal bzw vertikal ziehen |
+|Dame       | Kann horizontal, vertikal oder diagonal ziehen |
+|Bauer      | Kann ein Feld nach vorn ziehen <br>Wenn ein Bauer die Grundlienie des Gengers erreicht muss er in Springer, Läufer, Turm oder eine Dame umgewandelt werden |
+|König      | Zeiht wei die Dame jedoch nur 1 Feld (ausser Rocahde) |
+|Rochade    | https://schach.de/de/page/schachregeln-die-rochade
