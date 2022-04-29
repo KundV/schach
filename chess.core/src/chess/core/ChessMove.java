@@ -24,14 +24,8 @@ public class ChessMove extends Dataelement
     }
 
     @Override
-    public boolean equals(ChessMove cm)
+    public boolean equals(ChessMove cm)     //if either the start or the target position is the same, the move is the same
     {
-    /** if(de instanceof ChessMove)
-     {
-     ChessMove cm = (ChessMove)de;
-     return (cm.xStart == xStart && cm.yStart == yStart && cm.xTarget == xTarget && cm.yTarget == yTarget);
-     }
-     return false;**/
         return this == cm || (cm.xStart == xStart && cm.yStart == yStart && cm.xTarget == xTarget && cm.yTarget == yTarget);
 }
 

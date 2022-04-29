@@ -1,5 +1,7 @@
 package chess.core.VerktetteListe;
 
+import chess.core.ChessMove;
+
 public class Queue {
     private Listelement first;
 
@@ -7,27 +9,32 @@ public class Queue {
         first = new End();
     }
 
-    public void add(Dataelement content){
+    public void add(Dataelement content){   // add to end of queue
         first=first.insert(content);
     }
 
-    public Listelement remove(){
+    public Dataelement remove(){    // remove from front of queue
         Listelement oldFirst = first;
         first = first.get_next();
-        return oldFirst;
+        return oldFirst.get_content();
     }
-    public Dataelement getByIndex(int index){
+
+    public void remove(ChessMove move){  // removes a specific move from the queue
+        first = first.remove(move);
+
+    }
+    public Dataelement getByIndex(int index){   // returns the element at the given index
         return first.get_contentById(index);
     }
 
-    public int count_nodes() {
+    public int count_nodes() {                 // counts the number of nodes in the queue
         return first.count_nodes();
     }
-    public void clear(){
+    public void clear(){                  // clears the queue
         first = new End();
     }
 
-    public boolean isEmpty(){
+    public boolean isEmpty(){                  // checks if the queue is empty
         return first.get_next() == null;
     }
 }

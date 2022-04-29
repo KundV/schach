@@ -1,8 +1,10 @@
 package chess.core.VerktetteListe;
 
+import chess.core.ChessMove;
+
 public class Datanode extends Listelement{
-    private Dataelement content;
-    private Listelement next;
+    private Dataelement content;        //contents of the node (move)
+    private Listelement next;           //pointer to the next node in the list
     private int index;
 
 
@@ -15,32 +17,51 @@ public class Datanode extends Listelement{
 
     public int count_nodes() {
         return next.count_nodes() + 1;
-    }
+    }     //counts the number of nodes in the list
 
-    public Dataelement get_contentById(int index) {
+    public Dataelement get_contentById(int index) {       //returns if the index is the same as the index of the node
         if (index == this.index)
         {
             return this.content;
         }
         else
         {
-            return next.get_contentById(index);
+            return next.get_contentById(index);        //if not, it goes to the next node
         }
     }
 
     public Listelement get_next() {
         return next;
-    }
+    }       //returns the next node
 
-    public Datanode insert(Dataelement in) {
+    public Datanode insert(Dataelement in) {       //inserts a new node at the end of the list
         next = next.insert(in);
         return this;
     }
 
-    public Dataelement get_content() {
+    public Dataelement get_content() {     //returns the content of the node
         return this.content;
     }
 
+    public int get_index() {       //returns the index of the node
+        return this.index;
+    }
+
+    public boolean is_empty() {       //checks if the list is empty
+        return false;
+    }
+
+    public Listelement remove(ChessMove move) {       //removes a specific node from the list
+        if (content.equals(move))     //if the move is the same as the move of the node
+        {
+            return next;
+        }
+        else
+        {
+            next = next.remove(move);    //if not, it goes to the next node
+            return this;
+        }
+    }
     /** search remove. not needed yet
     public Listelement remove(Dataelement search) {
         if(content.equals(search)){

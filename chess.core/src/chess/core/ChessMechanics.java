@@ -22,7 +22,12 @@ public class ChessMechanics
     {
         makeBoard();
         StartPosition();
-        chessBoard[2][2].setPiece(new ChessPiece(ChessPieceId.PAWN,PlayerId.WHITE,187));
+        chessBoard[2][2].setPiece(new ChessPiece(ChessPieceId.PAWN, PlayerId.WHITE,187));
+        for(int i = 0; i<10; i++)
+        {
+        getAllMoves();
+        }
+        executeMove((ChessMove) chessBoard[0][0].getPiece().getPossibleMoves().getByIndex(1));
 
     }
 
@@ -30,9 +35,20 @@ public class ChessMechanics
     {
         for(int i = 0; i<8; i++)
         {
+            for(int j = 0; j<8; j++)
+            {
+                chessBoard[i][j].removeAllTargetingMoves();
+                if(chessBoard[i][j].hasPiece())
+                {
+                    chessBoard[i][j].getPiece().removeAllPossibleMoves();
+                }
+            }
+        }
+        for(int i = 0; i<8; i++)
+        {
             for (int j = 0; j < 8; j++)
             {
-                if(chessBoard[i][j].getPiece() != null)
+                if(chessBoard[i][j].hasPiece())
                 {
                    CheckMoves(i,j);
                 }
@@ -100,7 +116,7 @@ public class ChessMechanics
                 {
                     if (chessBoard[x + a][y+1].hasPiece())
                     {
-                        ChessMove move = new ChessMove(x, y, x + a, y+1, chessBoard[x][y].getPlayerId(), new Event(EventID.Move));                               // if the tile is empty
+                        ChessMove move = new ChessMove(x, y, x + a, y+1, chessBoard[x][y].getPlayerId(), new Event(EventID.Capture));                               // if the tile is empty
                         chessBoard[x][y].getPiece().addPossibleMove(move);
                         chessBoard[x + a][y+1].addTargetingMove(move);
                     }
@@ -109,7 +125,7 @@ public class ChessMechanics
                 {
                     if (chessBoard[x + a][y-1].hasPiece())
                     {
-                        ChessMove move = new ChessMove(x, y, x + a, y-1, chessBoard[x][y].getPlayerId(), new Event(EventID.Move));                               // if the tile is empty
+                        ChessMove move = new ChessMove(x, y, x + a, y-1, chessBoard[x][y].getPlayerId(), new Event(EventID.Capture));                               // if the tile is empty
                         chessBoard[x][y].getPiece().addPossibleMove(move);
                         chessBoard[x + a][y-1].addTargetingMove(move);
                     }
@@ -250,12 +266,12 @@ public class ChessMechanics
 
                 }
             }
-
-
-
         }
-
+        getAllMoves();
     }
+
+
+
     public void makeBoard()
     {
         chessBoard = new ChessBoardTile[8][8];
@@ -273,12 +289,14 @@ public class ChessMechanics
     {
         return chessBoard;
     }
-    public PlayerId executeMove(int x, int y, int x2, int y2)
+
+
+    /*public PlayerId executeMove(int x, int y, int x2, int y2)
     {
         //Queue movesTemp1 = chessBoard[x][y].getPiece().getPossibleMoves();
         Queue movesTemp[] = new Queue[2];
-        movesTemp[1] = chessBoard[x][y].getTargetingMoves();
-        movesTemp[2] = chessBoard[x2][y2].getTargetingMoves();
+        movesTemp[1] = chessBoard[x][y].removeAllTargetingMoves();
+        movesTemp[2] = chessBoard[x2][y2].removeAllTargetingMoves();
         //chessBoard[x][y].getPiece().removePossibleMove(x,y,x2,y2);
         chessBoard[x2][y2].setPiece(chessBoard[x][y].removePiece());
         CheckMoves(x2,y2);
@@ -288,25 +306,47 @@ public class ChessMechanics
         CheckMoves(movesTemp[i].remove().get_content().get_xStart(),movesTemp[i].remove().get_content().get_yStart());
         }
         return null;
-    }
+    }*/
 
     public PlayerId executeMove(ChessMove move)
     {
-        //Queue movesTemp1 = chessBoard[x][y].getPiece().getPossibleMoves();
         Queue movesTemp[] = new Queue[2];
-        movesTemp[1] = chessBoard[move.get_xStart()][move.get_yStart()].getTargetingMoves();
-        movesTemp[2] = chessBoard[move.get_xTarget()][move.get_yTarget()].getTargetingMoves();
-        //chessBoard[x][y].getPiece().removePossibleMove(x,y,x2,y2);
-        chessBoard[move.get_xTarget()][move.get_yTarget()].setPiece(chessBoard[move.get_xStart()][move.get_yStart()].removePiece());
-        CheckMoves(move.get_xTarget(),move.get_yTarget());
-        for(int i = 0; i<2; i++)
-            while(!movesTemp[i].isEmpty())
-            {
+        ChessMove moveTemp;
 
-                ChessMove Move = movesTemp[i].remove().get_content();
-                CheckMoves(Move.get_xStart(),Move.get_yStart());
+        while(!chessBoard[move.get_xStart()][move.get_yStart()].getPiece().getPossibleMoves().isEmpty())
+        {
+            if(chessBoard[move.get_xStart()][move.get_yStart()].getPiece().hasPossibleMove())
+            {
+            moveTemp = (ChessMove) chessBoard[move.get_xStart()][move.get_yStart()].getPiece().removePossibleMove();
+            chessBoard[moveTemp.get_xTarget()][moveTemp.get_yTarget()].getPiece().removePossibleMove(moveTemp);
             }
-        return null;
+        }
+        chessBoard[move.get_xTarget()][move.get_yTarget()].setPiece(chessBoard[move.get_xStart()][move.get_yStart()].removePiece());
+
+
+        int i = 0;
+        if(chessBoard[move.get_xStart()][move.get_yStart()].hasTargetingMoves())
+        {
+        movesTemp[i] = chessBoard[move.get_xStart()][move.get_yStart()].removeAllTargetingMoves();
+        i++;
+        }
+        if(chessBoard[move.get_xTarget()][move.get_yTarget()].hasTargetingMoves())
+        {
+        movesTemp[i] = chessBoard[move.get_xTarget()][move.get_yTarget()].removeAllTargetingMoves();
+        }
+
+
+        CheckMoves(move.get_xTarget(),move.get_yTarget());
+
+
+        for(int j = i; i<=0; i--)
+            while(!movesTemp[j].isEmpty())
+            {
+                moveTemp = (ChessMove) movesTemp[j].remove();
+                chessBoard[moveTemp.get_xStart()][moveTemp.get_yStart()].getPiece().removeAllPossibleMoves();
+                CheckMoves(moveTemp.get_xStart(),moveTemp.get_yStart());
+            }
+        return player.opposite();
     }
 }
 

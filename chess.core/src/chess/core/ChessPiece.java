@@ -1,8 +1,7 @@
 package chess.core;
 
+import chess.core.VerktetteListe.Dataelement;
 import chess.core.VerktetteListe.Queue;
-
-import java.util.ArrayList;
 
 
 public class ChessPiece
@@ -50,30 +49,49 @@ public class ChessPiece
         this.ID = ID;
     }
 
-    public Queue getPossibleMoves()
+
+    public Queue removeAllPossibleMoves()   //returns the queue of possible moves and deletes it
     {
         Queue temp = possibleMoves;
         possibleMoves = new Queue();
         return possibleMoves;
     }
 
-    public void addPossibleMove(ChessMove move)
+    public Queue getPossibleMoves()        //returns the queue of possible moves
+    {
+        return possibleMoves;
+    }
+
+    public void addPossibleMove(ChessMove move)     //adds a move to the queue of possible moves
     {
         this.possibleMoves.add(move);
     }
 
-    public boolean isFirstMove()
+    public boolean isFirstMove()            //returns if the piece has been moved or not
     {
         return isFirstMove;
     }
 
-    //public void resetPossibleMove(ChessMove move)
+    public void setFirstMove(boolean isFirstMove)       //sets if the piece has been moved or not
+    {
+        this.isFirstMove = isFirstMove;
+    }
+
+    public void resetAllPossibleMoves()         //resets the queue of possible moves
     {
         this.possibleMoves.clear();
     }
 
-    public void resetAllPossibleMove()
+    public void removePossibleMove(ChessMove move)  //removes a specific move from the queue of possible moves
     {
-        this.possibleMoves.clear();
+        this.possibleMoves.remove(move);
+    }
+    public Dataelement removePossibleMove()     //removes the first move from the queue of possible moves
+    {
+        return this.possibleMoves.remove();
+    }
+    public boolean hasPossibleMove()      //checks if a specific move is in the queue of possible moves
+    {
+        return this.possibleMoves.isEmpty();
     }
 }
