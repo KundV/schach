@@ -289,5 +289,24 @@ public class ChessMechanics
         }
         return null;
     }
+
+    public PlayerId executeMove(ChessMove move)
+    {
+        //Queue movesTemp1 = chessBoard[x][y].getPiece().getPossibleMoves();
+        Queue movesTemp[] = new Queue[2];
+        movesTemp[1] = chessBoard[move.get_xStart()][move.get_yStart()].getTargetingMoves();
+        movesTemp[2] = chessBoard[move.get_xTarget()][move.get_yTarget()].getTargetingMoves();
+        //chessBoard[x][y].getPiece().removePossibleMove(x,y,x2,y2);
+        chessBoard[move.get_xTarget()][move.get_yTarget()].setPiece(chessBoard[move.get_xStart()][move.get_yStart()].removePiece());
+        CheckMoves(move.get_xTarget(),move.get_yTarget());
+        for(int i = 0; i<2; i++)
+            while(!movesTemp[i].isEmpty())
+            {
+
+                ChessMove Move = movesTemp[i].remove().get_content();
+                CheckMoves(Move.get_xStart(),Move.get_yStart());
+            }
+        return null;
+    }
 }
 

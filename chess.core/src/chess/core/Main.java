@@ -7,6 +7,7 @@ class Main
     {
         ChessMechanics chessMechanics = new ChessMechanics();
         chessMechanics.getAllMoves();
+        chessMechanics.executeMove(2,2,3,4);
     }
 
 }
