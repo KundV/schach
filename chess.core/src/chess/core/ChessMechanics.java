@@ -21,12 +21,12 @@ public class ChessMechanics
     public ChessMechanics()
     {
         makeBoard();
-        StartPosition();
         chessBoard[2][2].setPiece(new ChessPiece(ChessPieceId.PAWN, PlayerId.WHITE,187));
-        for(int i = 0; i<10; i++)
-        {
-        getAllMoves();
-        }
+        StartPosition();
+
+
+        //getAllMoves();
+
         executeMove((ChessMove) chessBoard[0][0].getPiece().getPossibleMoves().getByIndex(1));
 
     }
@@ -112,24 +112,26 @@ public class ChessMechanics
         }
         if(x+a >= 0 & x+a <= 7 & y+1 >= 0 & y-1 >= 0 & y+1 <= 7 & y-1 <= 7)
             {
-                if (chessBoard[x][y].getPiece() == chessBoard[x + a][y + 1].getPiece())
-                {
-                    if (chessBoard[x + a][y+1].hasPiece())
+
+                if (chessBoard[x + a][y+1].hasPiece())
                     {
+                        if (chessBoard[x][y].getPiece().getPlayerId() == chessBoard[x + a][y + 1].getPiece().getPlayerId().opposite())
+                        {
                         ChessMove move = new ChessMove(x, y, x + a, y+1, chessBoard[x][y].getPlayerId(), new Event(EventID.Capture));                               // if the tile is empty
                         chessBoard[x][y].getPiece().addPossibleMove(move);
                         chessBoard[x + a][y+1].addTargetingMove(move);
+                        }
                     }
-                }
-                if (chessBoard[x][y].getPiece() == chessBoard[x + a][y - 1].getPiece())
-                {
-                    if (chessBoard[x + a][y-1].hasPiece())
+
+                if (chessBoard[x + a][y-1].hasPiece())
                     {
+                        if (chessBoard[x][y].getPiece().getPlayerId() == chessBoard[x + a][y - 1].getPiece().getPlayerId().opposite())
+                        {
                         ChessMove move = new ChessMove(x, y, x + a, y-1, chessBoard[x][y].getPlayerId(), new Event(EventID.Capture));                               // if the tile is empty
                         chessBoard[x][y].getPiece().addPossibleMove(move);
                         chessBoard[x + a][y-1].addTargetingMove(move);
+                        }
                     }
-                }
             }
     }
     public void RulesTower(int x,int y)

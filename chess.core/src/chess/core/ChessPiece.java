@@ -92,6 +92,6 @@ public class ChessPiece
     }
     public boolean hasPossibleMove()      //checks if a specific move is in the queue of possible moves
     {
-        return this.possibleMoves.isEmpty();
+        return !this.possibleMoves.isEmpty();
     }
 }
