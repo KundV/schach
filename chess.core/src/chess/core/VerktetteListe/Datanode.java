@@ -35,8 +35,17 @@ public class Datanode extends Listelement{
     }       //returns the next node
 
     public Datanode insert(Dataelement in) {       //inserts a new node at the end of the list
-        next = next.insert(in);
-        return this;
+
+        if(this.content.equals(in))
+        {
+            this.content = in;
+            return this;
+        }
+        else
+        {
+            next = next.insert(in);
+            return this;
+        }
     }
 
     public Dataelement getContent() {     //returns the content of the node

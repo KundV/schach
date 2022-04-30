@@ -22,6 +22,7 @@ public class Queue {
     public void remove(ChessMove move){  // removes a specific move from the queue
         first = first.remove(move);
     }
+
     public Dataelement getByIndex(int index){   // returns the element at the given index
         return first.getContentById(index);
     }
@@ -29,6 +30,7 @@ public class Queue {
     public int count_nodes() {                 // counts the number of nodes in the queue
         return first.countNodes();
     }
+
     public void clear(){                  // clears the queue
         first = new End();
     }

@@ -9,7 +9,7 @@ public class ChessMechanics
 {
 
     private ChessBoardTile[][] chessBoard; // the chess board
-    private ArrayList<ChessPiece> deadPieces ;   // the dead pieces
+    private ArrayList<ChessPiece> deadPieces = new ArrayList<ChessPiece>() ;   // the dead pieces
     private int turn;                      // the current turn
     private PlayerId player = PlayerId.WHITE; // the current player
     private Queue madeMoves;               // the moves made
@@ -23,13 +23,14 @@ public class ChessMechanics
     public ChessMechanics()
     {
         makeBoard();
-        chessBoard[2][2].setPiece(new ChessPiece(ChessPieceId.PAWN, PlayerId.WHITE,187));
         StartPosition();
-
-
-        //getAllMoves();
-
-        executeMove((ChessMove) chessBoard[0][0].getPiece().getPossibleMoves().getByIndex(1));
+        chessBoard[2][2].setPiece(new ChessPiece(ChessPieceId.PAWN, PlayerId.WHITE,187)); //Test position  //TODO: Remove this
+        for(int i = 0; i<1000000; i++)
+        {
+        getAllMoves();
+        }
+        executeMove((ChessMove) chessBoard[2][2].getPiece().getPossibleMoves().getByIndex(3));
+        executeMove((ChessMove) chessBoard[1][7].getPiece().getPossibleMoves().getByIndex(2));
 
     }
 
@@ -89,29 +90,30 @@ public class ChessMechanics
                     chessBoard[x][y].getPiece().addPossibleMove(move);
                     chessBoard[x + a][y].addTargetingMove(move);
                 }
-            }
-
-        if(x+(a*2)>=0 && x+(a+2)<=7)
-        {
-        if(chessBoard[x][y].getPiece().isFirstMove())
-            {
-                if(x+(a*2)>=0 && x+(a*2)<=7)
+                if(x+(a*2)>=0 && x+(a+2)<=7)
                 {
-                    if (!chessBoard[x +(a*2)][y].hasPiece())
+                    if(chessBoard[x][y].getPiece().isFirstMove())
                     {
-                        ChessMove move = new ChessMove(x, y, x + (a*2), y, chessBoard[x][y].getPlayerId(), new Event(EventID.Move));                               // if the tile is empty
-                        chessBoard[x][y].getPiece().addPossibleMove(move);
-                        chessBoard[x + (a*2)][y].addTargetingMove(move);
-                    }
-                    else if (chessBoard[x + (a*2)][y].hasPiece())
-                    {
-                        ChessMove move = new ChessMove(x, y, x + (a*2), y, chessBoard[x][y].getPlayerId(), new Event(EventID.Blocked));                               // if the tile is empty
-                        chessBoard[x][y].getPiece().addPossibleMove(move);
-                        chessBoard[x + (a*2)][y].addTargetingMove(move);
+                        if(x+(a*2)>=0 && x+(a*2)<=7)
+                        {
+                            if (!chessBoard[x +(a*2)][y].hasPiece())
+                            {
+                                ChessMove move = new ChessMove(x, y, x + (a*2), y, chessBoard[x][y].getPlayerId(), new Event(EventID.Move));                               // if the tile is empty
+                                chessBoard[x][y].getPiece().addPossibleMove(move);
+                                chessBoard[x + (a*2)][y].addTargetingMove(move);
+                            }
+                            else if (chessBoard[x + (a*2)][y].hasPiece())
+                            {
+                                ChessMove move = new ChessMove(x, y, x + (a*2), y, chessBoard[x][y].getPlayerId(), new Event(EventID.Blocked));                               // if the tile is empty
+                                chessBoard[x][y].getPiece().addPossibleMove(move);
+                                chessBoard[x + (a*2)][y].addTargetingMove(move);
+                            }
+                        }
                     }
                 }
             }
-        }
+
+
         if(x+a >= 0 & x+a <= 7 & y+1 >= 0 & y-1 >= 0 & y+1 <= 7 & y-1 <= 7)
             {
 
@@ -316,9 +318,12 @@ public class ChessMechanics
     {
         Queue movesTemp[] = new Queue[2];
         ChessMove moveTemp;
+        int i = 0;
+
         if (move.getEvent().getID() == EventID.Capture || move.getEvent().getID() == EventID.Move)
         {
-            while (!chessBoard[move.get_xStart()][move.get_yStart()].getPiece().hasPossibleMove())
+            chessBoard[move.get_xStart()][move.get_yStart()].getPiece().setFirstMove(false);
+            while (!chessBoard[move.get_xStart()][move.get_yStart()].getPiece().hasPossibleMove())          // if the piece has possible moves, remove them in targeting moves
             {
                 if (chessBoard[move.get_xStart()][move.get_yStart()].getPiece().hasPossibleMove())
                 {
@@ -326,40 +331,39 @@ public class ChessMechanics
                     chessBoard[moveTemp.get_xTarget()][moveTemp.get_yTarget()].removeTargetingMove(moveTemp);
                 }
             }
-            if (move.getEvent().getID() == EventID.Capture)
+            if (move.getEvent().getID() == EventID.Capture)                                               // if the piece has been captured, remove the Piece on the targeted tile
             {
                 deadPieces.add(chessBoard[move.get_xTarget()][move.get_yTarget()].removePiece());
                 chessBoard[move.get_xTarget()][move.get_yTarget()].setPiece(chessBoard[move.get_xStart()][move.get_yStart()].removePiece());
             }
-            else
+            else                                                                                          // if the piece has been moved, remove from start tile and add to target tile
             {
                 chessBoard[move.get_xTarget()][move.get_yTarget()].setPiece(chessBoard[move.get_xStart()][move.get_yStart()].removePiece());
             }
 
-            int i = 0;
-            if(chessBoard[move.get_xStart()][move.get_yStart()].hasTargetingMoves())
+            CheckMoves(move.get_xTarget(), move.get_yTarget());
+
+            if(!chessBoard[move.get_xStart()][move.get_yStart()].hasTargetingMoves())                          // if the piece has possible moves, remove them in targeting moves, in order to update the possible moves
             {
                 movesTemp[i] = chessBoard[move.get_xStart()][move.get_yStart()].removeAllTargetingMoves();
                 i++;
             }
-            if(chessBoard[move.get_xTarget()][move.get_yTarget()].hasTargetingMoves())
+            if(!chessBoard[move.get_xTarget()][move.get_yTarget()].hasTargetingMoves())                          // if the piece has possible moves, remove them in targeting moves, in order to update the possible moves
             {
                 movesTemp[i] = chessBoard[move.get_xTarget()][move.get_yTarget()].removeAllTargetingMoves();
             }
 
-            for(int j = i; i<=0; i--)
-                while(!movesTemp[j].isEmpty())
+            for(int j = i; i<=0; j--)
+            {
+                while (!movesTemp[j].isEmpty())
                 {
                     moveTemp = (ChessMove) movesTemp[j].remove();
                     chessBoard[moveTemp.get_xStart()][moveTemp.get_yStart()].getPiece().removeAllPossibleMoves();
-                    CheckMoves(moveTemp.get_xStart(),moveTemp.get_yStart());
+                    CheckMoves(moveTemp.get_xStart(), moveTemp.get_yStart());
                 }
+            }
             return player.opposite();
         }
-
-
-        CheckMoves(move.get_xTarget(),move.get_yTarget());
-
 
         return player;
     }

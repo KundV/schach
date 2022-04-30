@@ -31,6 +31,7 @@ public class ChessBoardTile                        //Is a tile on the chessboard
 
     public ChessPiece removePiece()                 //Removes the piece from this tile and Returns the piece.
     {
+        piece.resetAllPossibleMoves();
         ChessPiece temp = piece;
         piece = null;
         return temp;
@@ -66,15 +67,5 @@ public class ChessBoardTile                        //Is a tile on the chessboard
     {
         return (piece != null);
     }
-
-    public void clearTargetingMoves()                 //Clears the targeting moves.
-    {
-        TargetingMoves.clear();
-    }
-
-
-
-
-
 
 }
