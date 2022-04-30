@@ -15,22 +15,22 @@ public class Datanode extends Listelement{
     }
 
 
-    public int count_nodes() {
-        return next.count_nodes() + 1;
-    }     //counts the number of nodes in the list
+    public int countNodes() {                       //counts the number of nodes in the list
+        return next.countNodes() + 1;
+    }
 
-    public Dataelement get_contentById(int index) {       //returns if the index is the same as the index of the node
+    public Dataelement getContentById(int index) {       //returns if the index is the same as the index of the node
         if (index == this.index)
         {
             return this.content;
         }
         else
         {
-            return next.get_contentById(index);        //if not, it goes to the next node
+            return next.getContentById(index);        //if not, it goes to the next node
         }
     }
 
-    public Listelement get_next() {
+    public Listelement getNext() {
         return next;
     }       //returns the next node
 
@@ -39,15 +39,15 @@ public class Datanode extends Listelement{
         return this;
     }
 
-    public Dataelement get_content() {     //returns the content of the node
+    public Dataelement getContent() {     //returns the content of the node
         return this.content;
     }
 
-    public int get_index() {       //returns the index of the node
+    public int getIndex() {       //returns the index of the node
         return this.index;
     }
 
-    public boolean is_empty() {       //checks if the list is empty
+    public boolean isEmpty() {       //checks if the list is empty
         return false;
     }
 

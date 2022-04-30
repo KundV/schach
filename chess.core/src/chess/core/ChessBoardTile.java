@@ -43,6 +43,11 @@ public class ChessBoardTile                        //Is a tile on the chessboard
         return temp;
     }
 
+    public void removeTargetingMove(ChessMove move)      //Removes a specific targeting move from the list.
+    {
+        TargetingMoves.remove(move);
+    }
+
     public void addTargetingMove(ChessMove move)    //Adds a targeting move to the list.
     {
         TargetingMoves.add(move);

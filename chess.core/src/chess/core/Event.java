@@ -9,4 +9,9 @@ public class Event
     {
         this.id = id;
     }
+
+    public EventID getID()
+    {
+        return id;
+    }
 }

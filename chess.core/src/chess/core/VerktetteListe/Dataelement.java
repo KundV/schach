@@ -16,10 +16,7 @@ public abstract class Dataelement {
 
     public abstract PlayerId getPlayerId();
 
-    public abstract int get_xStart();
-    public abstract int get_yStart();
-    public abstract int get_xTarget();
-    public abstract int get_yTarget();
+
 }
 
 

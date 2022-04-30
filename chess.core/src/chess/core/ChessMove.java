@@ -55,5 +55,10 @@ public class ChessMove extends Dataelement
     {
         return yTarget;
     }
+
+    public Event getEvent()
+    {
+        return event;
+    }
 }
 

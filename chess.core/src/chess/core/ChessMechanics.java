@@ -2,12 +2,14 @@ package chess.core;
 
 import chess.core.VerktetteListe.Queue;
 
+import java.util.ArrayList;
+
 
 public class ChessMechanics
 {
 
     private ChessBoardTile[][] chessBoard; // the chess board
-    private ChessPiece[] deadPieces;       // the dead pieces
+    private ArrayList<ChessPiece> deadPieces ;   // the dead pieces
     private int turn;                      // the current turn
     private PlayerId player = PlayerId.WHITE; // the current player
     private Queue madeMoves;               // the moves made
@@ -314,41 +316,54 @@ public class ChessMechanics
     {
         Queue movesTemp[] = new Queue[2];
         ChessMove moveTemp;
-
-        while(!chessBoard[move.get_xStart()][move.get_yStart()].getPiece().getPossibleMoves().isEmpty())
+        if (move.getEvent().getID() == EventID.Capture || move.getEvent().getID() == EventID.Move)
         {
-            if(chessBoard[move.get_xStart()][move.get_yStart()].getPiece().hasPossibleMove())
+            while (!chessBoard[move.get_xStart()][move.get_yStart()].getPiece().hasPossibleMove())
             {
-            moveTemp = (ChessMove) chessBoard[move.get_xStart()][move.get_yStart()].getPiece().removePossibleMove();
-            chessBoard[moveTemp.get_xTarget()][moveTemp.get_yTarget()].getPiece().removePossibleMove(moveTemp);
+                if (chessBoard[move.get_xStart()][move.get_yStart()].getPiece().hasPossibleMove())
+                {
+                    moveTemp = (ChessMove) chessBoard[move.get_xStart()][move.get_yStart()].getPiece().removePossibleMove();
+                    chessBoard[moveTemp.get_xTarget()][moveTemp.get_yTarget()].removeTargetingMove(moveTemp);
+                }
             }
-        }
-        chessBoard[move.get_xTarget()][move.get_yTarget()].setPiece(chessBoard[move.get_xStart()][move.get_yStart()].removePiece());
+            if (move.getEvent().getID() == EventID.Capture)
+            {
+                deadPieces.add(chessBoard[move.get_xTarget()][move.get_yTarget()].removePiece());
+                chessBoard[move.get_xTarget()][move.get_yTarget()].setPiece(chessBoard[move.get_xStart()][move.get_yStart()].removePiece());
+            }
+            else
+            {
+                chessBoard[move.get_xTarget()][move.get_yTarget()].setPiece(chessBoard[move.get_xStart()][move.get_yStart()].removePiece());
+            }
 
+            int i = 0;
+            if(chessBoard[move.get_xStart()][move.get_yStart()].hasTargetingMoves())
+            {
+                movesTemp[i] = chessBoard[move.get_xStart()][move.get_yStart()].removeAllTargetingMoves();
+                i++;
+            }
+            if(chessBoard[move.get_xTarget()][move.get_yTarget()].hasTargetingMoves())
+            {
+                movesTemp[i] = chessBoard[move.get_xTarget()][move.get_yTarget()].removeAllTargetingMoves();
+            }
 
-        int i = 0;
-        if(chessBoard[move.get_xStart()][move.get_yStart()].hasTargetingMoves())
-        {
-        movesTemp[i] = chessBoard[move.get_xStart()][move.get_yStart()].removeAllTargetingMoves();
-        i++;
-        }
-        if(chessBoard[move.get_xTarget()][move.get_yTarget()].hasTargetingMoves())
-        {
-        movesTemp[i] = chessBoard[move.get_xTarget()][move.get_yTarget()].removeAllTargetingMoves();
+            for(int j = i; i<=0; i--)
+                while(!movesTemp[j].isEmpty())
+                {
+                    moveTemp = (ChessMove) movesTemp[j].remove();
+                    chessBoard[moveTemp.get_xStart()][moveTemp.get_yStart()].getPiece().removeAllPossibleMoves();
+                    CheckMoves(moveTemp.get_xStart(),moveTemp.get_yStart());
+                }
+            return player.opposite();
         }
 
 
         CheckMoves(move.get_xTarget(),move.get_yTarget());
 
 
-        for(int j = i; i<=0; i--)
-            while(!movesTemp[j].isEmpty())
-            {
-                moveTemp = (ChessMove) movesTemp[j].remove();
-                chessBoard[moveTemp.get_xStart()][moveTemp.get_yStart()].getPiece().removeAllPossibleMoves();
-                CheckMoves(moveTemp.get_xStart(),moveTemp.get_yStart());
-            }
-        return player.opposite();
+        return player;
     }
+
+
 }
 

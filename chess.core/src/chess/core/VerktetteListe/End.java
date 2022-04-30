@@ -10,11 +10,11 @@ public class End extends Listelement{
         index = 0;
     }
 
-    public int count_nodes() {
+    public int countNodes() {
         return 0;
     }       //counts the number of nodes in the list
 
-    public Listelement get_next() {
+    public Listelement getNext() {
         return this;
     }       // End of list
 
@@ -23,15 +23,15 @@ public class End extends Listelement{
         return new Datanode(this, in, index);
     }
 
-    public Dataelement get_content() {
+    public Dataelement getContent() {
         return null;
     }   // End of list
 
-    public Dataelement get_contentById(int index) {
+    public Dataelement getContentById(int index) {
         return null;
     }  // End of list
 
-    public boolean is_empty() {
+    public boolean isEmpty() {
         return true;
     }    //if end is first in list then list is empty
 
