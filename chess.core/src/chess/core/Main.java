@@ -1,13 +1,18 @@
 package chess.core;
 
 
+import java.util.ArrayList;
+
 class Main
 {
     public static void main(String[]args)
     {
-        ChessBoardTile[][] board ;
-        ChessMechanics chessMechanics = new ChessMechanics();
-        chessMechanics.getAllMoves();
+
+        ArrayList<ChessMechanics> board = new ArrayList<ChessMechanics>();
+        for (int i = 0; i < 100000; i++)
+        {
+            board.add(new ChessMechanics());
+        }
     }
 
 }

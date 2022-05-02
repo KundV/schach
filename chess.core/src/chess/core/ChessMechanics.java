@@ -14,10 +14,9 @@ public class ChessMechanics
     private PlayerId player = PlayerId.WHITE; // the current player
     private Queue madeMoves;               // the moves made
 
-    public ChessMechanics(ChessBoardTile[][] chessBoard)
+    public ChessMechanics(ChessBoardTile[][] chessBoard, ArrayList<ChessPiece> deadPieces, int turn, PlayerId player, Queue madeMoves, ChessMove move)
     {
         this.chessBoard = chessBoard;
-        StartPosition();
         getAllMoves();
     }
     public ChessMechanics()
@@ -25,10 +24,9 @@ public class ChessMechanics
         makeBoard();
         StartPosition();
         chessBoard[2][2].setPiece(new ChessPiece(ChessPieceId.PAWN, PlayerId.WHITE,187)); //Test position  //TODO: Remove this
-        for(int i = 0; i<1000000; i++)
-        {
+
         getAllMoves();
-        }
+
         executeMove((ChessMove) chessBoard[2][2].getPiece().getPossibleMoves().getByIndex(3));
         executeMove((ChessMove) chessBoard[1][7].getPiece().getPossibleMoves().getByIndex(2));
 
