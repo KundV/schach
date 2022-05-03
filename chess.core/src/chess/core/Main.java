@@ -8,10 +8,10 @@ class Main
     public static void main(String[]args)
     {
 
-        ArrayList<ChessGame> board = new ArrayList<ChessGame>();
+        ArrayList<ChessMechanics> board = new ArrayList<ChessMechanics>();
         for (int i = 0; i < 100000; i++)
         {
-            board.add(new ChessGame());
+            board.add(new ChessMechanics());
         }
     }
 
