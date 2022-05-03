@@ -1,4 +1,5 @@
 import chess.core.ChessPieceId;
+import chess.core.Vec;
 
 import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
@@ -13,9 +14,9 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
 
     GridLayout layout;
 
-    private JChessPiece[][] jChessPieces = new JChessPiece[8][8];
-    private JPanel[][] boardFields = new JPanel[8][8];
-    private JPanel _glassPane = new JPanel();
+    private final JChessPiece[][] jChessPieces = new JChessPiece[8][8];
+    private final JPanel[][] boardFields = new JPanel[8][8];
+    private final JPanel _glassPane = new JPanel();
 
     public void onResize()
     {
@@ -63,8 +64,6 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
     public boolean IsSelected;
 
 
-
-
     private void addFields()
     {
         for (int r = 0; r < 8; r++)
@@ -81,15 +80,8 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
     }
 
 
-    @Override
-    protected void addImpl(Component comp, Object constraints, int index)
-    {
-        super.addImpl(comp, constraints, index);
-    }
-
     public ChessBoard()
     {
-
 
 
         this.setLayout(null);
@@ -116,10 +108,7 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
         });
 
 
-
-
     }
-
 
 
     private static boolean isWhite(int row, int col)
@@ -169,7 +158,6 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
     }
 
 
-
     @Override
     public void mouseClicked(MouseEvent e)
     {
@@ -181,12 +169,20 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
     public void mousePressed(MouseEvent e)
     {
 
+        var fieldVec = vecFromPoint(e.getPoint());
+        if (fieldVec.x >= 0 && fieldVec.y >= 0 // if field is negative
+                && fieldVec.x < 8 && fieldVec.y < 8 // if field is out of bounds
+                && jChessPieces[fieldVec.x][fieldVec.y] != null) // if field is empty
+        {
+            this._selectedPiece = fieldVec;
+        }
     }
 
     @Override
     public void mouseReleased(MouseEvent e)
     {
-
+        onResize();
+        this._selectedPiece = null;
     }
 
     @Override
@@ -201,10 +197,38 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
 
     }
 
+
+    private Vec _selectedPiece;
+
     @Override
     public void mouseDragged(MouseEvent e)
     {
+        if (_selectedPiece != null) {
+            var piece = jChessPieces[_selectedPiece.x][_selectedPiece.y];
+            piece.setLocation(e.getPoint());
 
+        }
+    }
+
+
+    private Vec vecFromPoint(Point p)
+    {
+        return new Vec(fieldFromX(p.x), fieldFromY(p.y));
+    }
+
+    private Point pointFromVec(Vec v)
+    {
+        return new Point(v.x * getWidth() / 8, v.y * getHeight() / 8);
+    }
+
+    private int fieldFromX(int x)
+    {
+        return x / (getWidth() / 8);
+    }
+
+    private int fieldFromY(int y)
+    {
+        return y / (getHeight() / 8);
     }
 
     @Override
