@@ -1,22 +1,25 @@
 import chess.core.ChessPieceId;
 
 import javax.swing.*;
+import javax.swing.event.MouseInputAdapter;
+import javax.swing.event.MouseInputListener;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
-public class ChessBoard extends JLayeredPane
+public class ChessBoard extends JLayeredPane implements MouseMotionListener, MouseListener
 {
 
     GridLayout layout;
 
     private JChessPiece[][] jChessPieces = new JChessPiece[8][8];
     private JPanel[][] boardFields = new JPanel[8][8];
+    private JPanel _glassPane = new JPanel();
 
     public void onResize()
     {
+        _glassPane.setSize(this.getWidth(), this.getHeight());
         for (int r = 0; r < 8; r++)
         {
             for (int c = 0; c < 8; c++)
@@ -40,6 +43,8 @@ public class ChessBoard extends JLayeredPane
 
     private void addPieces()
     {
+
+
         for (int r = 0; r < 8; r++)
         {
             for (int c = 0; c < 8; c++)
@@ -47,11 +52,18 @@ public class ChessBoard extends JLayeredPane
                 var p = jChessPieces[r][c];
                 if (p != null)
                 {
-                    this.add(p, new Integer(3));
+                    this.add(p, new Integer(-9));
                 }
             }
         }
     }
+
+    public int SelectedX;
+    public int SelectedY;
+    public boolean IsSelected;
+
+
+
 
     private void addFields()
     {
@@ -63,20 +75,34 @@ public class ChessBoard extends JLayeredPane
                 p.setBackground(isWhite(r, c) ? Color.white : Color.black);
                 boardFields[r][c] = p;
 
-                this.add(p, new Integer(0));
+                this.add(p, new Integer(-10));
             }
         }
     }
 
+
+    @Override
+    protected void addImpl(Component comp, Object constraints, int index)
+    {
+        super.addImpl(comp, constraints, index);
+    }
+
     public ChessBoard()
     {
-        //this.setDoubleBuffered(true);
+
+
 
         this.setLayout(null);
         jChessPieces[0][0] = new JChessPiece(ChessPieceId.BISHOP, false);
         jChessPieces[0][2] = new JChessPiece(ChessPieceId.BISHOP, false);
         jChessPieces[0][1] = new JChessPiece(ChessPieceId.BISHOP, false);
 
+        _glassPane.addMouseListener(this);
+        _glassPane.addMouseMotionListener(this);
+        _glassPane.setOpaque(false);
+        this.add(_glassPane, new Integer(0));
+
+        // jChessPieces[0][0].addMouseListener(mouseListener);
         addPieces();
         addFields();
         this.addComponentListener(new ComponentAdapter()
@@ -86,8 +112,15 @@ public class ChessBoard extends JLayeredPane
             {
                 onResize();
             }
+
         });
+
+
+
+
     }
+
+
 
     private static boolean isWhite(int row, int col)
     {
@@ -135,4 +168,49 @@ public class ChessBoard extends JLayeredPane
         }
     }
 
+
+
+    @Override
+    public void mouseClicked(MouseEvent e)
+    {
+
+        System.out.println(e.getX() / (getWidth() / 8));
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e)
+    {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e)
+    {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e)
+    {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e)
+    {
+
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e)
+    {
+
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e)
+    {
+
+    }
 }
+
