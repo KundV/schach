@@ -11,4 +11,4 @@ Schach wird nach folgenden Regeln gespielt
 |Dame       | Kann horizontal, vertikal oder diagonal ziehen |
 |Bauer      | Kann ein Feld nach vorn ziehen <br>Wenn ein Bauer die Grundlienie des Gengers erreicht muss er in Springer, Läufer, Turm oder eine Dame umgewandelt werden |
 |König      | Zeiht wei die Dame jedoch nur 1 Feld (ausser Rocahde) |
-|Rochade    | https://schach.de/de/page/schachregeln-die-rochade
+|Rochade    | https://schach.de/de/page/schachregeln-die-rochade |
