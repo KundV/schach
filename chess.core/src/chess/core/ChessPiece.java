@@ -12,7 +12,7 @@ public class ChessPiece
     private ChessPieceId chessPieceId;
     private PlayerId playerId;
     private Queue possibleMoves;
-    private boolean isFirstMove = true;
+    private int moveCount = 0;
     private int ID;
 
 
@@ -23,9 +23,9 @@ public class ChessPiece
         this.possibleMoves = new Queue();
 
     }
-    public ChessPiece(ChessPieceId chessPieceId,PlayerId playerId,boolean isFirstMove)
+    public ChessPiece(ChessPieceId chessPieceId,PlayerId playerId,int moveCount)
     {
-        this.isFirstMove = isFirstMove;
+        this.moveCount = moveCount;
         this.chessPieceId = chessPieceId;
         this.playerId = playerId;
         this.possibleMoves = new Queue();
@@ -77,12 +77,17 @@ public class ChessPiece
 
     public boolean isFirstMove()            //returns if the piece has been moved or not
     {
-        return isFirstMove;
+        return moveCount == 0;
     }
 
-    public void setFirstMove(boolean isFirstMove)       //sets if the piece has been moved or not
+    public void addMoveCount()       //sets if the piece has been moved or not
     {
-        this.isFirstMove = isFirstMove;
+        moveCount++;
+    }
+
+    public void removeMoveCount()
+    {
+        moveCount--;
     }
 
     public void resetAllPossibleMoves()         //resets the queue of possible moves
@@ -111,5 +116,10 @@ public class ChessPiece
             temp.add(possibleMoves.getByIndex(i));
         }
         return temp;
+    }
+
+    public int getMoveCount()
+    {
+        return moveCount;
     }
 }
