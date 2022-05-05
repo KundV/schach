@@ -25,13 +25,14 @@ public class ChessMechanics
     }
     public ChessMechanics()
     {
+        madeMoves = new Queue();
         makeBoard();
         StartPosition();
-        chessBoard[2][2].setPiece(new ChessPiece(ChessPieceId.PAWN, PlayerId.WHITE)); //Test position  //TODO: Remove this
+        chessBoard[2][2].setPiece(new ChessPiece(ChessPieceId.KING, PlayerId.WHITE)); //Test position  //TODO: Remove this
 
         getAllMoves();
 
-        executeMove((ChessMove) chessBoard[2][2].getPiece().getPossibleMoves().getByIndex(3));
+        executeMove((ChessMove) chessBoard[2][2].getPiece().getPossibleMoves().getByIndex(1));
         executeMove((ChessMove) chessBoard[1][7].getPiece().getPossibleMoves().getByIndex(2));
 
     }
@@ -421,7 +422,7 @@ public class ChessMechanics
         ChessMove moveTemp;
         int i = 0;
 
-        if (move.getEvent().getID() == EventID.Capture || move.getEvent().getID() == EventID.Move)
+        if (move != null && move.getEvent().getID() == EventID.Capture || move.getEvent().getID() == EventID.Move)
         {
             chessBoard[move.get_xStart()][move.get_yStart()].getPiece().addMoveCount();
             while (chessBoard[move.get_xStart()][move.get_yStart()].getPiece().hasPossibleMove())
@@ -457,7 +458,7 @@ public class ChessMechanics
                 movesTemp[i] = chessBoard[move.get_xTarget()][move.get_yTarget()].removeAllTargetingMoves();
             }
 
-            for(int j = i; i<=0; j--)
+            for(int j = i; j>0; j--)
             {
                 while (!movesTemp[j].isEmpty())
                 {
@@ -473,6 +474,8 @@ public class ChessMechanics
 
     public PlayerId reverseMove()
     {
+        if(!madeMoves.isEmpty())
+        {
         ChessMove move = (ChessMove) madeMoves.remove();
         Queue movesTemp[] = new Queue[2];
         ChessMove moveTemp;
@@ -494,8 +497,7 @@ public class ChessMechanics
                 chessBoard[move.get_xStart()][move.get_yStart()].setPiece(chessBoard[move.get_xTarget()][move.get_yTarget()].removePiece());
                 chessBoard[move.get_xTarget()][move.get_yTarget()].setPiece(deadPieces.get(deadPieces.size() - 1));
                 deadPieces.remove(deadPieces.size() - 1);
-            }
-            else                                                                                          // if the piece has been moved, remove from start tile and add to target tile
+            } else                                                                                          // if the piece has been moved, remove from start tile and add to target tile
             {
                 chessBoard[move.get_xStart()][move.get_yStart()].setPiece(chessBoard[move.get_xTarget()][move.get_yTarget()].removePiece());
             }
@@ -504,17 +506,17 @@ public class ChessMechanics
             CheckMoves(move.get_xTarget(), move.get_yTarget());
 
 
-            if(!chessBoard[move.get_xStart()][move.get_yStart()].hasTargetingMoves())                          // if the piece has possible moves, remove them in targeting moves, in order to update the possible moves
+            if (!chessBoard[move.get_xStart()][move.get_yStart()].hasTargetingMoves())                          // if the piece has possible moves, remove them in targeting moves, in order to update the possible moves
             {
                 movesTemp[i] = chessBoard[move.get_xStart()][move.get_yStart()].removeAllTargetingMoves();
                 i++;
             }
-            if(!chessBoard[move.get_xTarget()][move.get_yTarget()].hasTargetingMoves())                          // if the piece has possible moves, remove them in targeting moves, in order to update the possible moves
+            if (!chessBoard[move.get_xTarget()][move.get_yTarget()].hasTargetingMoves())                          // if the piece has possible moves, remove them in targeting moves, in order to update the possible moves
             {
                 movesTemp[i] = chessBoard[move.get_xTarget()][move.get_yTarget()].removeAllTargetingMoves();
             }
 
-            for(int j = i; i<=0; j--)
+            for (int j = i; i <= 0; j--)
             {
                 while (!movesTemp[j].isEmpty())
                 {
@@ -525,6 +527,7 @@ public class ChessMechanics
             }
             return player.opposite();
         }
+        }
 
         return player;
     }
@@ -534,7 +537,7 @@ public class ChessMechanics
         makeBoard();
         for(int i = 0; i < 8; i++)
         {
-            for (int j = 0; j < 8 ; i++)
+            for (int j = 0; j < 8 ; j++)
             {
                 if(oldBord[i][j].hasPiece())
                 {
