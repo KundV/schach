@@ -63,6 +63,11 @@ public class ChessBoardTile                        //Is a tile on the chessboard
         return (TargetingMoves.isEmpty());
     }
 
+    public Queue getTargetingMoves()                 //Returns the targeting moves.
+    {
+        return TargetingMoves;
+    }
+
     public boolean hasPiece()                 //Returns true if the tile has a piece on it.
     {
         return (piece != null);
@@ -76,6 +81,11 @@ public class ChessBoardTile                        //Is a tile on the chessboard
             temp.add(TargetingMoves.getByIndex(i));
         }
         return temp;
+    }
+
+    public void setTargetingMoves(Queue moves)
+    {
+        this.TargetingMoves = moves;
     }
 
 }

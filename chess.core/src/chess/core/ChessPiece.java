@@ -16,8 +16,16 @@ public class ChessPiece
     private int ID;
 
 
-    public ChessPiece(ChessPieceId chessPieceId,PlayerId playerId, int ID)
+    public ChessPiece(ChessPieceId chessPieceId,PlayerId playerId)
     {
+        this.chessPieceId = chessPieceId;
+        this.playerId = playerId;
+        this.possibleMoves = new Queue();
+
+    }
+    public ChessPiece(ChessPieceId chessPieceId,PlayerId playerId,boolean isFirstMove)
+    {
+        this.isFirstMove = isFirstMove;
         this.chessPieceId = chessPieceId;
         this.playerId = playerId;
         this.possibleMoves = new Queue();
