@@ -71,6 +71,7 @@ public class Datanode extends Listelement{
             return this;
         }
     }
+
     /** search remove. not needed yet
     public Listelement remove(Dataelement search) {
         if(content.equals(search)){

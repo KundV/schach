@@ -94,4 +94,14 @@ public class ChessPiece
     {
         return !this.possibleMoves.isEmpty();
     }
+
+    public Queue clonePossibleMoves()
+    {
+        Queue temp = new Queue();
+        for(int i = possibleMoves.getNumberOfElements(); i > 0;i--)
+        {
+            temp.add(possibleMoves.getByIndex(i));
+        }
+        return temp;
+    }
 }

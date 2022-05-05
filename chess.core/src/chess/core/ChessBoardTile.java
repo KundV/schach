@@ -68,4 +68,14 @@ public class ChessBoardTile                        //Is a tile on the chessboard
         return (piece != null);
     }
 
+    public Queue cloneTargetingMoves()
+    {
+        Queue temp = new Queue();
+        for(int i = TargetingMoves.getNumberOfElements(); i > 0;i--)
+        {
+            temp.add(TargetingMoves.getByIndex(i));
+        }
+        return temp;
+    }
+
 }

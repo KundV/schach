@@ -16,12 +16,12 @@ public class ChessMechanics
 
     public ChessMechanics(ChessBoardTile[][] chessBoard, ArrayList<ChessPiece> deadPieces, int turn, PlayerId player, Queue madeMoves, ChessMove move)
     {
-        this.chessBoard = chessBoard;
-        getAllMoves();
+        cloneBoard(chessBoard);
+        executeMove(move);
     }
     public ChessMechanics()
     {
-        makeBoard();
+        makeBoard(chessBoard);
         StartPosition();
         chessBoard[2][2].setPiece(new ChessPiece(ChessPieceId.PAWN, PlayerId.WHITE,187)); //Test position  //TODO: Remove this
 
@@ -71,7 +71,7 @@ public class ChessMechanics
         }
     }
 
-    public void RulesPawn(int x, int y)
+    public boolean RulesPawn(int x, int y)
     {
             int a = chessBoard[x][y].getPiece().getPlayerId() == PlayerId.BLACK ? 1 : -1;
             if(x+a>=0 && x+a<=7)
@@ -169,8 +169,9 @@ public class ChessMechanics
                         }
                     }
             }
+        return true;
     }
-    public void RulesTower(int x,int y)
+    public boolean RulesTower(int x,int y)
     {
         boolean notBlocked = true;
         for(int i = x+1; i<8 && notBlocked; i++)
@@ -192,9 +193,10 @@ public class ChessMechanics
         {
             notBlocked= TestMovePiece(x,y,x,i);
         }
+        return true;
     }
 
-    public void RulesBishop(int x, int y)
+    public boolean RulesBishop(int x, int y)
     {
         boolean notBlocked = true;
         for(int i = x+1, j = y+1; i<8 && j<8 && notBlocked; i++, j++)
@@ -216,9 +218,10 @@ public class ChessMechanics
         {
             notBlocked= TestMovePiece(x,y,i,j);
         }
+        return true;
     }
 
-    public void RulesHorse(int x, int y)
+    public boolean RulesHorse(int x, int y)
     {
         TestMovePiece(x,y,x+1,y+2);
         TestMovePiece(x,y,x+1,y-2);
@@ -228,12 +231,14 @@ public class ChessMechanics
         TestMovePiece(x,y,x+2,y-1);
         TestMovePiece(x,y,x-2,y+1);
         TestMovePiece(x,y,x-2,y-1);
+        return true;
     }
 
-    public void RulesQueen(int x, int y)
+    public boolean RulesQueen(int x, int y)
     {
         RulesBishop(x,y);
         RulesTower(x,y);
+        return true;
     }
 
     public void RulesKing(int x, int y)
@@ -319,7 +324,6 @@ public class ChessMechanics
             {
                 chessBoard[i][j] = new ChessBoardTile();
             }
-
         }
     }
 
@@ -400,6 +404,75 @@ public class ChessMechanics
         return player;
     }
 
+    public PlayerId reverseMove(ChessMove move)         //TODO
+    {
+        Queue movesTemp[] = new Queue[2];
+        ChessMove moveTemp;
+        int i = 0;
+
+        if (move.getEvent().getID() == EventID.Capture || move.getEvent().getID() == EventID.Move)
+        {
+            chessBoard[move.get_xStart()][move.get_yStart()].getPiece().setFirstMove(false);
+            while (!chessBoard[move.get_xStart()][move.get_yStart()].getPiece().hasPossibleMove())          // if the piece has possible moves, remove them in targeting moves
+            {
+                if (chessBoard[move.get_xStart()][move.get_yStart()].getPiece().hasPossibleMove())
+                {
+                    moveTemp = (ChessMove) chessBoard[move.get_xStart()][move.get_yStart()].getPiece().removePossibleMove();
+                    chessBoard[moveTemp.get_xTarget()][moveTemp.get_yTarget()].removeTargetingMove(moveTemp);
+                }
+            }
+            if (move.getEvent().getID() == EventID.Capture)                                               // if the piece has been captured, remove the Piece on the targeted tile
+            {
+                deadPieces.add(chessBoard[move.get_xTarget()][move.get_yTarget()].removePiece());
+                chessBoard[move.get_xTarget()][move.get_yTarget()].setPiece(chessBoard[move.get_xStart()][move.get_yStart()].removePiece());
+            }
+            else                                                                                          // if the piece has been moved, remove from start tile and add to target tile
+            {
+                chessBoard[move.get_xTarget()][move.get_yTarget()].setPiece(chessBoard[move.get_xStart()][move.get_yStart()].removePiece());
+            }
+
+            CheckMoves(move.get_xTarget(), move.get_yTarget());
+
+            if(!chessBoard[move.get_xStart()][move.get_yStart()].hasTargetingMoves())                          // if the piece has possible moves, remove them in targeting moves, in order to update the possible moves
+            {
+                movesTemp[i] = chessBoard[move.get_xStart()][move.get_yStart()].removeAllTargetingMoves();
+                i++;
+            }
+            if(!chessBoard[move.get_xTarget()][move.get_yTarget()].hasTargetingMoves())                          // if the piece has possible moves, remove them in targeting moves, in order to update the possible moves
+            {
+                movesTemp[i] = chessBoard[move.get_xTarget()][move.get_yTarget()].removeAllTargetingMoves();
+            }
+
+            for(int j = i; i<=0; j--)
+            {
+                while (!movesTemp[j].isEmpty())
+                {
+                    moveTemp = (ChessMove) movesTemp[j].remove();
+                    chessBoard[moveTemp.get_xStart()][moveTemp.get_yStart()].getPiece().removeAllPossibleMoves();
+                    CheckMoves(moveTemp.get_xStart(), moveTemp.get_yStart());
+                }
+            }
+            return player.opposite();
+        }
+
+        return player;
+    }
+
+public ChessBoardTile[][] cloneBoard(ChessBoardTile[][] oldBord)
+    {
+        makeBoard();
+        for(int i = 0; i < 8; i++)
+        {
+            for (int j = 0; j < 8; i++)
+            {
+                chessBoard[]
+
+            }
+
+        }
+        oldBord
+
+    }
 
 }
 

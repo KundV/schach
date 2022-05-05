@@ -38,4 +38,9 @@ public class Queue {
     public boolean isEmpty(){                  // checks if the queue is empty
         return first.isEmpty();
     }
+
+    public int getNumberOfElements()
+    {
+        return first.getIndex();
+    }
 }
