@@ -3,7 +3,8 @@ package chess.core.VerktetteListe;
 import chess.core.ChessMove;
 import chess.core.PlayerId;
 
-public abstract class Dataelement {
+public abstract class Dataelement
+{
     public PlayerId Player;
 
 

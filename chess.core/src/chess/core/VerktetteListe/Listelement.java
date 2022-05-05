@@ -2,7 +2,8 @@ package chess.core.VerktetteListe;
 
 import chess.core.ChessMove;
 
-public abstract class Listelement {
+public abstract class Listelement
+{
     public abstract int countNodes();
     public abstract Listelement getNext();
     public abstract Datanode insert(Dataelement in);
