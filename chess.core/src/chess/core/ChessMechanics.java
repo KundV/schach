@@ -129,7 +129,7 @@ public class ChessMechanics
             }
 
 
-        if(x+a >= 0 & x+a <= 7 & y+1 >= 0 & y-1 >= 0 & y+1 <= 7 & y-1 <= 7)
+        if(x+a >= 0 & x+a <= 7 & y-1 >= 0 & y+1 <= 7 )
             {
 
                 if (chessBoard[x + a][y+1].hasPiece())
