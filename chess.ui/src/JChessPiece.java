@@ -46,19 +46,22 @@ public class JChessPiece extends JPanel
 
         add(svg);
 
-        this.addComponentListener(new ComponentAdapter()
-        {
-            @Override
-            public void componentResized(ComponentEvent e)
-            {
-                updateSvg();
-            }
+        this.addComponentListener
+        (
+                new ComponentAdapter()
+                {
+                    @Override
+                    public void componentResized(ComponentEvent e)
+                    {
+                        updateSvg();
+                    }
 
-            public void componentShown(ComponentEvent e)
-            {
-                updateSvg();
-            }
-        });
+                    public void componentShown(ComponentEvent e)
+                    {
+                        updateSvg();
+                    }
+                }
+        );
 
 
     }
@@ -81,7 +84,6 @@ public class JChessPiece extends JPanel
                         case PAWN -> "P";
                     };
         }
-
 
     }
 

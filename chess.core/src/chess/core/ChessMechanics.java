@@ -282,6 +282,7 @@ public class ChessMechanics
         }
         return false;
     }
+
     public void StartPosition()
     {
         for(int i = 0; i<8; i++)

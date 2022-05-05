@@ -1,6 +1,7 @@
 package chess.core.VerktetteListe;
 
-public class Stack {
+public class Stack
+{
     private Listelement first;
     private int index =0;
 
@@ -8,6 +9,7 @@ public class Stack {
     {
         first = new End();
     }
+
 
     public void add(Dataelement content)
     {

@@ -130,7 +130,6 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
         super.paintComponent(g);
         //drawBoard(g);
 
-
     }
 
 

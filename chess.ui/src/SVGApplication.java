@@ -27,13 +27,16 @@ public class SVGApplication
         f.getContentPane().add(app.createComponents());
 
         // Display the frame.
-        f.addWindowListener(new WindowAdapter()
-        {
-            public void windowClosing(WindowEvent e)
+        f.addWindowListener
+        (
+            new WindowAdapter()
             {
-                System.exit(0);
+                public void windowClosing(WindowEvent e)
+                {
+                    System.exit(0);
+                }
             }
-        });
+        );
         f.setSize(400, 400);
         f.setVisible(true);
     }
@@ -50,7 +53,8 @@ public class SVGApplication
     // The SVG canvas.
     protected JSVGCanvas svgCanvas = new JSVGCanvas();
 
-    public SVGApplication(JFrame f) {
+    public SVGApplication(JFrame f)
+    {
         frame = f;
     }
 
@@ -67,64 +71,76 @@ public class SVGApplication
         panel.add("Center", svgCanvas);
 
         // Set the button action.
-        button.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent ae)
+        button.addActionListener
+        (
+            new ActionListener()
             {
-                JFileChooser fc = new JFileChooser(".");
-                int choice = fc.showOpenDialog(panel);
-                if (choice == JFileChooser.APPROVE_OPTION)
+                public void actionPerformed(ActionEvent ae)
                 {
-                    File f = fc.getSelectedFile();
-                    try
+                    JFileChooser fc = new JFileChooser(".");
+                    int choice = fc.showOpenDialog(panel);
+                    if (choice == JFileChooser.APPROVE_OPTION)
                     {
-                        svgCanvas.setURI(f.toURL().toString());
-                    }
-                    catch (IOException ex)
-                    {
-                        ex.printStackTrace();
+                        File f = fc.getSelectedFile();
+                        try
+                        {
+                            svgCanvas.setURI(f.toURL().toString());
+                        }
+                        catch (IOException ex)
+                        {
+                            ex.printStackTrace();
+                        }
                     }
                 }
             }
-        });
+        );
 
         // Set the JSVGCanvas listeners.
-        svgCanvas.addSVGDocumentLoaderListener(new SVGDocumentLoaderAdapter()
-        {
-            public void documentLoadingStarted(SVGDocumentLoaderEvent e)
+        svgCanvas.addSVGDocumentLoaderListener
+        (
+            new SVGDocumentLoaderAdapter()
             {
-                label.setText("Document Loading...");
+                public void documentLoadingStarted(SVGDocumentLoaderEvent e)
+                {
+                    label.setText("Document Loading...");
+                }
+                public void documentLoadingCompleted(SVGDocumentLoaderEvent e)
+                {
+                    label.setText("Document Loaded.");
+                }
             }
-            public void documentLoadingCompleted(SVGDocumentLoaderEvent e)
-            {
-                label.setText("Document Loaded.");
-            }
-        });
+        );
 
-        svgCanvas.addGVTTreeBuilderListener(new GVTTreeBuilderAdapter()
-        {
-            public void gvtBuildStarted(GVTTreeBuilderEvent e)
+        svgCanvas.addGVTTreeBuilderListener
+        (
+            new GVTTreeBuilderAdapter()
             {
-                label.setText("Build Started...");
+                public void gvtBuildStarted(GVTTreeBuilderEvent e)
+                {
+                    label.setText("Build Started...");
+                }
+                public void gvtBuildCompleted(GVTTreeBuilderEvent e)
+                {
+                    label.setText("Build Done.");
+                    frame.pack();
+                }
             }
-            public void gvtBuildCompleted(GVTTreeBuilderEvent e)
-            {
-                label.setText("Build Done.");
-                frame.pack();
-            }
-        });
+        );
 
-        svgCanvas.addGVTTreeRendererListener(new GVTTreeRendererAdapter()
-        {
-            public void gvtRenderingPrepare(GVTTreeRendererEvent e)
+        svgCanvas.addGVTTreeRendererListener
+        (
+            new GVTTreeRendererAdapter()
             {
-                label.setText("Rendering Started...");
+                public void gvtRenderingPrepare(GVTTreeRendererEvent e)
+                {
+                    label.setText("Rendering Started...");
+                }
+                public void gvtRenderingCompleted(GVTTreeRendererEvent e)
+                {
+                    label.setText("");
+                }
             }
-            public void gvtRenderingCompleted(GVTTreeRendererEvent e)
-            {
-                label.setText("");
-            }
-        });
+        );
 
         return panel;
     }
