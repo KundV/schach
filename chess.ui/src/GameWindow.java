@@ -11,6 +11,7 @@ public class GameWindow extends JFrame
     private GridBagLayout _layout;
     private JPanel _sidebar;
     private ChessBoard _board;
+
     public GameWindow()
     {
         setTitle("CHESS");
@@ -18,9 +19,6 @@ public class GameWindow extends JFrame
         setMinimumSize(new Dimension(400, 300));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-
-
-
 
 
         _board = new ChessBoard();
@@ -49,7 +47,9 @@ public class GameWindow extends JFrame
 
         this.getContentPane().addComponentListener(new ComponentAdapter()
         {
-            @Override public void componentResized(ComponentEvent e) {
+            @Override
+            public void componentResized(ComponentEvent e)
+            {
 
                 var maxW = _content.getSize().width - _sidebar.getMinimumSize().width;
                 var maxH = _content.getSize().height;

@@ -10,9 +10,9 @@ public enum EventID
                 ChessPieceId PlayerPromotedTo;
             },
     Castling
-                {
-                    ChessMove CastlingMove;
-                },
+            {
+                ChessMove CastlingMove;
+            },
     enPassant
             {
                 int xCapture;
@@ -23,3 +23,4 @@ public enum EventID
     Checkmate,
     Stalemate
 }
+

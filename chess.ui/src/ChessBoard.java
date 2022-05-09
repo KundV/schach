@@ -12,11 +12,56 @@ import java.util.Arrays;
 public class ChessBoard extends JLayeredPane implements MouseMotionListener, MouseListener
 {
 
-    GridLayout layout;
-
     private final JChessPiece[][] jChessPieces = new JChessPiece[8][8];
     private final JPanel[][] boardFields = new JPanel[8][8];
     private final JPanel _glassPane = new JPanel();
+    public int SelectedX;
+    public int SelectedY;
+    public boolean IsSelected;
+    GridLayout layout;
+    private Vec _selectedPiece;
+    public ChessBoard()
+    {
+
+
+        this.setLayout(null);
+        jChessPieces[0][0] = new JChessPiece(ChessPieceId.BISHOP, false);
+        jChessPieces[0][2] = new JChessPiece(ChessPieceId.BISHOP, false);
+        jChessPieces[0][1] = new JChessPiece(ChessPieceId.BISHOP, false);
+
+        _glassPane.addMouseListener(this);
+        _glassPane.addMouseMotionListener(this);
+        _glassPane.setOpaque(false);
+        this.add(_glassPane, new Integer(0));
+
+        // jChessPieces[0][0].addMouseListener(mouseListener);
+        addPieces();
+        addFields();
+        this.addComponentListener(new ComponentAdapter()
+        {
+            @Override
+            public void componentResized(ComponentEvent e)
+            {
+                onResize();
+            }
+
+        });
+
+
+    }
+
+    private static boolean isWhite(int row, int col)
+    {
+        //return row + (column % 2) % 2 == 0;
+        return (row + col) % 2 == 0;
+    }
+
+    private static JPanel createBox(boolean isBlack, int row, int col)
+    {
+        var r = new JPanel();
+        r.setBackground(isBlack ? Color.black : Color.white);
+        return r;
+    }
 
     public void onResize()
     {
@@ -59,11 +104,6 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
         }
     }
 
-    public int SelectedX;
-    public int SelectedY;
-    public boolean IsSelected;
-
-
     private void addFields()
     {
         for (int r = 0; r < 8; r++)
@@ -79,51 +119,6 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
         }
     }
 
-
-    public ChessBoard()
-    {
-
-
-        this.setLayout(null);
-        jChessPieces[0][0] = new JChessPiece(ChessPieceId.BISHOP, false);
-        jChessPieces[0][2] = new JChessPiece(ChessPieceId.BISHOP, false);
-        jChessPieces[0][1] = new JChessPiece(ChessPieceId.BISHOP, false);
-
-        _glassPane.addMouseListener(this);
-        _glassPane.addMouseMotionListener(this);
-        _glassPane.setOpaque(false);
-        this.add(_glassPane, new Integer(0));
-
-        // jChessPieces[0][0].addMouseListener(mouseListener);
-        addPieces();
-        addFields();
-        this.addComponentListener(new ComponentAdapter()
-        {
-            @Override
-            public void componentResized(ComponentEvent e)
-            {
-                onResize();
-            }
-
-        });
-
-
-    }
-
-
-    private static boolean isWhite(int row, int col)
-    {
-        //return row + (column % 2) % 2 == 0;
-        return (row + col) % 2 == 0;
-    }
-
-    private static JPanel createBox(boolean isBlack, int row, int col)
-    {
-        var r = new JPanel();
-        r.setBackground(isBlack ? Color.black : Color.white);
-        return r;
-    }
-
     @Override
     public void paintComponent(Graphics g)
     {
@@ -131,7 +126,6 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
         //drawBoard(g);
 
     }
-
 
     private BufferedImage createBufferedBox(int width, int height, Color color)
     {
@@ -155,7 +149,6 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
             }
         }
     }
-
 
     @Override
     public void mouseClicked(MouseEvent e)
@@ -196,13 +189,11 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
 
     }
 
-
-    private Vec _selectedPiece;
-
     @Override
     public void mouseDragged(MouseEvent e)
     {
-        if (_selectedPiece != null) {
+        if (_selectedPiece != null)
+        {
             var piece = jChessPieces[_selectedPiece.x][_selectedPiece.y];
             piece.setLocation(e.getPoint());
 

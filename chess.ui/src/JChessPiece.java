@@ -15,14 +15,6 @@ public class JChessPiece extends JPanel
     private final JSVGCanvas svg;
 
 
-    private void updateSvg() {
-        svg.setSize(new Dimension(getWidth(), getHeight()));
-        svg.setLocation(0,0);
-        svg.revalidate();
-
-        repaint();
-    }
-
     public JChessPiece(ChessPieceId id, Boolean isBlack)
     {
         this.setOpaque(false);
@@ -40,33 +32,54 @@ public class JChessPiece extends JPanel
         svg.setURI(uri.toString());
 
 
-
         svg.setOpaque(false);
         svg.setBackground(new Color(0, 0, 0, 0));
 
         add(svg);
 
         this.addComponentListener
-        (
-                new ComponentAdapter()
-                {
-                    @Override
-                    public void componentResized(ComponentEvent e)
-                    {
-                        updateSvg();
-                    }
+                (
+                        new ComponentAdapter()
+                        {
+                            @Override
+                            public void componentResized(ComponentEvent e)
+                            {
+                                updateSvg();
+                            }
 
-                    public void componentShown(ComponentEvent e)
-                    {
-                        updateSvg();
-                    }
-                }
-        );
+                            public void componentShown(ComponentEvent e)
+                            {
+                                updateSvg();
+                            }
+                        }
+                );
 
 
     }
 
+    static URI loadUri(ChessPieceId id, Boolean isBlack) throws IOException
+    {
+        var c = (isBlack ? "b" : "w") + ResourceHelper.IdToKaHu(id) + ".svg";
+        var res = ClassLoader.getSystemClassLoader().getResource("./ka-hu/chess_kaneo/" + c);
+        if (res == null)
+            throw new IOException("Could not find a SVG-ressource for " + id.toString() + " in " + (isBlack ? "black" : "white") + " color");
+        try
+        {
+            return res.toURI();
+        } catch (URISyntaxException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
 
+    private void updateSvg()
+    {
+        svg.setSize(new Dimension(getWidth(), getHeight()));
+        svg.setLocation(0, 0);
+        svg.revalidate();
+
+        repaint();
+    }
 
     public static class ResourceHelper
     {
@@ -85,21 +98,6 @@ public class JChessPiece extends JPanel
                     };
         }
 
-    }
-
-    static URI loadUri(ChessPieceId id, Boolean isBlack) throws IOException
-    {
-        var c = (isBlack ? "b" : "w") + ResourceHelper.IdToKaHu(id) + ".svg";
-        var res = ClassLoader.getSystemClassLoader().getResource("./ka-hu/chess_kaneo/" + c);
-        if (res == null)
-            throw new IOException("Could not find a SVG-ressource for " + id.toString() + " in " + (isBlack ? "black" : "white") + " color");
-        try
-        {
-            return res.toURI();
-        } catch (URISyntaxException e)
-        {
-            throw new RuntimeException(e);
-        }
     }
 
 }
