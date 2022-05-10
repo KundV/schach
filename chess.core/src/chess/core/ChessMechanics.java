@@ -28,12 +28,7 @@ public class ChessMechanics
         madeMoves = new Queue();
         makeBoard();
         StartPosition();
-        chessBoard[2][2].setPiece(new ChessPiece(ChessPieceId.KING, PlayerId.WHITE)); //Test position  //TODO: Remove this
-
         getAllMoves();
-
-        executeMove((ChessMove) chessBoard[2][2].getPiece().getPossibleMoves().getByIndex(1));
-        executeMove((ChessMove) chessBoard[1][7].getPiece().getPossibleMoves().getByIndex(2));
 
     }
 
@@ -352,6 +347,8 @@ public class ChessMechanics
         return false;
     }
 
+
+
     public void StartPosition()
     {
         for(int i = 0; i<8; i++)
@@ -418,11 +415,12 @@ public class ChessMechanics
 
     public void executeMove(ChessMove move)
     {
+        ChessMove moveTempKing ;
         Queue movesTemp[] = new Queue[2];
         ChessMove moveTemp;
         int i = 0;
 
-        if (move != null && move.getEvent().getID() == EventID.Capture || move.getEvent().getID() == EventID.Move)
+        if (move != null && (move.getEvent().getID() == EventID.Capture || move.getEvent().getID() == EventID.Move))
         {
             chessBoard[move.get_xStart()][move.get_yStart()].getPiece().addMoveCount();
             while (chessBoard[move.get_xStart()][move.get_yStart()].getPiece().hasPossibleMove())
@@ -462,9 +460,17 @@ public class ChessMechanics
             {
                 while (!movesTemp[j].isEmpty())
                 {
+
                     moveTemp = (ChessMove) movesTemp[j].remove();
+                    if(chessBoard[moveTemp.get_xStart()][moveTemp.get_yStart()].getPiece().getChessPieceId() == ChessPieceId.KING && moveTemp.getPlayerId() == player)
+                    {
+                        moveTempKing = moveTemp;
+                    }
+                    else
+                    {
                     chessBoard[moveTemp.get_xStart()][moveTemp.get_yStart()].getPiece().removeAllPossibleMoves();
                     CheckMoves(moveTemp.get_xStart(), moveTemp.get_yStart());
+                    }
                 }
             }
             player = player.opposite();
@@ -554,14 +560,15 @@ public class ChessMechanics
     {
         for(int i = 0; i < 8; i++)
         {
-            for (int j = 0; j < 8 && (chessBoard[i][j].hasPiece()) && (chessBoard[i][j].getPiece().getChessPieceId() == ChessPieceId.KING) && (chessBoard[i][j].getPiece().getPlayerId() == player) &&  (chessBoard[i][j].hasTargetingMoves()) ; i++)
+            for (int j = 0; j < 8 && (chessBoard[i][j].hasPiece()) && (chessBoard[i][j].getPiece().getChessPieceId() == ChessPieceId.KING) && (chessBoard[i][j].getPiece().getPlayerId() == player) &&  (chessBoard[i][j].hasTargetingMoves()) ; j++)
             {
                 for(int k = chessBoard[i][j].getTargetingMoves().getNumberOfElements(); i > 0;i--)
                 {
-                    if (chessBoard[i][j].getTargetingMoves().getByIndex(k).getPlayerId() == player)
-                    {
-                        return false;
-                    }
+                        if (chessBoard[i][j].getTargetingMoves().getByIndex(k).getEvent().getID() != EventID.Blocked)
+                        {
+                            return false;
+                        }
+
                 }
             }
         }
@@ -572,7 +579,7 @@ public class ChessMechanics
     {
         for(int i = 0; i < 8; i++)
         {
-            for (int j = 0; j < 8 && (chessBoard[i][j].hasPiece()) && (chessBoard[i][j].getPiece().getChessPieceId() == ChessPieceId.KING) && (chessBoard[i][j].getPiece().getPlayerId() == player) &&  (chessBoard[i][j].getPiece().hasPossibleMove()) ; i++)
+            for (int j = 0; j < 8 && (chessBoard[i][j].hasPiece()) && (chessBoard[i][j].getPiece().getChessPieceId() == ChessPieceId.KING) && (chessBoard[i][j].getPiece().getPlayerId() == player) &&  (chessBoard[i][j].getPiece().hasPossibleMove()) ; j++)
             {
                 for(int k = chessBoard[i][j].getPiece().getPossibleMoves().getNumberOfElements(); i > 0;i--)
                 {
