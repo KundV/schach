@@ -19,5 +19,10 @@ public enum PlayerId
     {
         return this == WHITE ? BLACK : WHITE;
     }
+
+    public boolean isBlack()
+    {
+        return this == BLACK;
+    }
 }
 

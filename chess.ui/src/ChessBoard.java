@@ -1,9 +1,8 @@
+import chess.core.ChessMechanics;
 import chess.core.ChessPieceId;
 import chess.core.Vec;
 
 import javax.swing.*;
-import javax.swing.event.MouseInputAdapter;
-import javax.swing.event.MouseInputListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
@@ -17,6 +16,7 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
     private final JChessPiece[][] jChessPieces = new JChessPiece[8][8];
     private final JPanel[][] boardFields = new JPanel[8][8];
     private final JPanel _glassPane = new JPanel();
+    private ChessMechanics _mechanics;
 
     public void onResize()
     {
@@ -80,14 +80,38 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
     }
 
 
-    public ChessBoard()
+    private void recreateBoard()
     {
+        for (int y = 0; y < jChessPieces.length; y++)
+        {
+            for (int x = 0; x < jChessPieces.length; x++)
+            {
+                var old = jChessPieces[y][x];
+                if (old != null)
+                    this.remove(old);
+                var tile = _mechanics.getChessBoard()[x][y];
+                if (tile != null && tile.getPiece() != null)
+                {
+                    var p = new JChessPiece(tile.getPiece().getChessPieceId(), tile.getPlayerId().isBlack());
+                    p.setSelectable(true);
+                    jChessPieces[x][y] = p;
+                }
+            }
+        }
+    }
+
+
+    public ChessBoard(ChessMechanics _mechanics)
+    {
+        this._mechanics = _mechanics;
 
 
         this.setLayout(null);
-        jChessPieces[0][0] = new JChessPiece(ChessPieceId.BISHOP, false);
+
+        recreateBoard();
+        /*        jChessPieces[0][0] = new JChessPiece(ChessPieceId.BISHOP, false);
         jChessPieces[0][2] = new JChessPiece(ChessPieceId.BISHOP, false);
-        jChessPieces[0][1] = new JChessPiece(ChessPieceId.BISHOP, false);
+        jChessPieces[0][1] = new JChessPiece(ChessPieceId.BISHOP, false);*/
 
         _glassPane.addMouseListener(this);
         _glassPane.addMouseMotionListener(this);
@@ -175,6 +199,8 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
                 && jChessPieces[fieldVec.x][fieldVec.y] != null) // if field is empty
         {
             this._selectedPiece = fieldVec;
+            this.add(jChessPieces[fieldVec.x][fieldVec.y], new Integer(1));
+
         }
     }
 
@@ -182,6 +208,9 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
     public void mouseReleased(MouseEvent e)
     {
         onResize();
+        if (_selectedPiece != null)
+            this.add(jChessPieces[_selectedPiece.x][_selectedPiece.y], new Integer(1));
+
         this._selectedPiece = null;
     }
 
@@ -203,7 +232,8 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
     @Override
     public void mouseDragged(MouseEvent e)
     {
-        if (_selectedPiece != null) {
+        if (_selectedPiece != null)
+        {
             var piece = jChessPieces[_selectedPiece.x][_selectedPiece.y];
             piece.setLocation(e.getPoint());
 

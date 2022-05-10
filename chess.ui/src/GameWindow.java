@@ -1,3 +1,5 @@
+import chess.core.ChessMechanics;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
@@ -11,8 +13,11 @@ public class GameWindow extends JFrame
     private GridBagLayout _layout;
     private JPanel _sidebar;
     private ChessBoard _board;
+    private ChessMechanics _mechanics;
+
     public GameWindow()
     {
+        _mechanics = new ChessMechanics();
         setTitle("CHESS");
         setPreferredSize(new Dimension(800, 600));
         setMinimumSize(new Dimension(400, 300));
@@ -21,9 +26,7 @@ public class GameWindow extends JFrame
 
 
 
-
-
-        _board = new ChessBoard();
+        _board = new ChessBoard(_mechanics);
         _content = new JPanel();
         // Set _layout to BoxLayout
         _layout = new GridBagLayout();

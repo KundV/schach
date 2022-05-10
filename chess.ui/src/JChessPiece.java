@@ -2,6 +2,7 @@ import chess.core.ChessPieceId;
 import org.apache.batik.swing.JSVGCanvas;
 
 import javax.swing.*;
+import javax.swing.border.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -15,12 +16,54 @@ public class JChessPiece extends JPanel
     private final JSVGCanvas svg;
 
 
-    private void updateSvg() {
+
+    private void updateSvg()
+    {
         svg.setSize(new Dimension(getWidth(), getHeight()));
-        svg.setLocation(0,0);
+        svg.setLocation(0, 0);
         svg.revalidate();
 
         repaint();
+    }
+
+    @Override
+    protected void paintBorder(Graphics g)
+    {
+        int horizontalWidth = (int) (getHeight() * 0.05); // Breite des horizontalen Randes
+        int verticalWidth = (int) (getWidth() * 0.05); // Breite des vertikalen Randes
+
+        int horizontalLength = ((int) (getWidth() * 0.2)); // Länge des horizontalen Randes
+        int verticalLength = ((int) (getHeight() * 0.2)); // Länge des vertikalen Randes
+
+        int xPadding = (int) (getWidth() * 0.05);
+        int yPadding = (int) (getHeight() * 0.05);
+
+        g.setColor(Color.RED);
+
+        g.fillRect(xPadding, yPadding,
+                horizontalLength, horizontalWidth); // Horizontaler Rand oben links
+        g.fillRect(getWidth() - xPadding - horizontalLength, yPadding,
+                horizontalLength, horizontalWidth); // Horizontaler Rand oben rechts
+        g.fillRect(xPadding, getWidth() - yPadding - horizontalWidth,
+                horizontalLength, horizontalWidth); // Horizontaler Rand unten links
+        g.fillRect(getWidth() - xPadding - horizontalLength, getHeight() - yPadding - horizontalWidth,
+                horizontalLength, horizontalWidth); // Horizontaler Rand unten rechts
+
+        g.fillRect(xPadding, yPadding,
+                verticalWidth, verticalLength); // Vertikaler Rand oben links
+        g.fillRect(getWidth() - xPadding - verticalWidth, yPadding,
+                verticalWidth, verticalLength); // Horizontaler Rand oben rechts
+        g.fillRect(xPadding, getWidth() - yPadding - horizontalLength,
+                verticalWidth, verticalLength); // Horizontaler Rand unten links
+        g.fillRect(getWidth() - xPadding - verticalWidth, getHeight() - yPadding - verticalLength,
+                verticalWidth, verticalLength); // Horizontaler Rand unten rechts
+
+    }
+
+    public void setSelectable(boolean selectable)
+    {
+        repaint();
+
     }
 
     public JChessPiece(ChessPieceId id, Boolean isBlack)
@@ -38,7 +81,6 @@ public class JChessPiece extends JPanel
         setLayout(null);
         svg = new JSVGCanvas();
         svg.setURI(uri.toString());
-
 
 
         svg.setOpaque(false);
@@ -62,7 +104,6 @@ public class JChessPiece extends JPanel
 
 
     }
-
 
 
     public static class ResourceHelper
