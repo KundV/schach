@@ -1,6 +1,4 @@
-import chess.core.ChessMechanics;
-import chess.core.ChessPieceId;
-import chess.core.Vec;
+import chess.core.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -202,16 +200,27 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
             this.add(jChessPieces[fieldVec.x][fieldVec.y], new Integer(1));
 
         }
+
+
     }
 
     @Override
     public void mouseReleased(MouseEvent e)
     {
-        onResize();
-        if (_selectedPiece != null)
+        if (_selectedPiece != null) {
             this.add(jChessPieces[_selectedPiece.x][_selectedPiece.y], new Integer(1));
-
+            var target = vecFromPoint(e.getPoint());
+            var moves = _mechanics.getChessBoard()[_selectedPiece.x][_selectedPiece.y].getPiece().getPossibleMoves();
+            for (int i = 1; i <= moves.getNumberOfElements(); i++)
+            {
+                var move = ((ChessMove) moves.getByIndex(i));
+                if (move.get_xTarget() == target.x && move.get_yTarget() == target.y)
+                    _mechanics.executeMove(move);
+            }
+        }
         this._selectedPiece = null;
+        recreateBoard();
+
     }
 
     @Override
