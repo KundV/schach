@@ -23,6 +23,11 @@ public class End extends Listelement{
         return new Datanode(this, in, index);
     }
 
+    public int getIndex()
+    {
+        return index;
+    }
+
     public Dataelement getContent() {
         return null;
     }   // End of list

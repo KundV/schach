@@ -1,9 +1,11 @@
 package chess.core.VerktetteListe;
 
 import chess.core.ChessMove;
+import chess.core.Event;
 import chess.core.PlayerId;
 
-public abstract class Dataelement {
+public abstract class Dataelement
+{
     public PlayerId Player;
 
 
@@ -15,6 +17,8 @@ public abstract class Dataelement {
     public abstract boolean equals(ChessMove cm);
 
     public abstract PlayerId getPlayerId();
+
+    public abstract Event getEvent();
 
 
 }
