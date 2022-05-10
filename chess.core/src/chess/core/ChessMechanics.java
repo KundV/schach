@@ -420,7 +420,7 @@ public class ChessMechanics
         ChessMove moveTemp;
         int i = 0;
 
-        if (move != null && move.getEvent().getID() == EventID.Capture || move.getEvent().getID() == EventID.Move)
+        if (move != null && (move.getEvent().getID() == EventID.Capture || move.getEvent().getID() == EventID.Move))
         {
             chessBoard[move.get_xStart()][move.get_yStart()].getPiece().addMoveCount();
             while (chessBoard[move.get_xStart()][move.get_yStart()].getPiece().hasPossibleMove())
