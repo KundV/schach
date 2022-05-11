@@ -416,7 +416,7 @@ public class ChessMechanics
     public void executeMove(ChessMove move)
     {
         ChessMove moveTempKing ;
-        Queue movesTemp[] = new Queue[2];
+        Queue movesTemp = new Queue();
         ChessMove moveTemp;
         int i = 0;
 
@@ -448,31 +448,44 @@ public class ChessMechanics
 
             if(!chessBoard[move.get_xStart()][move.get_yStart()].hasTargetingMoves())                          // if the piece has possible moves, remove them in targeting moves, in order to update the possible moves
             {
-                movesTemp[i] = chessBoard[move.get_xStart()][move.get_yStart()].removeAllTargetingMoves();
-                i++;
-            }
-            if(!chessBoard[move.get_xTarget()][move.get_yTarget()].hasTargetingMoves())                          // if the piece has possible moves, remove them in targeting moves, in order to update the possible moves
-            {
-                movesTemp[i] = chessBoard[move.get_xTarget()][move.get_yTarget()].removeAllTargetingMoves();
-            }
-
-            for(int j = i; j>0; j--)
-            {
-                while (!movesTemp[j].isEmpty())
+                movesTemp = chessBoard[move.get_xStart()][move.get_yStart()].removeAllTargetingMoves();
+                while (!movesTemp.isEmpty())
                 {
 
-                    moveTemp = (ChessMove) movesTemp[j].remove();
+                    moveTemp = (ChessMove) movesTemp.remove();
                     if(chessBoard[moveTemp.get_xStart()][moveTemp.get_yStart()].getPiece().getChessPieceId() == ChessPieceId.KING && moveTemp.getPlayerId() == player)
                     {
                         moveTempKing = moveTemp;
                     }
                     else
                     {
-                    chessBoard[moveTemp.get_xStart()][moveTemp.get_yStart()].getPiece().removeAllPossibleMoves();
-                    CheckMoves(moveTemp.get_xStart(), moveTemp.get_yStart());
+                        chessBoard[moveTemp.get_xStart()][moveTemp.get_yStart()].getPiece().removeAllPossibleMoves();
+                        CheckMoves(moveTemp.get_xStart(), moveTemp.get_yStart());
                     }
                 }
             }
+            if(!chessBoard[move.get_xTarget()][move.get_yTarget()].hasTargetingMoves())                          // if the piece has possible moves, remove them in targeting moves, in order to update the possible moves
+            {
+                movesTemp = chessBoard[move.get_xTarget()][move.get_yTarget()].removeAllTargetingMoves();
+                while (!movesTemp.isEmpty())
+                {
+
+                    moveTemp = (ChessMove) movesTemp.remove();
+                    if(chessBoard[moveTemp.get_xStart()][moveTemp.get_yStart()].getPiece().getChessPieceId() == ChessPieceId.KING && moveTemp.getPlayerId() == player)
+                    {
+                        moveTempKing = moveTemp;
+                    }
+                    else
+                    {
+                        chessBoard[moveTemp.get_xStart()][moveTemp.get_yStart()].getPiece().removeAllPossibleMoves();
+                        CheckMoves(moveTemp.get_xStart(), moveTemp.get_yStart());
+                    }
+                }
+            }
+
+
+
+
             player = player.opposite();
         }
 
