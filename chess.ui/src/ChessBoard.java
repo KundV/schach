@@ -5,9 +5,12 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
+import java.util.function.Supplier;
 
 public class ChessBoard extends JLayeredPane implements MouseMotionListener, MouseListener
 {
+
+
 
     GridLayout layout;
 
@@ -19,21 +22,21 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
     public void onResize()
     {
         _glassPane.setSize(this.getWidth(), this.getHeight());
-        for (int r = 0; r < 8; r++)
+        for (int x = 0; x < 8; x++)
         {
-            for (int c = 0; c < 8; c++)
+            for (int y = 0; y < 8; y++)
             {
-                var p = jChessPieces[r][c];
+                var p = jChessPieces[y][x];
                 if (p != null)
                 {
                     p.setSize(getWidth() / 8, getHeight() / 8);
-                    p.setLocation(r * getWidth() / 8, c * getHeight() / 8);
+                    p.setLocation(x * getWidth() / 8, y * getHeight() / 8);
                     p.revalidate();
                 }
 
-                var f = boardFields[r][c];
+                var f = boardFields[y][x];
                 f.setSize(getWidth() / 8, getHeight() / 8);
-                f.setLocation(r * getWidth() / 8, c * getHeight() / 8);
+                f.setLocation(x * getWidth() / 8, y * getHeight() / 8);
                 f.revalidate();
             }
         }
@@ -80,19 +83,19 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
 
     private void recreateBoard()
     {
-        for (int y = 0; y < jChessPieces.length; y++)
+        for (int y = 0; y < 8; y++)
         {
-            for (int x = 0; x < jChessPieces.length; x++)
+            for (int x = 0; x < 8; x++)
             {
                 var old = jChessPieces[y][x];
                 if (old != null)
                     this.remove(old);
-                var tile = _mechanics.getChessBoard()[x][y];
+                var tile = _mechanics.getChessBoard()[y][x];
                 if (tile != null && tile.getPiece() != null)
                 {
                     var p = new JChessPiece(tile.getPiece().getChessPieceId(), tile.getPlayerId().isBlack());
                     p.setSelectable(true);
-                    jChessPieces[x][y] = p;
+                    jChessPieces[y][x] = p;
                 }
             }
         }
@@ -131,6 +134,8 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
 
 
     }
+
+
 
 
     private static boolean isWhite(int row, int col)
@@ -194,11 +199,10 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
         var fieldVec = vecFromPoint(e.getPoint());
         if (fieldVec.x >= 0 && fieldVec.y >= 0 // if field is negative
                 && fieldVec.x < 8 && fieldVec.y < 8 // if field is out of bounds
-                && jChessPieces[fieldVec.x][fieldVec.y] != null) // if field is empty
+                && jChessPieces[fieldVec.y][fieldVec.x] != null) // if field is empty
         {
             this._selectedPiece = fieldVec;
-            this.add(jChessPieces[fieldVec.x][fieldVec.y], new Integer(1));
-
+            this.add(jChessPieces[fieldVec.y][fieldVec.x], new Integer(1));
         }
 
 
@@ -207,14 +211,15 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
     @Override
     public void mouseReleased(MouseEvent e)
     {
-        if (_selectedPiece != null) {
-            this.add(jChessPieces[_selectedPiece.x][_selectedPiece.y], new Integer(1));
+        if (_selectedPiece != null)
+        {
+            this.add(jChessPieces[_selectedPiece.y][_selectedPiece.x], new Integer(1));
             var target = vecFromPoint(e.getPoint());
-            var moves = _mechanics.getChessBoard()[_selectedPiece.x][_selectedPiece.y].getPiece().getPossibleMoves();
+            var moves = _mechanics.getChessBoard()[_selectedPiece.y][_selectedPiece.x].getPiece().getPossibleMoves();
             for (int i = 1; i <= moves.getNumberOfElements(); i++)
             {
                 var move = ((ChessMove) moves.getByIndex(i));
-                if (move.get_xTarget() == target.x && move.get_yTarget() == target.y)
+                if (move.get_xTarget() == target.y && move.get_yTarget() == target.x)
                     _mechanics.executeMove(move);
             }
         }
@@ -243,7 +248,7 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
     {
         if (_selectedPiece != null)
         {
-            var piece = jChessPieces[_selectedPiece.x][_selectedPiece.y];
+            var piece = jChessPieces[_selectedPiece.y][_selectedPiece.x];
             piece.setLocation(e.getPoint());
 
         }
