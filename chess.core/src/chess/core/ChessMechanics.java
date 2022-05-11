@@ -483,7 +483,7 @@ public class ChessMechanics
         if(!madeMoves.isEmpty())
         {
         ChessMove move = (ChessMove) madeMoves.remove();
-        Queue movesTemp[] = new Queue[2];
+        Queue movesTemp = new Queue();
         ChessMove moveTemp;
         int i = 0;
 
@@ -514,23 +514,25 @@ public class ChessMechanics
 
             if (!chessBoard[move.get_xStart()][move.get_yStart()].hasTargetingMoves())                          // if the piece has possible moves, remove them in targeting moves, in order to update the possible moves
             {
-                movesTemp[i] = chessBoard[move.get_xStart()][move.get_yStart()].removeAllTargetingMoves();
-                i++;
-            }
-            if (!chessBoard[move.get_xTarget()][move.get_yTarget()].hasTargetingMoves())                          // if the piece has possible moves, remove them in targeting moves, in order to update the possible moves
-            {
-                movesTemp[i] = chessBoard[move.get_xTarget()][move.get_yTarget()].removeAllTargetingMoves();
-            }
-
-            for (int j = i; i <= 0; j--)
-            {
-                while (!movesTemp[j].isEmpty())
+                movesTemp = chessBoard[move.get_xStart()][move.get_yStart()].removeAllTargetingMoves();
+                while (!movesTemp.isEmpty())
                 {
-                    moveTemp = (ChessMove) movesTemp[j].remove();
+                    moveTemp = (ChessMove) movesTemp.remove();
                     chessBoard[moveTemp.get_xStart()][moveTemp.get_yStart()].getPiece().removeAllPossibleMoves();
                     CheckMoves(moveTemp.get_xStart(), moveTemp.get_yStart());
                 }
             }
+            if (!chessBoard[move.get_xTarget()][move.get_yTarget()].hasTargetingMoves())                          // if the piece has possible moves, remove them in targeting moves, in order to update the possible moves
+            {
+                movesTemp = chessBoard[move.get_xTarget()][move.get_yTarget()].removeAllTargetingMoves();
+                while (!movesTemp.isEmpty())
+                {
+                    moveTemp = (ChessMove) movesTemp.remove();
+                    chessBoard[moveTemp.get_xStart()][moveTemp.get_yStart()].getPiece().removeAllPossibleMoves();
+                    CheckMoves(moveTemp.get_xStart(), moveTemp.get_yStart());
+                }
+            }
+
             return player.opposite();
         }
         }
