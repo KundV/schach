@@ -631,7 +631,7 @@ public class ChessMechanics
                 {
                     if (chessBoard[i][j].getTargetingMoves().getByIndex(k).getEvent().getID() != EventID.Blocked)
                     {
-                        return false;
+                        return true;
                     }
                 }
             }
