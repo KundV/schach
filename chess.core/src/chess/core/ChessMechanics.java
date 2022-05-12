@@ -69,9 +69,10 @@ public class ChessMechanics
     {
         if(chessBoard[x][y].hasPiece())
         {
-            while (chessBoard[move.get_xTarget()][move.get_yTarget()].getPiece().hasPossibleMove())       //remove all possible moves from the captured piece
+            ChessMove moveTemp ;
+            while (chessBoard[x][y].getPiece().hasPossibleMove())       //remove all possible moves from the captured piece
             {
-                moveTemp = (ChessMove) chessBoard[move.get_xStart()][move.get_yStart()].getPiece().removePossibleMove();
+                moveTemp = (ChessMove) chessBoard[x][y].getPiece().removePossibleMove();
                 chessBoard[moveTemp.get_xTarget()][moveTemp.get_yTarget()].removeTargetingMove(moveTemp);
             }
         }
