@@ -51,6 +51,6 @@ public class Queue
 
     public int getNumberOfElements()
     {
-        return first.getIndex();
+        return first.countNodes();
     }
 }
