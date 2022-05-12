@@ -71,7 +71,7 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
             for (int c = 0; c < 8; c++)
             {
                 var p = new JPanel();
-                p.setBackground(isWhite(r, c) ? Color.white : Color.black);
+                p.setBackground(isWhite(r, c) ? Color.green : Color.black);
                 boardFields[r][c] = p;
 
                 this.add(p, new Integer(-10));
