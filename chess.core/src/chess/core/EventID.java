@@ -9,10 +9,12 @@ public enum EventID
             {
                 ChessPieceId PlayerPromotedTo;
             },
+
     Castling
             {
                 ChessMove CastlingMove;
             },
+
     enPassant
             {
                 int xCapture;

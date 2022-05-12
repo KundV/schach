@@ -4,15 +4,17 @@ import chess.core.VerktetteListe.Queue;
 
 public class ChessBoardTile                        //Is a tile on the chessboard. It can be empty or contain a piece.
 {
-
     private ChessPiece piece;                    //The piece on this tile.
-
     private Queue TargetingMoves;                //The moves that can be made to this tile.
+
+
 
     public ChessBoardTile()                      //Constructor. Creates a new tile with no piece on it.
     {
         this.TargetingMoves = new Queue();
     }
+
+
 
     public ChessBoardTile(ChessPiece piece)   //Constructor. Creates a new tile with a piece on it.
     {
@@ -87,5 +89,4 @@ public class ChessBoardTile                        //Is a tile on the chessboard
     {
         this.TargetingMoves = moves;
     }
-
 }

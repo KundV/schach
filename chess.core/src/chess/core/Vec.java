@@ -8,11 +8,15 @@ public class Vec
     public final int x;
     public final int y;
 
+
+
     public Vec(int x, int y)
     {
         this.x = x;
         this.y = y;
     }
+
+
 
     public Vec add(Vec other)
     {
@@ -28,6 +32,4 @@ public class Vec
     {
         return new Vec(x * scalar, y * scalar);
     }
-
-
 }
