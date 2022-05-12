@@ -66,8 +66,10 @@ public class JChessPiece extends JPanel
 
     }
 
+
     public JChessPiece(ChessPieceId id, Boolean isBlack)
     {
+;
         this.setOpaque(false);
         URI uri;
         try

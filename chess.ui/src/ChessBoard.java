@@ -11,7 +11,6 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
 {
 
 
-
     GridLayout layout;
 
     private final JChessPiece[][] jChessPieces = new JChessPiece[8][8];
@@ -80,6 +79,10 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
         }
     }
 
+    private void updateBoard()
+    {
+
+    }
 
     private void recreateBoard()
     {
@@ -88,8 +91,10 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
             for (int x = 0; x < 8; x++)
             {
                 var old = jChessPieces[y][x];
-                if (old != null)
+                if (old != null) {
                     this.remove(old);
+                    jChessPieces[y][x] = null;
+                }
                 var tile = _mechanics.getChessBoard()[y][x];
                 if (tile != null && tile.getPiece() != null)
                 {
@@ -134,8 +139,6 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
 
 
     }
-
-
 
 
     private static boolean isWhite(int row, int col)
@@ -225,7 +228,8 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
         }
         this._selectedPiece = null;
         recreateBoard();
-
+        addPieces();
+        onResize();
     }
 
     @Override
