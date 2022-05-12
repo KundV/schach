@@ -67,6 +67,14 @@ public class ChessMechanics
 
     public void CheckMoves(int x, int y)
     {
+        if(chessBoard[x][y].hasPiece())
+        {
+            while (chessBoard[move.get_xTarget()][move.get_yTarget()].getPiece().hasPossibleMove())       //remove all possible moves from the captured piece
+            {
+                moveTemp = (ChessMove) chessBoard[move.get_xStart()][move.get_yStart()].getPiece().removePossibleMove();
+                chessBoard[moveTemp.get_xTarget()][moveTemp.get_yTarget()].removeTargetingMove(moveTemp);
+            }
+        }
         switch (chessBoard[x][y].getPiece().getChessPieceId())                                                                      // switch statement for the piece
         {
             case PAWN   -> { RulesPawn(x,y);}
@@ -432,7 +440,8 @@ public class ChessMechanics
         if (move != null && (move.getEvent().getID() == EventID.Capture || move.getEvent().getID() == EventID.Move))
         {
             chessBoard[move.get_xStart()][move.get_yStart()].getPiece().addMoveCount();
-            while (chessBoard[move.get_xStart()][move.get_yStart()].getPiece().hasPossibleMove())
+
+            while (chessBoard[move.get_xStart()][move.get_yStart()].getPiece().hasPossibleMove())           //because the piece is moved(capture also moves), we need to remove all possible moves
             {
                 moveTemp = (ChessMove) chessBoard[move.get_xStart()][move.get_yStart()].getPiece().removePossibleMove();
                 chessBoard[moveTemp.get_xTarget()][moveTemp.get_yTarget()].removeTargetingMove(moveTemp);
@@ -449,12 +458,26 @@ public class ChessMechanics
                 chessBoard[move.get_xTarget()][move.get_yTarget()].setPiece(chessBoard[move.get_xStart()][move.get_yStart()].removePiece());
             }
 
-            else                                                                                          // if the piece has been moved, remove from start tile and add to target tile
+            else                                                                           // if the piece has been moved, remove from start tile and add to target tile
             {
                 chessBoard[move.get_xTarget()][move.get_yTarget()].setPiece(chessBoard[move.get_xStart()][move.get_yStart()].removePiece());
             }
 
+            for(int k = chessBoard[move.get_xStart()][move.get_yStart()].getTargetingMoves().getNumberOfElements(); k > 0;k--)
+            {
+                moveTemp = (ChessMove) chessBoard[move.get_xStart()][move.get_yStart()].getTargetingMoves().getByIndex(k);
+                CheckMoves(moveTemp.get_xStart(),moveTemp.get_yStart());
+
+
+            }
+
+
             CheckMoves(move.get_xTarget(), move.get_yTarget());
+
+
+
+
+
 
             if(!chessBoard[move.get_xStart()][move.get_yStart()].hasTargetingMoves())                          // if the piece has possible moves, remove them in targeting moves, in order to update the possible moves
             {
