@@ -6,10 +6,13 @@ public class Queue
 {
     private Listelement first;
 
+
+
     public Queue()
     {
         first = new End();
     }
+
 
 
     public void add(Dataelement content)        // add to end of queue

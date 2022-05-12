@@ -13,8 +13,5 @@ public abstract class Listelement
     public abstract Listelement remove(ChessMove move);
     public abstract boolean isEmpty();
 
-
-
-
     //public abstract Listelement remove(Dataelement search);
 }

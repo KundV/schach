@@ -9,12 +9,14 @@ public class Datanode extends Listelement
     private int index;
 
 
+
     public Datanode(Listelement next, Dataelement content, int index)
     {
         this.index = index;
         this.next = next;
         this.content = content;
     }
+
 
 
     public int countNodes()     //counts the number of nodes in the list
@@ -28,6 +30,7 @@ public class Datanode extends Listelement
         {
             return this.content;
         }
+
         else
         {
             return next.getContentById(index);        //if not, it goes to the next node
@@ -47,6 +50,7 @@ public class Datanode extends Listelement
             this.content = in;
             return this;
         }
+
         else
         {
             next = next.insert(in);
@@ -75,6 +79,7 @@ public class Datanode extends Listelement
         {
             return next;
         }
+
         else
         {
             next = next.remove(move);    //if not, it goes to the next node
@@ -89,6 +94,7 @@ public class Datanode extends Listelement
         {
             return next;
         }
+
         else
         {
             next = next.remove(search);

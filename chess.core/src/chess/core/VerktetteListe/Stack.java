@@ -5,10 +5,13 @@ public class Stack
     private Listelement first;
     private int index =0;
 
+
+
     public Stack()
     {
         first = new End();
     }
+
 
 
     public void add(Dataelement content)
@@ -42,6 +45,4 @@ public class Stack
     {
         return first.isEmpty();
     }
-
-
 }
