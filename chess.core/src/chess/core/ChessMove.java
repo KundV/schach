@@ -20,9 +20,9 @@ public class ChessMove extends Dataelement
         super(Player);
         this.event = event;
         this.xStart = xStart;
-        this.xStart = yStart;
+        this.yStart = yStart;
         this.xTarget = xTarget;
-        this.xTarget = yTarget;
+        this.yTarget = yTarget;
     }
 
     @Override
