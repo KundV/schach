@@ -66,8 +66,11 @@ public class JChessPiece extends JPanel
 
     public JChessPiece(ChessPieceId id, Boolean isBlack)
     {
-;
+        piece = id;
+        this.isBlack = isBlack;
+
         this.setOpaque(false);
+        this.setBorder(new CornerBorder());
         URI uri;
         try
         {
@@ -82,8 +85,8 @@ public class JChessPiece extends JPanel
         setLayout(null);
         svg = new JSVGCanvas();
         svg.setURI(uri.toString());
-
-
+    public final ChessPieceId piece;
+    public final boolean isBlack;
         svg.setOpaque(false);
         svg.setBackground(new Color(0, 0, 0, 0));
 
