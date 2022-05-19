@@ -10,6 +10,5 @@ public class Main
 
         var w = new GameWindow();
 
-
     }
 }

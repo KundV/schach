@@ -12,7 +12,6 @@ import java.net.URISyntaxException;
 
 public class JChessPiece extends JPanel
 {
-
     private final JSVGCanvas svg;
 
 
@@ -57,7 +56,6 @@ public class JChessPiece extends JPanel
                 verticalWidth, verticalLength); // Horizontaler Rand unten links
         g.fillRect(getWidth() - xPadding - verticalWidth, getHeight() - yPadding - verticalLength,
                 verticalWidth, verticalLength); // Horizontaler Rand unten rechts
-
     }
 
     public void setSelectable(boolean selectable)
@@ -65,7 +63,6 @@ public class JChessPiece extends JPanel
         repaint();
 
     }
-
 
     public JChessPiece(ChessPieceId id, Boolean isBlack)
     {
@@ -75,7 +72,9 @@ public class JChessPiece extends JPanel
         try
         {
             uri = loadUri(id, isBlack);
-        } catch (IOException e)
+        }
+
+        catch (IOException e)
         {
             throw new RuntimeException(e);
         }
@@ -90,23 +89,23 @@ public class JChessPiece extends JPanel
 
         add(svg);
 
-        this.addComponentListener(new ComponentAdapter()
-        {
-            @Override
-            public void componentResized(ComponentEvent e)
+        this.addComponentListener
+        (
+            new ComponentAdapter()
             {
-                updateSvg();
+                @Override
+                public void componentResized(ComponentEvent e)
+                {
+                    updateSvg();
+                }
+
+                public void componentShown(ComponentEvent e)
+                {
+                    updateSvg();
+                }
             }
-
-            public void componentShown(ComponentEvent e)
-            {
-                updateSvg();
-            }
-        });
-
-
+        );
     }
-
 
     public static class ResourceHelper
     {
@@ -114,18 +113,16 @@ public class JChessPiece extends JPanel
         {
             // Correspond to the files in resources/ka-hu/chess_kaneo/
             return switch (id)
-                    {
-                        case KING -> "K";
-                        case QUEEN -> "Q";
-                        case TOWER -> "R";
+            {
+                case KING -> "K";
+                case QUEEN -> "Q";
+                case TOWER -> "R";
 
-                        case BISHOP -> "B";
-                        case HORSE -> "N";
-                        case PAWN -> "P";
-                    };
+                case BISHOP -> "B";
+                case HORSE -> "N";
+                case PAWN -> "P";
+            };
         }
-
-
     }
 
     static URI loadUri(ChessPieceId id, Boolean isBlack) throws IOException
@@ -134,13 +131,15 @@ public class JChessPiece extends JPanel
         var res = ClassLoader.getSystemClassLoader().getResource("./ka-hu/chess_kaneo/" + c);
         if (res == null)
             throw new IOException("Could not find a SVG-ressource for " + id.toString() + " in " + (isBlack ? "black" : "white") + " color");
+
         try
         {
             return res.toURI();
-        } catch (URISyntaxException e)
+        }
+
+        catch (URISyntaxException e)
         {
             throw new RuntimeException(e);
         }
     }
-
 }

@@ -8,37 +8,39 @@ import java.util.concurrent.Semaphore;
 
 public class CornerBorder extends AbstractBorder
 {
-
     @Override
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height)
     {
         var p = new Polygon();
     }
 
-    private enum Alignment {
+    private enum Alignment
+    {
         TopLeft,
         TopRight,
         BottomLeft,
         BottomRight;
 
-        boolean isBottom() {
+        boolean isBottom()
+        {
             return this == BottomLeft || this == BottomRight;
         }
 
-        boolean isTop() {
+        boolean isTop()
+        {
             return this == TopLeft || this == TopRight;
         }
 
-        boolean isLeft() {
+        boolean isLeft()
+        {
             return this == TopLeft || this == BottomLeft;
         }
 
-        boolean isRight() {
+        boolean isRight()
+        {
             return this == TopRight || this == BottomRight;
         }
-
     }
-
 
     private Polygon generatePolygon(Alignment alignment, boolean isHorizontal, int x, int y, int width, int height)
     {
@@ -51,9 +53,6 @@ public class CornerBorder extends AbstractBorder
         //var yPonts = new int[4] {x, x + width, x + width, x};
         return null;
     }
-
-
-
 
     public Insets getBorderInsets(Component c)
     {
