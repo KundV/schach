@@ -30,6 +30,10 @@ public class End extends Listelement
         index++;
         return new Datanode(this, in, index);
     }
+    public Datanode insertByStart(Dataelement in)
+    {    //creates new node to insert at the end of the list
+        return insert(in);
+    }
 
     public int getIndex()
     {

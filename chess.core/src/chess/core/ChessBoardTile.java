@@ -39,12 +39,18 @@ public class ChessBoardTile                        //Is a tile on the chessboard
         return temp;
     }
 
-    public Queue removeAllTargetingMoves()      //Returns the targeting moves and clears the list.
+    public Queue extractAllTargetingMoves()      //Returns the targeting moves and clears the list.
     {
-        Queue temp = TargetingMoves;
+        Queue temp = cloneTargetingMoves();
         TargetingMoves.clear();
         return temp;
     }
+    public void extractAllTargetingMoves(Queue temp)      //Returns the targeting moves and clears the list.
+    {
+        cloneTargetingMoves(temp);
+        TargetingMoves.clear();
+    }
+
 
     public void removeTargetingMove(ChessMove move)      //Removes a specific targeting move from the list.
     {
@@ -78,11 +84,18 @@ public class ChessBoardTile                        //Is a tile on the chessboard
     public Queue cloneTargetingMoves()
     {
         Queue temp = new Queue();
-        for(int i = TargetingMoves.getNumberOfElements(); i > 0;i--)
+        for(int i = TargetingMoves.getNumberOfElements(); i > 0;i--)//TODO: Possible bug.!!!
         {
             temp.add(TargetingMoves.getByIndex(i));
         }
         return temp;
+    }
+    public void cloneTargetingMoves(Queue temp)
+    {
+        for(int i = TargetingMoves.getNumberOfElements(); i > 0;i--)//TODO: Possible bug.!!!
+        {
+            temp.addByStart(TargetingMoves.getByIndex(i));
+        }
     }
 
     public void setTargetingMoves(Queue moves)

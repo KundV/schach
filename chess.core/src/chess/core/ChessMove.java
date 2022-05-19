@@ -20,16 +20,20 @@ public class ChessMove extends Dataelement
         super(Player);
         this.event = event;
         this.xStart = xStart;
-        this.xStart = yStart;
+        this.yStart = yStart;
         this.xTarget = xTarget;
-        this.xTarget = yTarget;
+        this.yTarget = yTarget;
     }
 
     @Override
     public boolean equals(ChessMove cm)     //if either the start or the target position is the same, the move is the same
     {
-        return this == cm || (cm.xStart == xStart && cm.yStart == yStart && cm.xTarget == xTarget && cm.yTarget == yTarget);
+        return (this == cm) || ((cm.xStart == xStart) && (cm.yStart == yStart) && (cm.xTarget == xTarget) && (cm.yTarget == yTarget));
 }
+    public boolean sameStart(ChessMove cm)
+    {
+        return ((this == cm) || (cm.xStart == xStart && cm.yStart == yStart));
+    }
 
 
 

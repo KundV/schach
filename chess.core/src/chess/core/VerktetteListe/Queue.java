@@ -20,6 +20,11 @@ public class Queue
         first=first.insert(content);
     }
 
+    public void addByStart(Dataelement content)        // add to start of queue
+    {
+        first=first.insertByStart(content);
+    }
+
     public Dataelement remove()     // remove from front of queue
     {
         Listelement oldFirst = first;

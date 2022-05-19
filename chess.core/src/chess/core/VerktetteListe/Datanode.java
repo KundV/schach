@@ -26,13 +26,14 @@ public class Datanode extends Listelement
 
     public Dataelement getContentById(int index)        //returns if the index is the same as the index of the node
     {
-        if (index == this.index)
+        if (index == 1)
         {
             return this.content;
         }
 
         else
         {
+            index--;
             return next.getContentById(index);        //if not, it goes to the next node
         }
     }
@@ -43,6 +44,22 @@ public class Datanode extends Listelement
     }       //returns the next node
 
     public Datanode insert(Dataelement in)          //inserts a new node at the end of the list
+    {
+
+        if(this.content.equals(in))
+        {
+            this.content = in;
+            return this;
+        }
+
+        else
+        {
+            next = next.insert(in);
+            return this;
+        }
+    }
+
+    public Datanode insertByStart(Dataelement in)          //inserts a new node at the end of the list
     {
 
         if(this.content.equals(in))
