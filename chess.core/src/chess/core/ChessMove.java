@@ -15,6 +15,8 @@ public class ChessMove extends Dataelement
     private int yTarget;
     private Event event;
 
+
+
     public ChessMove(int xStart,int yStart,int xTarget,int yTarget,PlayerId Player,Event event)
     {
         super(Player);
@@ -25,17 +27,18 @@ public class ChessMove extends Dataelement
         this.yTarget = yTarget;
     }
 
+
+
     @Override
     public boolean equals(ChessMove cm)     //if either the start or the target position is the same, the move is the same
     {
         return (this == cm) || ((cm.xStart == xStart) && (cm.yStart == yStart) && (cm.xTarget == xTarget) && (cm.yTarget == yTarget));
-}
+    }
+
     public boolean sameStart(ChessMove cm)
     {
         return ((this == cm) || (cm.xStart == xStart && cm.yStart == yStart));
     }
-
-
 
     public PlayerId getPlayerId()
     {

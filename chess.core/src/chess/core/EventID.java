@@ -6,23 +6,22 @@ public enum EventID
     Blocked,
     Capture,
     Promotion
-            {
-                ChessPieceId PlayerPromotedTo;
-            },
+        {
+            ChessPieceId PlayerPromotedTo;
+        },
 
     Castling
-            {
-                ChessMove CastlingMove;
-            },
+        {
+            ChessMove CastlingMove;
+        },
 
     enPassant
-            {
-                int xCapture;
-                int yCapture;
-            },
+        {
+            int xCapture;
+            int yCapture;
+        },
 
     Check,
     Checkmate,
     Stalemate
 }
-

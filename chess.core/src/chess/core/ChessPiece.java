@@ -16,6 +16,7 @@ public class ChessPiece
     private int ID;
 
 
+
     public ChessPiece(ChessPieceId chessPieceId,PlayerId playerId)
     {
         this.chessPieceId = chessPieceId;
@@ -23,6 +24,7 @@ public class ChessPiece
         this.possibleMoves = new Queue();
 
     }
+
     public ChessPiece(ChessPieceId chessPieceId,PlayerId playerId,int moveCount)
     {
         this.moveCount = moveCount;
@@ -31,6 +33,8 @@ public class ChessPiece
         this.possibleMoves = new Queue();
 
     }
+
+
 
     public ChessPieceId getChessPieceId()
     {
@@ -56,7 +60,6 @@ public class ChessPiece
     {
         this.ID = ID;
     }
-
 
     public Queue removeAllPossibleMoves()   //returns the queue of possible moves and deletes it
     {
@@ -99,10 +102,12 @@ public class ChessPiece
     {
         this.possibleMoves.remove(move);
     }
+
     public Dataelement removePossibleMove()     //removes the first move from the queue of possible moves
     {
         return this.possibleMoves.remove();
     }
+
     public boolean hasPossibleMove()      //checks if a specific move is in the queue of possible moves
     {
         return !this.possibleMoves.isEmpty();
