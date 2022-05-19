@@ -9,14 +9,14 @@ import java.util.function.Supplier;
 
 public class ChessBoard extends JLayeredPane implements MouseMotionListener, MouseListener
 {
-
-
     GridLayout layout;
 
     private final JChessPiece[][] jChessPieces = new JChessPiece[8][8];
     private final JPanel[][] boardFields = new JPanel[8][8];
     private final JPanel _glassPane = new JPanel();
     private ChessMechanics _mechanics;
+
+
 
     public void onResize()
     {
@@ -44,8 +44,6 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
 
     private void addPieces()
     {
-
-
         for (int r = 0; r < 8; r++)
         {
             for (int c = 0; c < 8; c++)
@@ -59,9 +57,12 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
         }
     }
 
+
+
     public int SelectedX;
     public int SelectedY;
     public boolean IsSelected;
+
 
 
     private void addFields()
@@ -91,10 +92,12 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
             for (int x = 0; x < 8; x++)
             {
                 var old = jChessPieces[y][x];
-                if (old != null) {
+                if (old != null)
+                {
                     this.remove(old);
                     jChessPieces[y][x] = null;
                 }
+
                 var tile = _mechanics.getChessBoard()[y][x];
                 if (tile != null && tile.getPiece() != null)
                 {
@@ -111,7 +114,6 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
     {
         this._mechanics = _mechanics;
 
-
         this.setLayout(null);
 
         recreateBoard();
@@ -127,17 +129,18 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
         // jChessPieces[0][0].addMouseListener(mouseListener);
         addPieces();
         addFields();
-        this.addComponentListener(new ComponentAdapter()
-        {
-            @Override
-            public void componentResized(ComponentEvent e)
+        this.addComponentListener
+        (
+            new ComponentAdapter()
             {
-                onResize();
+                @Override
+                public void componentResized(ComponentEvent e)
+                {
+                    onResize();
+                }
+
             }
-
-        });
-
-
+        );
     }
 
 
@@ -159,8 +162,6 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
     {
         super.paintComponent(g);
         //drawBoard(g);
-
-
     }
 
 
@@ -175,7 +176,6 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
 
     private void drawBoard(Graphics g)
     {
-
         var b = createBufferedBox(getWidth() / 8, getHeight() / 8, Color.black);
         var w = createBufferedBox(getWidth() / 8, getHeight() / 8, Color.white);
         for (int x = 0; x < 8; x++)
@@ -191,14 +191,12 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
     @Override
     public void mouseClicked(MouseEvent e)
     {
-
         System.out.println(e.getX() / (getWidth() / 8));
     }
 
     @Override
     public void mousePressed(MouseEvent e)
     {
-
         var fieldVec = vecFromPoint(e.getPoint());
         if (fieldVec.x >= 0 && fieldVec.y >= 0 // if field is negative
                 && fieldVec.x < 8 && fieldVec.y < 8 // if field is out of bounds
@@ -207,8 +205,6 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
             this._selectedPiece = fieldVec;
             this.add(jChessPieces[fieldVec.y][fieldVec.x], new Integer(1));
         }
-
-
     }
 
     @Override
@@ -226,6 +222,7 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
                     _mechanics.executeMove(move);
             }
         }
+
         this._selectedPiece = null;
         recreateBoard();
         addPieces();
@@ -243,7 +240,6 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
     {
 
     }
-
 
     private Vec _selectedPiece;
 
@@ -285,4 +281,3 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
 
     }
 }
-
