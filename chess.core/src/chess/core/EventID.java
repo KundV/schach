@@ -20,7 +20,6 @@ public enum EventID
                 int xCapture;
                 int yCapture;
             },
-
     Check,
     Checkmate,
     Stalemate
