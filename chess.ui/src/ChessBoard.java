@@ -49,7 +49,8 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
             {
                 var t = _mechanics.getChessBoard()[r][c];
                 if (t == null || t.getPiece() == null) continue;
-
+                var selectable = t.getPiece().getPlayerId() == _mechanics.getCurrentPlayer() && t.getPiece().hasNonBlockedMoves();
+                chessPieceUIComponents[r][c].setSelectable(selectable);
             }
         }
     }
@@ -189,7 +190,7 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
 
         var p = _mechanics.getChessBoard()[fieldVec.y][fieldVec.x].getPiece();
 
-        if (!p.hasPossibleMove() || p.getPlayerId() != _mechanics.getCurrentPlayer()) {
+        if (!p.hasNonBlockedMoves() || p.getPlayerId() != _mechanics.getCurrentPlayer()) {
             return;
         }
 
@@ -225,6 +226,7 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
         }
         this._selectedPiece = null;
         updatePlacement();
+        updateHints();
         //recreateBoard();
         //addPieces();
         //onResize();
@@ -287,6 +289,7 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
         _mechanics.reverseMove();
         reInitializeUiArray();
         updatePlacement();
+        updateHints();
     }
 }
 

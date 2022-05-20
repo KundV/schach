@@ -16,14 +16,15 @@ public class ChessPiece
     private int ID;
 
 
-    public ChessPiece(ChessPieceId chessPieceId,PlayerId playerId)
+    public ChessPiece(ChessPieceId chessPieceId, PlayerId playerId)
     {
         this.chessPieceId = chessPieceId;
         this.playerId = playerId;
         this.possibleMoves = new Queue();
 
     }
-    public ChessPiece(ChessPieceId chessPieceId,PlayerId playerId,int moveCount)
+
+    public ChessPiece(ChessPieceId chessPieceId, PlayerId playerId, int moveCount)
     {
         this.moveCount = moveCount;
         this.chessPieceId = chessPieceId;
@@ -42,11 +43,6 @@ public class ChessPiece
         return playerId;
     }
 
-    public void setPossibleMoves(Queue possibleMoves)
-    {
-        this.possibleMoves = possibleMoves;
-    }
-
     public int getID()
     {
         return ID;
@@ -56,7 +52,6 @@ public class ChessPiece
     {
         this.ID = ID;
     }
-
 
     public Queue removeAllPossibleMoves()   //returns the queue of possible moves and deletes it
     {
@@ -68,6 +63,11 @@ public class ChessPiece
     public Queue getPossibleMoves()        //returns the queue of possible moves
     {
         return possibleMoves;
+    }
+
+    public void setPossibleMoves(Queue possibleMoves)
+    {
+        this.possibleMoves = possibleMoves;
     }
 
     public void addPossibleMove(ChessMove move)     //adds a move to the queue of possible moves
@@ -99,10 +99,12 @@ public class ChessPiece
     {
         this.possibleMoves.remove(move);
     }
+
     public Dataelement removePossibleMove()     //removes the first move from the queue of possible moves
     {
         return this.possibleMoves.remove();
     }
+
     public boolean hasPossibleMove()      //checks if a specific move is in the queue of possible moves
     {
         return !this.possibleMoves.isEmpty();
@@ -111,11 +113,20 @@ public class ChessPiece
     public Queue clonePossibleMoves()
     {
         Queue temp = new Queue();
-        for(int i = possibleMoves.getNumberOfElements(); i > 0;i--)
+        for (int i = possibleMoves.getNumberOfElements(); i > 0; i--)
         {
             temp.add(possibleMoves.getByIndex(i));
         }
         return temp;
+    }
+
+    public boolean hasNonBlockedMoves()
+    {
+        for (int i = 0; i < possibleMoves.getNumberOfElements(); i++)
+        {
+            if (possibleMoves.getByIndex(i + 1).getEvent().getID() != EventID.Blocked) return true;
+        }
+        return false;
     }
 
     public int getMoveCount()
