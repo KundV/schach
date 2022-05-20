@@ -333,7 +333,7 @@ public class ChessMechanics
             if (targetTurn == 0)
             {
                 ChessMechanics test = new ChessMechanics(chessBoard, deadPieces, madeMoves.getNumberOfElements() + 1, player, madeMoves, move);
-                if (test.isLegal(player.opposite()))
+                if (test.isLegal(player))
                 {
                     chessBoard[x][y].getPiece().addPossibleMove(move);
                     chessBoard[x2][y2].addTargetingMove(move);
@@ -355,7 +355,7 @@ public class ChessMechanics
             ChessMove move = new ChessMove(x, y, x2, y2, chessBoard[x][y].getPlayerId(), new Event(EventID.Blocked));
             chessBoard[x][y].getPiece().addPossibleMove(move);
             chessBoard[x2][y2].addTargetingMove(move);
-            return true;
+            return false;
         }
         return false;
     }
