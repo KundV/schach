@@ -403,6 +403,12 @@ public class ChessMechanics
         return chessBoard;
     }
 
+            else if (chessBoard[x + a][y].hasPiece())
+            {
+                ChessMove move = new ChessMove(x, y, x + a, y, chessBoard[x][y].getPlayerId(), new Event(EventID.Blocked));                               // if the tile is empty
+                chessBoard[x][y].getPiece().addPossibleMove(move);
+                chessBoard[x + a][y].addTargetingMove(move);
+            }
 
 /*
     public PlayerId executeMove(int x, int y, int x2, int y2)
