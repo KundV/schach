@@ -9,10 +9,12 @@ import java.util.concurrent.Semaphore;
 public class CornerBorder implements Border
 {
 
+
+
     @Override
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height)
     {
-        g.setColor(Color.green);
+        g.setColor(Color.blue);
 
         for (Alignment alg : Alignment.values())
         {
@@ -45,11 +47,11 @@ public class CornerBorder implements Border
     {
         var p = new Polygon();
 
-        var horizontalInset = (int) Math.ceil(width * 0.1);
-        var verticalInset = (int) Math.ceil(height * 0.1);
+        var horizontalInset = (int) Math.ceil(width * 0.05);
+        var verticalInset = (int) Math.ceil(height * 0.05);
 
-        var thickness = (int) Math.ceil(Math.min(width, height) * 0.1);
-        var length = (int) Math.ceil(Math.min(width, height) * 0.3);
+        var thickness = (int) Math.ceil(Math.min(width, height) * 0.05);
+        var length = (int) Math.ceil(Math.min(width, height) * 0.2);
 
         var c = new Point(alignment.isLeft() ? x + horizontalInset : x + width - horizontalInset, alignment.isTop() ? y + verticalInset : y + height - verticalInset);
         p.addPoint(c.x, c.y);
