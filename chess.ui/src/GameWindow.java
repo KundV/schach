@@ -42,6 +42,11 @@ public class GameWindow extends JFrame
         _sidebar.add(new JLabel("Sidebar"));
         _sidebar.add(new JLabel("Very looooong text"));
         _sidebar.add(new JLabel("1"));
+        {
+            var undoButton = new JButton("Undo");
+            undoButton.addActionListener(e -> _board.Undo());
+            _sidebar.add(undoButton);
+        }
         c.gridx = 1;
         c.gridy = 0;
 
