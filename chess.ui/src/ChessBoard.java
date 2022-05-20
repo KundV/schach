@@ -203,6 +203,7 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
             }
         }
         this._selectedPiece = null;
+        updatePlacement();
         //recreateBoard();
         //addPieces();
         //onResize();
