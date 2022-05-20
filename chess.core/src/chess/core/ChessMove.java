@@ -9,11 +9,11 @@ import chess.core.VerktetteListe.Dataelement;
 
 public class ChessMove extends Dataelement
 {
-    private int xStart;
-    private int yStart;
-    private int xTarget;
-    private int yTarget;
-    private Event event;
+    public final int xStart;
+    public final int yStart;
+    public final int xTarget;
+    public final int yTarget;
+    public final Event event;
 
 
 
@@ -45,25 +45,6 @@ public class ChessMove extends Dataelement
         return Player;
     }
 
-    public int get_xStart()
-    {
-        return xStart;
-    }
-
-    public int get_yStart()
-    {
-        return yStart;
-    }
-
-    public int get_xTarget()
-    {
-        return xTarget;
-    }
-
-    public int get_yTarget()
-    {
-        return yTarget;
-    }
 
     public Event getEvent()
     {
