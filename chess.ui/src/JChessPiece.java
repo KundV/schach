@@ -16,23 +16,6 @@ public class JChessPiece extends JPanel
     private final JSVGCanvas svg;
 
 
-
-    private void updateSvg()
-    {
-        svg.setSize(new Dimension(getWidth(), getHeight()));
-        svg.setLocation(0, 0);
-        svg.revalidate();
-
-        repaint();
-    }
-
-
-    public void setSelectable(boolean selectable)
-    {
-        this.setBorder(new CornerBorder(new Color(3, 255, 255, 255)));
-
-    }
-
     public JChessPiece(ChessPieceId id, Boolean isBlack)
     {
 
@@ -72,6 +55,38 @@ public class JChessPiece extends JPanel
 
     }
 
+    static URI loadUri(ChessPieceId id, Boolean isBlack) throws IOException
+    {
+        var c = (isBlack ? "b" : "w") + ResourceHelper.IdToKaHu(id) + ".svg";
+        var res = ClassLoader.getSystemClassLoader().getResource("./ka-hu/chess_kaneo/" + c);
+        if (res == null)
+            throw new IOException("Could not find a SVG-ressource for " + id.toString() + " in " + (isBlack ? "black" : "white") + " color");
+        try
+        {
+            return res.toURI();
+        } catch (URISyntaxException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void updateSvg()
+    {
+        svg.setSize(new Dimension(getWidth(), getHeight()));
+        svg.setLocation(0, 0);
+        svg.revalidate();
+
+        repaint();
+    }
+
+    public void setSelectable(boolean selectable)
+    {
+        if (selectable)
+            this.setBorder(new CornerBorder(new Color(65, 65, 255, 255)));
+        else
+            this.setBorder(null);
+
+    }
 
     public static class ResourceHelper
     {
@@ -91,21 +106,6 @@ public class JChessPiece extends JPanel
         }
 
 
-    }
-
-    static URI loadUri(ChessPieceId id, Boolean isBlack) throws IOException
-    {
-        var c = (isBlack ? "b" : "w") + ResourceHelper.IdToKaHu(id) + ".svg";
-        var res = ClassLoader.getSystemClassLoader().getResource("./ka-hu/chess_kaneo/" + c);
-        if (res == null)
-            throw new IOException("Could not find a SVG-ressource for " + id.toString() + " in " + (isBlack ? "black" : "white") + " color");
-        try
-        {
-            return res.toURI();
-        } catch (URISyntaxException e)
-        {
-            throw new RuntimeException(e);
-        }
     }
 
 }
