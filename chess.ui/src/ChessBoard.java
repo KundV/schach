@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+@SuppressWarnings("removal")
 public class ChessBoard extends JLayeredPane implements MouseMotionListener, MouseListener
 {
 
@@ -39,6 +40,18 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
             }
         }
         repaint();
+    }
+
+    private void updateHints() {
+        for (int r = 0; r < 8; r++)
+        {
+            for (int c = 0; c < 8; c++)
+            {
+                var t = _mechanics.getChessBoard()[r][c];
+                if (t == null || t.getPiece() == null) continue;
+
+            }
+        }
     }
 
     private void addPieces()
@@ -80,12 +93,12 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
     }
 
     private void processMove(ChessMove move) {
-        var piece = chessPieceUIComponents[move.get_xStart()][move.get_yStart()];
-        var captured = chessPieceUIComponents[move.get_xTarget()][move.get_yTarget()];
+        var piece = chessPieceUIComponents[move.xStart][move.yStart];
+        var captured = chessPieceUIComponents[move.xTarget][move.yTarget];
         if (captured != null)
             this.remove(captured);
-        chessPieceUIComponents[move.get_xTarget()][move.get_yTarget()] = piece;
-        chessPieceUIComponents[move.get_xStart()][move.get_yStart()] = null;
+        chessPieceUIComponents[move.xTarget][move.yTarget] = piece;
+        chessPieceUIComponents[move.xStart][move.yStart] = null;
         updatePlacement();
     }
 
@@ -171,7 +184,15 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
     public void mousePressed(MouseEvent e)
     {
 
+
         var fieldVec = vecFromPoint(e.getPoint());
+
+        var p = _mechanics.getChessBoard()[fieldVec.y][fieldVec.x].getPiece();
+
+        if (!p.hasPossibleMove() || p.getPlayerId() != _mechanics.getCurrentPlayer()) {
+            return;
+        }
+
         if (fieldVec.x >= 0 && fieldVec.y >= 0 // if field is negative
                 && fieldVec.x < 8 && fieldVec.y < 8 // if field is out of bounds
                 && chessPieceUIComponents[fieldVec.y][fieldVec.x] != null) // if field is empty
@@ -195,7 +216,7 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
             for (int i = 1; i <= moves.getNumberOfElements(); i++)
             {
                 var move = ((ChessMove) moves.getByIndex(i));
-                if (move.get_xTarget() == target.y && move.get_yTarget() == target.x)
+            if (move.xTarget == target.y && move.yTarget == target.x && move.event.getID() != EventID.Blocked)
                 {
                     _mechanics.executeMove(move);
                     processMove(move);

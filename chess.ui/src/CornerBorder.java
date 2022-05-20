@@ -9,12 +9,22 @@ import java.util.concurrent.Semaphore;
 public class CornerBorder implements Border
 {
 
+    public final Color color;
 
+    public CornerBorder()
+    {
+        this(Color.black);
+    }
+
+    public CornerBorder(Color color)
+    {
+        this.color = color;
+    }
 
     @Override
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height)
     {
-        g.setColor(Color.blue);
+        g.setColor(color);
 
         for (Alignment alg : Alignment.values())
         {
@@ -22,26 +32,6 @@ public class CornerBorder implements Border
             g.fillPolygon(generatePolygon(alg, x, y, width, height));
         }
     }
-
-    private enum Alignment
-    {
-        TopLeft,
-        TopRight,
-        BottomLeft,
-        BottomRight;
-
-        boolean isTop()
-        {
-            return this == TopLeft || this == TopRight;
-        }
-
-        boolean isLeft()
-        {
-            return this == TopLeft || this == BottomLeft;
-        }
-
-    }
-
 
     private Polygon generatePolygon(Alignment alignment, int x, int y, int width, int height)
     {
@@ -70,7 +60,6 @@ public class CornerBorder implements Border
         return p;
     }
 
-
     public Insets getBorderInsets(Component c)
     {
         int w = (int) (c.getWidth() * 0.4);
@@ -82,5 +71,24 @@ public class CornerBorder implements Border
     public boolean isBorderOpaque()
     {
         return true;
+    }
+
+    private enum Alignment
+    {
+        TopLeft,
+        TopRight,
+        BottomLeft,
+        BottomRight;
+
+        boolean isTop()
+        {
+            return this == TopLeft || this == TopRight;
+        }
+
+        boolean isLeft()
+        {
+            return this == TopLeft || this == BottomLeft;
+        }
+
     }
 }
