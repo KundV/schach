@@ -14,6 +14,8 @@ public class ChessMechanics
     private Queue madeMoves;               // the moves made
 
 
+
+
     public ChessMechanics(ChessBoardTile[][] chessBoard, ArrayList<ChessPiece> deadPieces, int targetTurn, PlayerId player, Queue madeMoves, ChessMove move)
     {
         this.deadPieces = deadPieces;//TODO make a deep copy
@@ -610,6 +612,10 @@ public class ChessMechanics
             }
         }
         return true;
+    }
+
+    public PlayerId getCurrentPlayer() {
+        return player;
     }
 }
 

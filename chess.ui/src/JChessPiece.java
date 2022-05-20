@@ -29,10 +29,9 @@ public class JChessPiece extends JPanel
 
     public void setSelectable(boolean selectable)
     {
-        repaint();
+        this.setBorder(new CornerBorder(new Color(3, 255, 255, 255)));
 
     }
-
 
     public JChessPiece(ChessPieceId id, Boolean isBlack)
     {
