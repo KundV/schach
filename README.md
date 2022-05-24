@@ -1,5 +1,5 @@
 # Projektarbet Informatik     
-Kurs: 1I1                                        Fachlehrer: Reiner Görg
+Kurs: 1Inf1                                        Fachlehrer: Reiner Görg
 
 Projektteilnehmer: Vitus A. David B. Sebastian F.
 
