@@ -1,7 +1,11 @@
 package chess.core.VerktetteListe;
 
 import chess.core.ChessMove;
+import org.jetbrains.annotations.Debug;
 
+
+@Debug.Renderer(text = "this.getNumberOfElements()",
+        childrenArray = "this.toArray()")
 public class Queue
 {
     private Listelement first;
@@ -55,6 +59,17 @@ public class Queue
     public boolean isEmpty()        // checks if the queue is empty
     {
         return first.isEmpty();
+    }
+
+    public Dataelement[] toArray() {
+        var a = new Dataelement[this.getNumberOfElements()];
+
+        for (int i = 1; i <= this.getNumberOfElements(); i++)
+        {
+            a[i - 1] = this.getByIndex(i);
+        }
+        return a;
+
     }
 
     public int getNumberOfElements()
