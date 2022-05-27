@@ -26,8 +26,7 @@ public class JChessPiece extends JPanel
         try
         {
             uri = loadUri(id, isBlack);
-        }
-        catch (IOException e)
+        } catch (IOException e)
         {
             throw new RuntimeException(e);
         }
@@ -40,22 +39,19 @@ public class JChessPiece extends JPanel
 
         add(svg);
 
-        this.addComponentListener
-        (
-            new ComponentAdapter()
+        this.addComponentListener(new ComponentAdapter()
+        {
+            @Override
+            public void componentResized(ComponentEvent e)
             {
-                @Override
-                public void componentResized(ComponentEvent e)
-                {
-                    updateSvg();
-                }
-
-                public void componentShown(ComponentEvent e)
-                {
-                    updateSvg();
-                }
+                updateSvg();
             }
-        );
+
+            public void componentShown(ComponentEvent e)
+            {
+                updateSvg();
+            }
+        });
     }
 
     static URI loadUri(ChessPieceId id, Boolean isBlack) throws IOException
@@ -64,12 +60,11 @@ public class JChessPiece extends JPanel
         var res = ClassLoader.getSystemClassLoader().getResource("./ka-hu/chess_kaneo/" + c);
         if (res == null)
             throw new IOException("Could not find a SVG-ressource for " + id.toString() + " in " + (isBlack ? "black" : "white") + " color");
+
         try
         {
             return res.toURI();
-        }
-
-        catch (URISyntaxException e)
+        } catch (URISyntaxException e)
         {
             throw new RuntimeException(e);
         }
@@ -86,10 +81,8 @@ public class JChessPiece extends JPanel
 
     public void setSelectable(boolean selectable)
     {
-        if (selectable)
-            this.setBorder(new CornerBorder(new Color(65, 65, 255, 255)));
-        else
-            this.setBorder(null);
+        if (selectable) this.setBorder(new CornerBorder(new Color(65, 65, 255, 255)));
+        else this.setBorder(null);
     }
 
     public static class ResourceHelper
@@ -98,15 +91,15 @@ public class JChessPiece extends JPanel
         {
             // Correspond to the files in resources/ka-hu/chess_kaneo/
             return switch (id)
-            {
-                case KING -> "K";
-                case QUEEN -> "Q";
-                case TOWER -> "R";
+                    {
+                        case KING -> "K";
+                        case QUEEN -> "Q";
+                        case TOWER -> "R";
 
-                case BISHOP -> "B";
-                case HORSE -> "N";
-                case PAWN -> "P";
-            };
+                        case BISHOP -> "B";
+                        case HORSE -> "N";
+                        case PAWN -> "P";
+                    };
         }
     }
 
