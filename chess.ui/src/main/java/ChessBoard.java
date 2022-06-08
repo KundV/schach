@@ -12,7 +12,7 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
     GridLayout layout;
 
     private final JChessPiece[][] chessPieceUIComponents = new JChessPiece[8][8];
-    private final JPanel[][] boardFields = new JPanel[8][8];
+    private final JChessField[][] boardFields = new JChessField[8][8];
     private final JPanel _glassPane = new JPanel();
     private ChessMechanics _mechanics;
 
@@ -84,8 +84,8 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
         {
             for (int c = 0; c < 8; c++)
             {
-                var p = new JPanel();
-                p.setBackground(isWhite(r, c) ? Color.white : Color.black);
+                var p = new JChessField(!isWhite(r,c));
+                //p.setBackground(isWhite(r, c) ? Color.white : Color.black);
                 boardFields[r][c] = p;
 
                 this.add(p, new Integer(-10));

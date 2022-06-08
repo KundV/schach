@@ -5,25 +5,25 @@ public enum ChessPieceId
     /**
      * König
      */
-    KING,
+    King,
     /**
      * Königin
      */
-    QUEEN,
+    Queen,
     /**
      * Turm
      */
-    TOWER,
+    Tower,
     /**
      * Läufer
      */
-    BISHOP,
+    Bishop,
     /**
      * Pferd
      */
-    HORSE,
+    Horse,
     /**
      * Frau Bauer
      */
-    PAWN,
+    Pawn,
 }

@@ -69,12 +69,12 @@ public class ChessMechanics
     {
         switch (chessBoard[x][y].getPiece().getChessPieceId())                                                                      // switch statement for the piece
         {
-            case PAWN   -> { RulesPawn(x,y);}
-            case TOWER  -> { RulesTower(x,y);}
-            case BISHOP -> { RulesBishop(x,y);}
-            case HORSE  -> { RulesHorse(x,y);}
-            case KING   -> { RulesKing(x,y);}
-            case QUEEN  -> { RulesQueen(x,y);}
+            case Pawn -> { RulesPawn(x,y);}
+            case Tower -> { RulesTower(x,y);}
+            case Bishop -> { RulesBishop(x,y);}
+            case Horse -> { RulesHorse(x,y);}
+            case King -> { RulesKing(x,y);}
+            case Queen -> { RulesQueen(x,y);}
         }
     }
 
@@ -375,16 +375,16 @@ public class ChessMechanics
                 PlayerId player = i > 2 ? PlayerId.WHITE : PlayerId.BLACK;
                 if (i == 1 || i == 6)
                 {
-                    chessBoard[i][j].setPiece(new ChessPiece(ChessPieceId.PAWN, player));
+                    chessBoard[i][j].setPiece(new ChessPiece(ChessPieceId.Pawn, player));
                 } else if (i == 0 || i == 7)
                 {
                     switch (j)
                     {
-                        case 0, 7 -> chessBoard[i][j].setPiece(new ChessPiece(ChessPieceId.TOWER, player));
-                        case 1, 6 -> chessBoard[i][j].setPiece(new ChessPiece(ChessPieceId.HORSE, player));
-                        case 2, 5 -> chessBoard[i][j].setPiece(new ChessPiece(ChessPieceId.BISHOP, player));
-                        case 3 -> chessBoard[i][j].setPiece(new ChessPiece(ChessPieceId.QUEEN, player));
-                        case 4 -> chessBoard[i][j].setPiece(new ChessPiece(ChessPieceId.KING, player));
+                        case 0, 7 -> chessBoard[i][j].setPiece(new ChessPiece(ChessPieceId.Tower, player));
+                        case 1, 6 -> chessBoard[i][j].setPiece(new ChessPiece(ChessPieceId.Horse, player));
+                        case 2, 5 -> chessBoard[i][j].setPiece(new ChessPiece(ChessPieceId.Bishop, player));
+                        case 3 -> chessBoard[i][j].setPiece(new ChessPiece(ChessPieceId.Queen, player));
+                        case 4 -> chessBoard[i][j].setPiece(new ChessPiece(ChessPieceId.King, player));
                     }
                 }
             }
@@ -471,7 +471,7 @@ public class ChessMechanics
                 {
 
                     moveTemp = (ChessMove) movesTemp.remove();
-                    if (chessBoard[moveTemp.xStart][moveTemp.yStart].getPiece().getChessPieceId() == ChessPieceId.KING && moveTemp.getPlayerId() != player)
+                    if (chessBoard[moveTemp.xStart][moveTemp.yStart].getPiece().getChessPieceId() == ChessPieceId.King && moveTemp.getPlayerId() != player)
                     {
                         moveTempKing = moveTemp;
                     } else
@@ -579,7 +579,7 @@ public class ChessMechanics
     {
         for (int i = 0; i < 8; i++)
         {
-            for (int j = 0; j < 8 && (chessBoard[i][j].hasPiece()) && (chessBoard[i][j].getPiece().getChessPieceId() == ChessPieceId.KING) && (chessBoard[i][j].getPiece().getPlayerId() == player) && (chessBoard[i][j].hasTargetingMoves()); j++)
+            for (int j = 0; j < 8 && (chessBoard[i][j].hasPiece()) && (chessBoard[i][j].getPiece().getChessPieceId() == ChessPieceId.King) && (chessBoard[i][j].getPiece().getPlayerId() == player) && (chessBoard[i][j].hasTargetingMoves()); j++)
             {
                 for (int k = chessBoard[i][j].getTargetingMoves().getNumberOfElements(); i > 0; i--)
                 {
@@ -597,7 +597,7 @@ public class ChessMechanics
     {
         for (int i = 0; i < 8; i++)
         {
-            for (int j = 0; j < 8 && (chessBoard[i][j].hasPiece()) && (chessBoard[i][j].getPiece().getChessPieceId() == ChessPieceId.KING) && (chessBoard[i][j].getPiece().getPlayerId() == player) && (chessBoard[i][j].getPiece().hasPossibleMove()); j++)
+            for (int j = 0; j < 8 && (chessBoard[i][j].hasPiece()) && (chessBoard[i][j].getPiece().getChessPieceId() == ChessPieceId.King) && (chessBoard[i][j].getPiece().getPlayerId() == player) && (chessBoard[i][j].getPiece().hasPossibleMove()); j++)
             {
                 for (int k = chessBoard[i][j].getPiece().getPossibleMoves().getNumberOfElements(); i > 0; i--)
                 {

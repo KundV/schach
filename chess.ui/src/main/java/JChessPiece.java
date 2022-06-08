@@ -1,8 +1,18 @@
 import chess.core.ChessPieceId;
+import org.apache.batik.anim.dom.SAXSVGDocumentFactory;
+import org.apache.batik.anim.dom.SVGOMDocument;
+import org.apache.batik.bridge.DocumentLoader;
 import org.apache.batik.swing.JSVGCanvas;
+import org.apache.batik.swing.svg.SVGDocumentLoader;
+import org.apache.batik.util.XMLResourceDescriptor;
+import org.w3c.dom.Document;
+import org.w3c.dom.svg.SVGDocument;
+import org.xml.sax.SAXException;
 
 import javax.swing.*;
-import javax.swing.border.*;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -23,17 +33,31 @@ public class JChessPiece extends JPanel
         this.setBorder(new CornerBorder());
         URI uri;
 
+
+        SVGOMDocument doc = null;
+
+
+        uri = RessourceLoader.getRessource(isBlack ? RessourceLoader.WikimediaPieceColor.Black : RessourceLoader.WikimediaPieceColor.White, id);
+
         try
         {
-            uri = loadUri(id, isBlack);
+            String parser = XMLResourceDescriptor.getXMLParserClassName();
+            SAXSVGDocumentFactory f = new SAXSVGDocumentFactory(parser);
+            doc = (SVGOMDocument) f.createDocument(uri.toString());
+            doc.getRootElement().setAttribute("viewBox", "0 0 45 45");
+
         } catch (IOException e)
         {
             throw new RuntimeException(e);
         }
 
+
         setLayout(null);
         svg = new JSVGCanvas();
-        svg.setURI(uri.toString());
+        svg.setDocumentState(JSVGCanvas.ALWAYS_DYNAMIC);
+
+        svg.setDocument(doc);
+        //svg.setURI(uri.toString());
         svg.setOpaque(false);
         svg.setBackground(new Color(0, 0, 0, 0));
 
@@ -54,29 +78,15 @@ public class JChessPiece extends JPanel
         });
     }
 
-    static URI loadUri(ChessPieceId id, Boolean isBlack) throws IOException
-    {
-        var c = (isBlack ? "b" : "w") + ResourceHelper.IdToKaHu(id) + ".svg";
-        var res = ClassLoader.getSystemClassLoader().getResource("./ka-hu/chess_kaneo/" + c);
-        if (res == null)
-            throw new IOException("Could not find a SVG-ressource for " + id.toString() + " in " + (isBlack ? "black" : "white") + " color");
-
-        try
-        {
-            return res.toURI();
-        } catch (URISyntaxException e)
-        {
-            throw new RuntimeException(e);
-        }
-    }
 
     private void updateSvg()
     {
+        //svg.getSVGDocument();
         svg.setSize(new Dimension(getWidth(), getHeight()));
         svg.setLocation(0, 0);
         svg.revalidate();
-
         repaint();
+
     }
 
     public void setSelectable(boolean selectable)
@@ -87,18 +97,34 @@ public class JChessPiece extends JPanel
 
     public static class ResourceHelper
     {
+        static URI loadUri(ChessPieceId id, Boolean isBlack) throws IOException
+        {
+            var c = (isBlack ? "b" : "w") + ResourceHelper.IdToKaHu(id) + ".svg";
+            var res = ClassLoader.getSystemClassLoader().getResource("./ka-hu/chess_kaneo/" + c);
+            if (res == null)
+                throw new IOException("Could not find a SVG-ressource for " + id.toString() + " in " + (isBlack ? "black" : "white") + " color");
+
+            try
+            {
+                return res.toURI();
+            } catch (URISyntaxException e)
+            {
+                throw new RuntimeException(e);
+            }
+        }
+
         public static String IdToKaHu(ChessPieceId id)
         {
             // Correspond to the files in resources/ka-hu/chess_kaneo/
             return switch (id)
                     {
-                        case KING -> "K";
-                        case QUEEN -> "Q";
-                        case TOWER -> "R";
+                        case King -> "K";
+                        case Queen -> "Q";
+                        case Tower -> "R";
 
-                        case BISHOP -> "B";
-                        case HORSE -> "N";
-                        case PAWN -> "P";
+                        case Bishop -> "B";
+                        case Horse -> "N";
+                        case Pawn -> "P";
                     };
         }
     }
