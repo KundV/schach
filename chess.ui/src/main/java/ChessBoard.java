@@ -248,9 +248,9 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
             this.add(chessPieceUIComponents[_selectedPiece.y][_selectedPiece.x], new Integer(1));
             var target = vecFromPoint(e.getPoint());
             var moves = _mechanics.getChessBoard()[_selectedPiece.y][_selectedPiece.x].getPiece().getPossibleMoves();
-            for (int i = 1; i <= moves.getNumberOfElements(); i++)
+            for (int i = 1; i <= moves.size(); i++)
             {
-                var move = ((ChessMove) moves.getByIndex(i));
+                var move = ((ChessMove) moves.get(i - 1));
                 if (move.xTarget == target.y && move.yTarget == target.x && move.event.getID() != EventID.Blocked)
                 {
                     _mechanics.executeMove(move);

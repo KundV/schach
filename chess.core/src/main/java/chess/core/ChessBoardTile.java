@@ -1,17 +1,18 @@
 package chess.core;
 
-import chess.core.VerktetteListe.Queue;
+
+import java.util.ArrayList;
 
 public class ChessBoardTile                        //Is a tile on the chessboard. It can be empty or contain a piece.
 {
     private ChessPiece piece;                    //The piece on this tile.
-    private Queue TargetingMoves;                //The moves that can be made to this tile.
+    private ArrayList<ChessMove> TargetingMoves;                //The moves that can be made to this tile.
 
 
 
     public ChessBoardTile()                      //Constructor. Creates a new tile with no piece on it.
     {
-        this.TargetingMoves = new Queue();
+        this.TargetingMoves = new ArrayList();
     }
 
 
@@ -39,13 +40,13 @@ public class ChessBoardTile                        //Is a tile on the chessboard
         return temp;
     }
 
-    public Queue extractAllTargetingMoves()      //Returns the targeting moves and clears the list.
+    public ArrayList<ChessMove> extractAllTargetingMoves()      //Returns the targeting moves and clears the list.
     {
-        Queue temp = cloneTargetingMoves();
+        ArrayList<ChessMove> temp = cloneTargetingMoves();
         TargetingMoves.clear();
         return temp;
     }
-    public void extractAllTargetingMoves(Queue temp)      //Returns the targeting moves and clears the list.
+    public void extractAllTargetingMoves(ArrayList<ChessMove> temp)      //Returns the targeting moves and clears the list.
     {
         cloneTargetingMoves(temp);
         TargetingMoves.clear();
@@ -71,7 +72,7 @@ public class ChessBoardTile                        //Is a tile on the chessboard
         return (TargetingMoves.isEmpty());
     }
 
-    public Queue getTargetingMoves()                 //Returns the targeting moves.
+    public ArrayList<ChessMove> getTargetingMoves()                 //Returns the targeting moves.
     {
         return TargetingMoves;
     }
@@ -81,24 +82,24 @@ public class ChessBoardTile                        //Is a tile on the chessboard
         return (piece != null);
     }
 
-    public Queue cloneTargetingMoves()
+    public ArrayList<ChessMove> cloneTargetingMoves()
     {
-        Queue temp = new Queue();
-        for(int i = TargetingMoves.getNumberOfElements(); i > 0;i--)//TODO: Possible bug.!!!
+        ArrayList<ChessMove> temp = new ArrayList<ChessMove>();
+        for(int i = TargetingMoves.size(); i > 0; i--)//TODO: Possible bug.!!!
         {
-            temp.add(TargetingMoves.getByIndex(i));
+            temp.add(TargetingMoves.get(i - 1));
         }
         return temp;
     }
-    public void cloneTargetingMoves(Queue temp)
+    public void cloneTargetingMoves(ArrayList<ChessMove> temp)
     {
-        for(int i = TargetingMoves.getNumberOfElements(); i > 0;i--)//TODO: Possible bug.!!!
+        for(int i = TargetingMoves.size(); i > 0; i--)//TODO: Possible bug.!!!
         {
-            temp.addByStart(TargetingMoves.getByIndex(i));
+            temp.add(0, TargetingMoves.get(i - 1));
         }
     }
 
-    public void setTargetingMoves(Queue moves)
+    public void setTargetingMoves(ArrayList<ChessMove> moves)
     {
         this.TargetingMoves = moves;
     }

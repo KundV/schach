@@ -1,7 +1,8 @@
 package chess.core;
 
 import chess.core.VerktetteListe.Dataelement;
-import chess.core.VerktetteListe.Queue;
+
+import java.util.ArrayList;
 
 
 public class ChessPiece
@@ -11,7 +12,7 @@ public class ChessPiece
     //after a move is made, all possible moves are calculated.
     private ChessPieceId chessPieceId;
     private PlayerId playerId;
-    private Queue possibleMoves;
+    private ArrayList<ChessMove> possibleMoves;
     private int moveCount = 0;
     private int ID;
 
@@ -20,7 +21,7 @@ public class ChessPiece
     {
         this.chessPieceId = chessPieceId;
         this.playerId = playerId;
-        this.possibleMoves = new Queue();
+        this.possibleMoves = new ArrayList();
 
     }
 
@@ -29,7 +30,7 @@ public class ChessPiece
         this.moveCount = moveCount;
         this.chessPieceId = chessPieceId;
         this.playerId = playerId;
-        this.possibleMoves = new Queue();
+        this.possibleMoves = new ArrayList();
 
     }
 
@@ -55,24 +56,24 @@ public class ChessPiece
         this.ID = ID;
     }
 
-    public Queue removeAllPossibleMoves()   //returns the queue of possible moves and deletes it
+    public ArrayList<ChessMove> removeAllPossibleMoves()   //returns the ArrayList<ChessMove> of possible moves and deletes it
     {
-        Queue temp = possibleMoves;
-        possibleMoves = new Queue();
+        ArrayList<ChessMove> temp = possibleMoves;
+        possibleMoves = new ArrayList();
         return possibleMoves;
     }
 
-    public Queue getPossibleMoves()        //returns the queue of possible moves
+    public ArrayList<ChessMove> getPossibleMoves()        //returns the ArrayList<ChessMove> of possible moves
     {
         return possibleMoves;
     }
 
-    public void setPossibleMoves(Queue possibleMoves)
+    public void setPossibleMoves(ArrayList<ChessMove> possibleMoves)
     {
         this.possibleMoves = possibleMoves;
     }
 
-    public void addPossibleMove(ChessMove move)     //adds a move to the queue of possible moves
+    public void addPossibleMove(ChessMove move)     //adds a move to the ArrayList<ChessMove> of possible moves
     {
         this.possibleMoves.add(move);
     }
@@ -92,41 +93,41 @@ public class ChessPiece
         moveCount--;
     }
 
-    public void resetAllPossibleMoves()         //resets the queue of possible moves
+    public void resetAllPossibleMoves()         //resets the ArrayList<ChessMove> of possible moves
     {
         this.possibleMoves.clear();
     }
 
-    public void removePossibleMove(ChessMove move)  //removes a specific move from the queue of possible moves
+    public void removePossibleMove(ChessMove move)  //removes a specific move from the ArrayList<ChessMove> of possible moves
     {
         this.possibleMoves.remove(move);
     }
 
-    public Dataelement removePossibleMove()     //removes the first move from the queue of possible moves
+    public Dataelement removePossibleMove()     //removes the first move from the ArrayList<ChessMove> of possible moves
     {
-        return this.possibleMoves.remove();
+        return this.possibleMoves.remove(0);
     }
 
-    public boolean hasPossibleMove()      //checks if a specific move is in the queue of possible moves
+    public boolean hasPossibleMove()      //checks if a specific move is in the ArrayList<ChessMove> of possible moves
     {
         return !this.possibleMoves.isEmpty();
     }
 
-    public Queue clonePossibleMoves()
+    public ArrayList<ChessMove> clonePossibleMoves()
     {
-        Queue temp = new Queue();
-        for (int i = possibleMoves.getNumberOfElements(); i > 0; i--)
+        ArrayList<ChessMove> temp = new ArrayList<>();
+        for (int i = possibleMoves.size(); i > 0; i--)
         {
-            temp.add(possibleMoves.getByIndex(i));
+            temp.add(possibleMoves.get(i - 1));
         }
         return temp;
     }
 
     public boolean hasNonBlockedMoves()
     {
-        for (int i = 0; i < possibleMoves.getNumberOfElements(); i++)
+        for (int i = 0; i < possibleMoves.size(); i++)
         {
-            if (possibleMoves.getByIndex(i + 1).getEvent().getID() != EventID.Blocked) return true;
+            if (possibleMoves.get(i + 1 - 1).getEvent().getID() != EventID.Blocked) return true;
         }
         return false;
     }

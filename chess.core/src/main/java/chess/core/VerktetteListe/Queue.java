@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 
 @Debug.Renderer(text = "this.getNumberOfElements()",
@@ -21,50 +22,74 @@ public class Queue implements Collection<ChessMove>
     }
 
 
-    public void add(Dataelement content)        // add to end of queue
+    // Is OK for migration
+    public void add(Dataelement content)        // add to end of ArrayList
     {
+        List<ChessMove> moves = null;
+        
         first = first.insert(content);
     }
 
-    public void addByStart(Dataelement content)        // add to start of queue
+    
+    /* Custom Method Removed
+    public void addByStart(Dataelement content)        // add to start of ArrayList
+    {
+        first = first.insertByStart(content);
+    }*/
+    
+    // Dummy method
+    public void add(int index, Dataelement content)        // add to index of ArrayList
     {
         first = first.insertByStart(content);
     }
 
-    public Dataelement remove()     // remove from front of queue
+    // Custom method removed
+    /*
+    public Dataelement remove()     // remove from front of ArrayList
     {
         Listelement oldFirst = first;
         first = first.getNext();
         return oldFirst.getContent();
+    }*/
+    
+    // Dummy
+    public Dataelement remove(int index) {
+        throw new UnsupportedOperationException("Dummy method for ArrayList migration");
     }
 
-    public void remove(ChessMove move)      // removes a specific move from the queue
+    // Ok for migration
+    public void remove(ChessMove move)      // removes a specific move from the ArrayList
     {
         first = first.remove(move);
     }
 
-    public Dataelement getByIndex(int index)        // returns the element at the given index
+    // Ok for migration
+    public Dataelement get(int index)        // returns the element at the given index
     {
+        
         return first.getContentById(index);
     }
 
-    public int count_nodes()        // counts the number of nodes in the queue
+    /* Unused
+    public int count_nodes()        // counts the number of nodes in the ArrayList
     {
         return first.countNodes();
-    }
+    }*/
 
-    public void clear()         // clears the queue
+    // Ok for migration
+    public void clear()         // clears the ArrayList
     {
         first = new End();
     }
 
+    // Ok for migration
     @Override
     public int size()
     {
-        return getNumberOfElements();
+        return size();
     }
 
-    public boolean isEmpty()        // checks if the queue is empty
+    public boolean isEmpty()        // checks if the ArrayList is empty
     {
         return first.isEmpty();
     }
@@ -101,11 +126,11 @@ public class Queue implements Collection<ChessMove>
 
     public Dataelement[] toArray()
     {
-        var a = new Dataelement[this.getNumberOfElements()];
+        var a = new Dataelement[this.size()];
 
-        for (int i = 1; i <= this.getNumberOfElements(); i++)
+        for (int i = 1; i <= this.size(); i++)
         {
-            a[i - 1] = this.getByIndex(i);
+            a[i - 1] = this.get(i - 1);
         }
         return a;
 
@@ -159,9 +184,10 @@ public class Queue implements Collection<ChessMove>
         this.stream().filter(c::contains).forEach(this::remove);
         return true;
     }
-
-    public int getNumberOfElements()
+/*
+    public int size()
     {
         return first.countNodes();
     }
+    */
 }
