@@ -86,7 +86,7 @@ public class Queue implements Collection<ChessMove>
             @Override
             public boolean hasNext()
             {
-                return current.getNext() instanceof Datanode;
+                return current instanceof Datanode;
             }
 
             @Override

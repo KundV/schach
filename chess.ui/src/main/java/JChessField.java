@@ -44,7 +44,7 @@ public class JChessField extends JPanel
         isTarget = false;
     }
 
-    private boolean isTarget = true;
+    private boolean isTarget = false;
     private boolean isCapture = false;
     private boolean isOccupied = false;
 
@@ -52,6 +52,6 @@ public class JChessField extends JPanel
 
     private final Color lightFieldColor = new Color(239, 216, 180, 255);
 
-    private final Color captureColor = new Color(192, 87, 87, 255);
+    private final Color captureColor = new Color(192, 87, 87, 176);
     private final Color nonCaptureColor = new Color(131, 120, 69, 176);
 }
