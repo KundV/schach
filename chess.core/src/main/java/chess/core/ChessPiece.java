@@ -103,9 +103,11 @@ public class ChessPiece
         this.possibleMoves.remove(move);
     }
 
-    public Dataelement removePossibleMove()     //removes the first move from the ArrayList<ChessMove> of possible moves
+    public ChessMove removePossibleMove()     //removes the first move from the ArrayList<ChessMove> of possible moves
     {
-        return this.possibleMoves.remove(0);
+        var rm = this.possibleMoves.get(0);
+        this.possibleMoves.remove(0);
+        return rm;
     }
 
     public boolean hasPossibleMove()      //checks if a specific move is in the ArrayList<ChessMove> of possible moves

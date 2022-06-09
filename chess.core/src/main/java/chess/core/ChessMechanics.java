@@ -2,7 +2,10 @@ package chess.core;
 
 
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class ChessMechanics
@@ -87,9 +90,47 @@ public class ChessMechanics
         }
     }
 
+    @Nullable
+    ChessMove checkFinalizeTemplate(ChessMove input, boolean areCapturesRequired) {
+        var p = chessBoard[input.xStart][input.xTarget].getPiece();
+        if (p == null) {
+            return null;
+        }
+
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    void generateImmediateMoves() {
+        for (int row = 0; row < 8; row++)
+        {
+            for (int col = 0; col < 8; col++)
+            {
+                var piecePos = new Pos(col, row);
+                if (chessBoard[row][col].hasPiece()) {
+                    var piece = chessBoard[row][col].getPiece();
+
+                    //region PAWN
+                    if (piece.getChessPieceId() == ChessPieceId.Pawn) {
+
+                    }
+                    //endregion
+
+
+
+
+
+
+
+
+                }
+            }
+        }
+    }
+
     public boolean RulesPawn(int x, int y)
     {
         int a = chessBoard[x][y].getPiece().getPlayerId() == PlayerId.BLACK ? 1 : -1;
+
         if (x + a >= 0 && x + a <= 7)
         {
             if (!chessBoard[x + a][y].hasPiece())

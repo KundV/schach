@@ -117,9 +117,9 @@ public class Queue implements Collection<ChessMove>
             @Override
             public ChessMove next()
             {
-                var ret = (ChessMove) current.getContent();
+                //var ret = (ChessMove) current.getContent();
                 current = current.getNext();
-                return ret;
+                return null;
             }
         };
     }
@@ -147,7 +147,7 @@ public class Queue implements Collection<ChessMove>
     @Override
     public boolean add(ChessMove chessMove)
     {
-        add((Dataelement) chessMove);
+        add(chessMove);
         return true;
     }
 

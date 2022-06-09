@@ -49,7 +49,7 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
 
         if (this._selectedPiece != null)
         {
-            var moves = this._mechanics.getChessBoard()[_selectedPiece.y][_selectedPiece.x].getPiece().getPossibleMoves();
+            var moves = this._mechanics.getChessBoard()[_selectedPiece.r][_selectedPiece.c].getPiece().getPossibleMoves();
             for (var move : moves)
             {
                 if (move.event.getID() == EventID.Blocked) continue;
@@ -215,22 +215,22 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
 
 
         var fieldVec = vecFromPoint(e.getPoint());
-        if (fieldVec.x < 0 && fieldVec.y < 0 // if field is negative
-                && fieldVec.x >= 8 && fieldVec.y >= 8)
+        if (fieldVec.c < 0 && fieldVec.r < 0
+                && fieldVec.c >= 8 && fieldVec.r >= 8)
         {
             return;
         }
-        var p = _mechanics.getChessBoard()[fieldVec.y][fieldVec.x].getPiece();
+        var p = _mechanics.getChessBoard()[fieldVec.r][fieldVec.c].getPiece();
 
         if (p == null || !p.hasNonBlockedMoves() || p.getPlayerId() != _mechanics.getCurrentPlayer())
         {
             return;
         }
 
-        if (chessPieceUIComponents[fieldVec.y][fieldVec.x] != null) // if field is empty
+        if (chessPieceUIComponents[fieldVec.r][fieldVec.c] != null) // if field is empty
         {
             this._selectedPiece = fieldVec;
-            this.setLayer(chessPieceUIComponents[fieldVec.y][fieldVec.x], 1);
+            this.setLayer(chessPieceUIComponents[fieldVec.r][fieldVec.c], 1);
             //this.add(chessPieceUIComponents[fieldVec.y][fieldVec.x], new Integer(1));
         }
 
@@ -245,13 +245,13 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
 
         if (_selectedPiece != null)
         {
-            this.add(chessPieceUIComponents[_selectedPiece.y][_selectedPiece.x], new Integer(1));
+            this.add(chessPieceUIComponents[_selectedPiece.r][_selectedPiece.c], new Integer(1));
             var target = vecFromPoint(e.getPoint());
-            var moves = _mechanics.getChessBoard()[_selectedPiece.y][_selectedPiece.x].getPiece().getPossibleMoves();
+            var moves = _mechanics.getChessBoard()[_selectedPiece.r][_selectedPiece.c].getPiece().getPossibleMoves();
             for (int i = 1; i <= moves.size(); i++)
             {
                 var move = ((ChessMove) moves.get(i - 1));
-                if (move.xTarget == target.y && move.yTarget == target.x && move.event.getID() != EventID.Blocked)
+                if (move.xTarget == target.r && move.yTarget == target.c && move.event.getID() != EventID.Blocked)
                 {
                     _mechanics.executeMove(move);
                     processMove(move);
@@ -280,28 +280,28 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
     }
 
 
-    private Vec _selectedPiece;
+    private Pos _selectedPiece;
 
     @Override
     public void mouseDragged(MouseEvent e)
     {
         if (_selectedPiece != null)
         {
-            var piece = chessPieceUIComponents[_selectedPiece.y][_selectedPiece.x];
+            var piece = chessPieceUIComponents[_selectedPiece.r][_selectedPiece.c];
             piece.setLocation(e.getPoint());
 
         }
     }
 
 
-    private Vec vecFromPoint(Point p)
+    private Pos vecFromPoint(Point p)
     {
-        return new Vec(fieldFromX(p.x), fieldFromY(p.y));
+        return new Pos(fieldFromX(p.x), fieldFromY(p.y));
     }
 
-    private Point pointFromVec(Vec v)
+    private Point pointFromVec(Pos v)
     {
-        return new Point(v.x * getWidth() / 8, v.y * getHeight() / 8);
+        return new Point(v.c * getWidth() / 8, v.r * getHeight() / 8);
     }
 
     private int fieldFromX(int x)
