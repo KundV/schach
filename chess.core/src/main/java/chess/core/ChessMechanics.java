@@ -1,21 +1,19 @@
 package chess.core;
 
 
-
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 
-public class ChessMechanics
+public class ChessMechanics implements Cloneable
 {
     private ChessBoardTile[][] chessBoard; // the chess board
     private ArrayList<ChessPiece> deadPieces = new ArrayList<ChessPiece>();   // the dead pieces
     private int targetTurn = 0;// the targeted turn of simulation
     private PlayerId player = PlayerId.WHITE; // the current player
     private ArrayList<ChessMove> madeMoves = new ArrayList<ChessMove>();               // the moves made
-
 
 
 
@@ -26,7 +24,7 @@ public class ChessMechanics
         {
             this.madeMoves.add(madeMoves.getByIndex(i));
         }*/
-        for(int i = deadPieces.size()-1; i > 0;i--)//TODO: Possible bug.!!!
+        for (int i = deadPieces.size() - 1; i > 0; i--)//TODO: Possible bug.!!!
         {
             this.deadPieces.add(deadPieces.get(i));
         }
@@ -38,9 +36,10 @@ public class ChessMechanics
         executeMove(move);
     }
 
+
+
     public ChessMechanics()
     {
-        madeMoves = new ArrayList();
         makeBoard();
         StartPosition();
         //targetTurn--;
@@ -81,45 +80,62 @@ public class ChessMechanics
     {
         switch (chessBoard[x][y].getPiece().getChessPieceId())                                                                      // switch statement for the piece
         {
-            case Pawn -> { RulesPawn(x,y);}
-            case Tower -> { RulesTower(x,y);}
-            case Bishop -> { RulesBishop(x,y);}
-            case Horse -> { RulesHorse(x,y);}
-            case King -> { RulesKing(x,y);}
-            case Queen -> { RulesQueen(x,y);}
+            case Pawn ->
+            {
+                RulesPawn(x, y);
+            }
+            case Tower ->
+            {
+                RulesTower(x, y);
+            }
+            case Bishop ->
+            {
+                RulesBishop(x, y);
+            }
+            case Horse ->
+            {
+                RulesHorse(x, y);
+            }
+            case King ->
+            {
+                RulesKing(x, y);
+            }
+            case Queen ->
+            {
+                RulesQueen(x, y);
+            }
         }
     }
 
     @Nullable
-    ChessMove checkFinalizeTemplate(ChessMove input, boolean areCapturesRequired) {
+    ChessMove checkFinalizeTemplate(ChessMove input, boolean areCapturesRequired)
+    {
         var p = chessBoard[input.xStart][input.xTarget].getPiece();
-        if (p == null) {
+        if (p == null)
+        {
             return null;
         }
 
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
-    void generateImmediateMoves() {
+    void generateImmediateMoves()
+    {
         for (int row = 0; row < 8; row++)
         {
             for (int col = 0; col < 8; col++)
             {
                 var piecePos = new Pos(col, row);
-                if (chessBoard[row][col].hasPiece()) {
+                if (chessBoard[row][col].hasPiece())
+                {
                     var piece = chessBoard[row][col].getPiece();
 
                     //region PAWN
-                    if (piece.getChessPieceId() == ChessPieceId.Pawn) {
+                    if (piece.getChessPieceId() == ChessPieceId.Pawn)
+                    {
 
                     }
                     //endregion
-
-
-
-
-
-
 
 
                 }
@@ -139,8 +155,7 @@ public class ChessMechanics
                 if (x + a == 0 || x + a == 7)
                 {
                     move = new ChessMove(x, y, x + a, y, chessBoard[x][y].getPlayerId(), new Event(EventID.Promotion));
-                }
-                else
+                } else
                 {
                     move = new ChessMove(x, y, x + a, y, chessBoard[x][y].getPlayerId(), new Event(EventID.Move));
                 }
@@ -162,8 +177,7 @@ public class ChessMechanics
                         }                               // if the tile is empty
                         chessBoard[x][y].getPiece().addPossibleMove(move);
                         chessBoard[x + (a * 2)][y].addTargetingMove(move);
-                    }
-                    else if (chessBoard[x + (a * 2)][y].hasPiece())
+                    } else if (chessBoard[x + (a * 2)][y].hasPiece())
                     {
                         move = new ChessMove(x, y, x + (a * 2), y, chessBoard[x][y].getPlayerId(), new Event(EventID.Blocked));                               // if the tile is empty
                         chessBoard[x][y].getPiece().addPossibleMove(move);
@@ -179,73 +193,71 @@ public class ChessMechanics
             }
 
 
-
-
-        if ( y + 1 <= 7)
-        {
-            if (chessBoard[x + a][y + 1].hasPiece())
+            if (y + 1 <= 7)
             {
-                if (chessBoard[x][y].getPiece().getPlayerId() == chessBoard[x + a][y + 1].getPiece().getPlayerId().opposite())
+                if (chessBoard[x + a][y + 1].hasPiece())
                 {
-                    ChessMove move;
-                    if (x + a == 0 || x + a == 7)
+                    if (chessBoard[x][y].getPiece().getPlayerId() == chessBoard[x + a][y + 1].getPiece().getPlayerId().opposite())
                     {
-                        move = new ChessMove(x, y, x + a, y + 1, chessBoard[x][y].getPlayerId(), new Event(EventID.Promotion));
+                        ChessMove move;
+                        if (x + a == 0 || x + a == 7)
+                        {
+                            move = new ChessMove(x, y, x + a, y + 1, chessBoard[x][y].getPlayerId(), new Event(EventID.Promotion));
+                        } else
+                        {
+                            move = new ChessMove(x, y, x + a, y + 1, chessBoard[x][y].getPlayerId(), new Event(EventID.Capture));
+                        }
+                        // if the tile is empty
+                        chessBoard[x][y].getPiece().addPossibleMove(move);
+                        chessBoard[x + a][y + 1].addTargetingMove(move);
                     } else
                     {
-                        move = new ChessMove(x, y, x + a, y + 1, chessBoard[x][y].getPlayerId(), new Event(EventID.Capture));
+                        ChessMove move;
+                        move = new ChessMove(x, y, x + a, y + 1, chessBoard[x][y].getPlayerId(), new Event(EventID.Blocked));
+                        chessBoard[x][y].getPiece().addPossibleMove(move);
+                        chessBoard[x + a][y + 1].addTargetingMove(move);
                     }
-                    // if the tile is empty
-                    chessBoard[x][y].getPiece().addPossibleMove(move);
-                    chessBoard[x + a][y + 1].addTargetingMove(move);
-                }else
+                } else
                 {
                     ChessMove move;
                     move = new ChessMove(x, y, x + a, y + 1, chessBoard[x][y].getPlayerId(), new Event(EventID.Blocked));
                     chessBoard[x][y].getPiece().addPossibleMove(move);
                     chessBoard[x + a][y + 1].addTargetingMove(move);
                 }
-            }else
-            {
-                ChessMove move;
-                move = new ChessMove(x, y, x + a, y + 1, chessBoard[x][y].getPlayerId(), new Event(EventID.Blocked));
-                chessBoard[x][y].getPiece().addPossibleMove(move);
-                chessBoard[x + a][y + 1].addTargetingMove(move);
             }
-        }
 
-        if(y - 1 >= 0){
-            if (chessBoard[x + a][y - 1].hasPiece())
+            if (y - 1 >= 0)
             {
-                if (chessBoard[x][y].getPiece().getPlayerId() == chessBoard[x + a][y - 1].getPiece().getPlayerId().opposite())
+                if (chessBoard[x + a][y - 1].hasPiece())
                 {
-                    ChessMove move;
-                    if (x + a == 0 || x + a == 7)
+                    if (chessBoard[x][y].getPiece().getPlayerId() == chessBoard[x + a][y - 1].getPiece().getPlayerId().opposite())
                     {
-                        move = new ChessMove(x, y, x + a, y - 1, chessBoard[x][y].getPlayerId(), new Event(EventID.Promotion));
-                    }
-                    else
-                    {
-                        move = new ChessMove(x, y, x + a, y - 1, chessBoard[x][y].getPlayerId(), new Event(EventID.Capture));
-                    }// if the tile is empty
+                        ChessMove move;
+                        if (x + a == 0 || x + a == 7)
+                        {
+                            move = new ChessMove(x, y, x + a, y - 1, chessBoard[x][y].getPlayerId(), new Event(EventID.Promotion));
+                        } else
+                        {
+                            move = new ChessMove(x, y, x + a, y - 1, chessBoard[x][y].getPlayerId(), new Event(EventID.Capture));
+                        }// if the tile is empty
 
-                    chessBoard[x][y].getPiece().addPossibleMove(move);
-                    chessBoard[x + a][y - 1].addTargetingMove(move);
-                }else
+                        chessBoard[x][y].getPiece().addPossibleMove(move);
+                        chessBoard[x + a][y - 1].addTargetingMove(move);
+                    } else
+                    {
+                        ChessMove move;
+                        move = new ChessMove(x, y, x + a, y - 1, chessBoard[x][y].getPlayerId(), new Event(EventID.Blocked));
+                        chessBoard[x][y].getPiece().addPossibleMove(move);
+                        chessBoard[x + a][y - 1].addTargetingMove(move);
+                    }
+                } else
                 {
                     ChessMove move;
                     move = new ChessMove(x, y, x + a, y - 1, chessBoard[x][y].getPlayerId(), new Event(EventID.Blocked));
                     chessBoard[x][y].getPiece().addPossibleMove(move);
                     chessBoard[x + a][y - 1].addTargetingMove(move);
                 }
-            } else
-            {
-                ChessMove move;
-                move = new ChessMove(x, y, x + a, y - 1, chessBoard[x][y].getPlayerId(), new Event(EventID.Blocked));
-                chessBoard[x][y].getPiece().addPossibleMove(move);
-                chessBoard[x + a][y - 1].addTargetingMove(move);
             }
-        }
         }
         return true;
     }
@@ -358,6 +370,8 @@ public class ChessMechanics
         }*/
     }
 
+    public ArrayList<ChessMechanics> blackKingSimulations = new ArrayList<ChessMechanics>();
+
     public boolean TestMovePiece(int x, int y, int x2, int y2)
     {
         if (x2 < 0 | x2 > 7 | y2 < 0 | y2 > 7)
@@ -370,15 +384,20 @@ public class ChessMechanics
 
             if (targetTurn == 0)
             {
+                // Check legality
                 ChessMechanics test = new ChessMechanics(chessBoard, deadPieces, madeMoves.size() + 1, player, move);
+                boolean isBlackKing = chessBoard[x][y].getPiece().getPlayerId().isBlack() && chessBoard[x][y].getPiece().getChessPieceId() == ChessPieceId.King;
+                if (isBlackKing) {
+                    blackKingSimulations.add(test);
+                }
                 if (test.isLegal(player))
                 {
                     chessBoard[x][y].getPiece().addPossibleMove(move);
                     chessBoard[x2][y2].addTargetingMove(move);
                     return true;
                 } else return false;
-            }
-            else {
+            } else
+            {
                 chessBoard[x][y].getPiece().addPossibleMove(move);
                 chessBoard[x2][y2].addTargetingMove(move);
                 return true;
@@ -398,7 +417,8 @@ public class ChessMechanics
                     chessBoard[x2][y2].addTargetingMove(move);
                     return false;
                 } else return false;
-            }else {
+            } else
+            {
                 chessBoard[x][y].getPiece().addPossibleMove(move);
                 chessBoard[x2][y2].addTargetingMove(move);
                 return false;
@@ -413,7 +433,6 @@ public class ChessMechanics
         }
         return false;
     }
-
 
 
     public void StartPosition()
@@ -551,24 +570,25 @@ public class ChessMechanics
         if (move.getPlayerId() == player)
         {
 
-        if ((move.getEvent().getID() == EventID.Capture || move.getEvent().getID() == EventID.Move))
-        {
-            chessBoard[move.xStart][move.yStart].getPiece().addMoveCount();
+            if ((move.getEvent().getID() == EventID.Capture || move.getEvent().getID() == EventID.Move))
+            {
+                chessBoard[move.xStart][move.yStart].getPiece().addMoveCount();
 
 
-            if (move.getEvent().getID() == EventID.Capture)                                               // if the piece has been captured, remove the Piece on the targeted tile
-            {
-                deadPieces.add(chessBoard[move.xTarget][move.yTarget].removePiece());
-                chessBoard[move.xTarget][move.yTarget].setPiece(chessBoard[move.xStart][move.yStart].removePiece());
-            } else                                                                           // if the piece has been moved, remove from start tile and add to target tile
-            {
-                chessBoard[move.xTarget][move.yTarget].setPiece(chessBoard[move.xStart][move.yStart].removePiece());
+                if (move.getEvent().getID() == EventID.Capture)                                               // if the piece has been captured, remove the Piece on the targeted tile
+                {
+                    deadPieces.add(chessBoard[move.xTarget][move.yTarget].removePiece());
+                    chessBoard[move.xTarget][move.yTarget].setPiece(chessBoard[move.xStart][move.yStart].removePiece());
+                } else                                                                           // if the piece has been moved, remove from start tile and add to target tile
+                {
+                    chessBoard[move.xTarget][move.yTarget].setPiece(chessBoard[move.xStart][move.yStart].removePiece());
+                }
+                madeMoves.add(move);
             }
-            madeMoves.add(move);
-        }
 
-                removeAllMoves();
-                getAllMoves();
+            removeAllMoves();
+            blackKingSimulations = new ArrayList<>();
+            getAllMoves();
 
             player = player.opposite();
 
@@ -591,7 +611,7 @@ public class ChessMechanics
                     if (move.getEvent().getID() == EventID.Capture)                                               // if the piece has been captured, remove the Piece on the targeted tile
                     {
                         chessBoard[move.xStart][move.yStart].setPiece(chessBoard[move.xTarget][move.yTarget].removePiece());
-                        chessBoard[move.xTarget][move.yTarget].setPiece(deadPieces.remove(deadPieces.size()-1));
+                        chessBoard[move.xTarget][move.yTarget].setPiece(deadPieces.remove(deadPieces.size() - 1));
                     } else                                                                           // if the piece has been moved, remove from start tile and add to target tile
                     {
                         chessBoard[move.xStart][move.yStart].setPiece(chessBoard[move.xTarget][move.yTarget].removePiece());
@@ -662,8 +682,23 @@ public class ChessMechanics
         return true;
     }
 
-    public PlayerId getCurrentPlayer() {
+    public PlayerId getCurrentPlayer()
+    {
         return player;
+    }
+
+    @Override
+    public ChessMechanics clone()
+    {
+        try
+        {
+            ChessMechanics clone = (ChessMechanics) super.clone();
+            // TODO: copy mutable state here, so the clone can't change the internals of the original
+            return clone;
+        } catch (CloneNotSupportedException e)
+        {
+            throw new AssertionError();
+        }
     }
 }
 

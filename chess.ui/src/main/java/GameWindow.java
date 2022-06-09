@@ -16,10 +16,14 @@ public class GameWindow extends JFrame
     private ChessMechanics _mechanics;
 
 
-
     public GameWindow()
     {
-        _mechanics = new ChessMechanics();
+        this(new ChessMechanics());
+    }
+
+    public GameWindow(ChessMechanics mechanics)
+    {
+        _mechanics = mechanics;
         setTitle("CHESS");
         setPreferredSize(new Dimension(800, 600));
         setMinimumSize(new Dimension(400, 300));
@@ -27,6 +31,7 @@ public class GameWindow extends JFrame
         setLocationRelativeTo(null);
 
         _board = new ChessBoard(_mechanics);
+
         _content = new JPanel();
         // Set _layout to BoxLayout
         _layout = new GridBagLayout();
@@ -46,6 +51,27 @@ public class GameWindow extends JFrame
             var undoButton = new JButton("Undo");
             undoButton.addActionListener(e -> _board.Undo());
             _sidebar.add(undoButton);
+
+            var loadKingsSimulations = new Button("Load Kings Simulations");
+            var lm = new DefaultListModel<String>();
+
+            var jl = new JList<String>(lm);
+            loadKingsSimulations.addActionListener(e ->
+            {
+                lm.clear();
+                _mechanics.blackKingSimulations.forEach(b -> lm.addElement(b.toString()));
+            });
+
+            jl.addListSelectionListener(e ->
+            {
+                if (!e.getValueIsAdjusting() && jl.getSelectedIndex() != -1)
+                {
+                    new GameWindow(_mechanics.blackKingSimulations.get(jl.getSelectedIndex()));
+                }
+            });
+
+            _sidebar.add(loadKingsSimulations);
+            _sidebar.add(jl);
         }
         c.gridx = 1;
         c.gridy = 0;
@@ -56,25 +82,26 @@ public class GameWindow extends JFrame
         getContentPane().add(_content, BorderLayout.CENTER);
 
         this.getContentPane().addComponentListener
-        (
-            new ComponentAdapter()
-            {
-                @Override public void componentResized(ComponentEvent e)
-                {
+                (
+                        new ComponentAdapter()
+                        {
+                            @Override
+                            public void componentResized(ComponentEvent e)
+                            {
 
-                    var maxW = _content.getSize().width - _sidebar.getMinimumSize().width;
-                    var maxH = _content.getSize().height;
-                    var fitSize = Math.min(maxW, maxH);
-                    if (fitSize <= 0) return;
+                                var maxW = _content.getSize().width - _sidebar.getMinimumSize().width;
+                                var maxH = _content.getSize().height;
+                                var fitSize = Math.min(maxW, maxH);
+                                if (fitSize <= 0) return;
 
 
-                    //_board.setSize(fitSize, fitSize);
-                    _board.setPreferredSize(new Dimension(fitSize, fitSize));
-                    _board.revalidate();
-                    repaint();
-                }
-            }
-        );
+                                //_board.setSize(fitSize, fitSize);
+                                _board.setPreferredSize(new Dimension(fitSize, fitSize));
+                                _board.revalidate();
+                                repaint();
+                            }
+                        }
+                );
 
         pack();
         setVisible(true);
