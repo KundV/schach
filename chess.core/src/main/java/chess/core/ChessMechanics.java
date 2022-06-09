@@ -539,6 +539,7 @@ public class ChessMechanics
         if (!madeMoves.isEmpty())
         {
             ChessMove move = (ChessMove) madeMoves.getByIndex(madeMoves.getNumberOfElements() );
+            madeMoves.remove(move);
 
             if (move.getPlayerId() != player)
             {
