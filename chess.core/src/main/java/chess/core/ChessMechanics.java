@@ -355,12 +355,12 @@ public class ChessMechanics
                 {
                     chessBoard[x][y].getPiece().addPossibleMove(move);
                     chessBoard[x2][y2].addTargetingMove(move);
-                    return true;
+                    return false;
                 } else return false;
             }else {
                 chessBoard[x][y].getPiece().addPossibleMove(move);
                 chessBoard[x2][y2].addTargetingMove(move);
-                return true;
+                return false;
             }
 
         } else if (chessBoard[x2][y2].getPlayerId() == chessBoard[x][y].getPlayerId())                      // if the tile is occupied by a friendly piece
@@ -538,7 +538,8 @@ public class ChessMechanics
     {
         if (!madeMoves.isEmpty())
         {
-            ChessMove move = (ChessMove) madeMoves.get(madeMoves.size() - 1);
+            ChessMove move = madeMoves.get(madeMoves.size() - 1);
+            madeMoves.remove(move);
 
             if (move.getPlayerId() != player)
             {
