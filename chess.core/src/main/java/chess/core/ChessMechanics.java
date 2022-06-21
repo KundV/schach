@@ -16,6 +16,7 @@ public class ChessMechanics implements Cloneable
     private ArrayList<ChessMove> madeMoves = new ArrayList<ChessMove>();               // the moves made
 
 
+    private ChessBoardTile[][] initialBoard;
 
     public ChessMechanics(ChessBoardTile[][] chessBoard, ArrayList<ChessPiece> deadPieces, int targetTurn, PlayerId player, ChessMove move)
     {
@@ -42,6 +43,7 @@ public class ChessMechanics implements Cloneable
     {
         makeBoard();
         StartPosition();
+        //initialBoard = cloneBoard(chessBoard);
         //targetTurn--;
     }
 
@@ -372,6 +374,8 @@ public class ChessMechanics implements Cloneable
 
     public ArrayList<ChessMechanics> blackKingSimulations = new ArrayList<ChessMechanics>();
 
+
+
     public boolean TestMovePiece(int x, int y, int x2, int y2)
     {
         if (x2 < 0 | x2 > 7 | y2 < 0 | y2 > 7)
@@ -387,9 +391,7 @@ public class ChessMechanics implements Cloneable
                 // Check legality
                 ChessMechanics test = new ChessMechanics(chessBoard, deadPieces, madeMoves.size() + 1, player, move);
                 boolean isBlackKing = chessBoard[x][y].getPiece().getPlayerId().isBlack() && chessBoard[x][y].getPiece().getChessPieceId() == ChessPieceId.King;
-                if (isBlackKing) {
-                    blackKingSimulations.add(test);
-                }
+                blackKingSimulations.add(test);
                 if (test.isLegal(player))
                 {
                     chessBoard[x][y].getPiece().addPossibleMove(move);
@@ -411,6 +413,8 @@ public class ChessMechanics implements Cloneable
             if (targetTurn == 0)
             {
                 ChessMechanics test = new ChessMechanics(chessBoard, deadPieces, madeMoves.size() + 1, player, move);
+                blackKingSimulations.add(test);
+
                 if (test.isLegal(player))
                 {
                     chessBoard[x][y].getPiece().addPossibleMove(move);
