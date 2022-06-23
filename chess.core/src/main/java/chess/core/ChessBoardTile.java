@@ -3,7 +3,7 @@ package chess.core;
 
 import java.util.ArrayList;
 
-public class ChessBoardTile                        //Is a tile on the chessboard. It can be empty or contain a piece.
+public class ChessBoardTile implements Cloneable                        //Is a tile on the chessboard. It can be empty or contain a piece.
 {
     private ChessPiece piece;                    //The piece on this tile.
     private ArrayList<ChessMove> TargetingMoves;                //The moves that can be made to this tile.
@@ -102,5 +102,21 @@ public class ChessBoardTile                        //Is a tile on the chessboard
     public void setTargetingMoves(ArrayList<ChessMove> moves)
     {
         this.TargetingMoves = moves;
+    }
+
+    @Override
+    public ChessBoardTile clone()
+    {
+        try
+        {
+
+            ChessBoardTile clone = (ChessBoardTile) super.clone();
+
+            // TODO: copy mutable state here, so the clone can't change the internals of the original
+            return clone;
+        } catch (CloneNotSupportedException e)
+        {
+            throw new AssertionError();
+        }
     }
 }

@@ -35,7 +35,6 @@ public class ChessPiece
     }
 
 
-
     public ChessPieceId getChessPieceId()
     {
         return chessPieceId;
@@ -129,7 +128,7 @@ public class ChessPiece
     {
         for (int i = 0; i < possibleMoves.size(); i++)
         {
-            if (possibleMoves.get(i + 1 - 1).getEvent().getID() != EventID.Blocked) return true;
+            if (possibleMoves.get(i + 1 - 1).getEvent() != EventID.Blocked) return true;
         }
         return false;
     }
@@ -137,5 +136,11 @@ public class ChessPiece
     public int getMoveCount()
     {
         return moveCount;
+    }
+
+    public ChessPiece copy()
+    {
+
+        return new ChessPiece(this.chessPieceId, this.playerId, this.moveCount);
     }
 }

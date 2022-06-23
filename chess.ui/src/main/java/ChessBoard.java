@@ -52,11 +52,11 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
             var moves = this._mechanics.getChessBoard()[_selectedPiece.r][_selectedPiece.c].getPiece().getPossibleMoves();
             for (var move : moves)
             {
-                if (move.event.getID() == EventID.Blocked) continue;
+                if (move.event == EventID.Blocked) continue;
 
                 var b = boardFields[move.xTarget][move.yTarget];
                 b.setTarget(
-                        move.event.getID() == EventID.Capture || move.event.getID() == EventID.enPassant,
+                        move.event == EventID.Capture || move.event == EventID.enPassant,
                         _mechanics.getChessBoard()[move.xTarget][move.yTarget].getPiece() != null);
             }
         }
@@ -251,7 +251,7 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
             for (int i = 1; i <= moves.size(); i++)
             {
                 var move = ((ChessMove) moves.get(i - 1));
-                if (move.xTarget == target.r && move.yTarget == target.c && move.event.getID() != EventID.Blocked)
+                if (move.xTarget == target.r && move.yTarget == target.c && move.event != EventID.Blocked)
                 {
                     _mechanics.executeMove(move);
                     processMove(move);
