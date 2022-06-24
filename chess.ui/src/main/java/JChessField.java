@@ -13,7 +13,6 @@ public class JChessField extends JPanel
     @Override
     protected void paintComponent(Graphics g)
     {
-
         super.paintComponent(g);
 
         if (!isTarget) return;

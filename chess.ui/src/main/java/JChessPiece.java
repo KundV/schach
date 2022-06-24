@@ -1,18 +1,10 @@
 import chess.core.ChessPieceId;
 import org.apache.batik.anim.dom.SAXSVGDocumentFactory;
 import org.apache.batik.anim.dom.SVGOMDocument;
-import org.apache.batik.bridge.DocumentLoader;
 import org.apache.batik.swing.JSVGCanvas;
-import org.apache.batik.swing.svg.SVGDocumentLoader;
 import org.apache.batik.util.XMLResourceDescriptor;
-import org.w3c.dom.Document;
-import org.w3c.dom.svg.SVGDocument;
-import org.xml.sax.SAXException;
 
 import javax.swing.*;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -89,10 +81,27 @@ public class JChessPiece extends JPanel
 
     }
 
-    public void setSelectable(boolean selectable)
+
+    public void setSelectable(State s)
     {
-        if (selectable) this.setBorder(new CornerBorder(new Color(65, 65, 255, 255)));
-        else this.setBorder(null);
+        if (s == State.None)
+            this.setBorder(null);
+        else
+            this.setBorder(new CornerBorder(s.c));
+    }
+
+    enum State
+    {
+        None(null),
+        Selectable(new Color(65, 65, 255, 255)),
+        Hovering(new Color(118, 118, 255, 255));
+
+        final Color c;
+
+        State(Color c)
+        {
+            this.c = c;
+        }
     }
 
     public static class ResourceHelper
