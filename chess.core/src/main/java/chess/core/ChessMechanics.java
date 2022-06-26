@@ -1,10 +1,10 @@
 package chess.core;
 
 
+import chess.core.common.Vec;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 
 public class ChessMechanics implements Cloneable
@@ -127,7 +127,7 @@ public class ChessMechanics implements Cloneable
         {
             for (int col = 0; col < 8; col++)
             {
-                var piecePos = new Pos(col, row);
+                var piecePos = new Vec(col, row);
                 if (chessBoard[row][col].hasPiece())
                 {
                     var piece = chessBoard[row][col].getPiece();

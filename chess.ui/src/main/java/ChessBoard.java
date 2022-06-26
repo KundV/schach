@@ -1,4 +1,6 @@
 import chess.core.*;
+import chess.core.common.Vec;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,9 +17,9 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
     private final JPanel _glassPane = new JPanel();
     GridLayout layout;
     private ChessMechanics _mechanics;
-    private Pos _selectedPiece;
-    private Pos _hoveringPiece;
-    private Pos _selectedPieceDragOffset;
+    private Vec _selectedPiece;
+    private Vec _hoveringPiece;
+    private Vec _selectedPieceDragOffset;
 
     public ChessBoard(ChessMechanics _mechanics)
     {
@@ -92,7 +94,7 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
 
         if (this._selectedPiece != null)
         {
-            var moves = this._mechanics.getChessBoard()[_selectedPiece.r][_selectedPiece.c].getPiece().getPossibleMoves();
+            var moves = this._mechanics.getChessBoard()[_selectedPiece.y][_selectedPiece.x].getPiece().getPossibleMoves();
             for (var move : moves)
             {
                 if (move.event == EventID.Blocked) continue;
@@ -117,7 +119,7 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
                 if (t != null && t.getPiece() != null)
                 {
                     boolean selectable = t.getPiece().hasNonBlockedMoves() && _mechanics.getCurrentPlayer() == t.getPiece().getPlayerId();
-                    JChessPiece.State s = selectable && _hoveringPiece != null && _hoveringPiece.r == r && _hoveringPiece.c == c && _selectedPiece == null ? JChessPiece.State.Hovering : (selectable ? JChessPiece.State.Selectable : JChessPiece.State.None);
+                    JChessPiece.State s = selectable && _hoveringPiece != null && _hoveringPiece.y == r && _hoveringPiece.x == c && _selectedPiece == null ? JChessPiece.State.Hovering : (selectable ? JChessPiece.State.Selectable : JChessPiece.State.None);
                     chessPieceUIComponents[r][c].setSelectable(s);
                 }
             }
@@ -206,13 +208,13 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
     {
 
 
-        var fieldVec = vecFromPoint(e.getPoint());
-        if (fieldVec.c < 0 || fieldVec.r < 0 // filters all points out of range
-                || fieldVec.c >= 8 || fieldVec.r >= 8)
+        var fieldVec = posFromPoint(e.getPoint());
+        if (fieldVec.x < 0 || fieldVec.y < 0 // filters all points out of range
+                || fieldVec.x >= 8 || fieldVec.y >= 8)
         {
             return;
         }
-        var p = _mechanics.getChessBoard()[fieldVec.r][fieldVec.c].getPiece(); // current piece
+        var p = _mechanics.getChessBoard()[fieldVec.y][fieldVec.x].getPiece(); // current piece
 
         // stops if there is no piece or it
         if (p == null || !p.hasNonBlockedMoves() || p.getPlayerId() != _mechanics.getCurrentPlayer())
@@ -220,10 +222,12 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
             return;
         }
 
-        if (chessPieceUIComponents[fieldVec.r][fieldVec.c] != null) // if field is empty
+        if (chessPieceUIComponents[fieldVec.y][fieldVec.x] != null) // if field is empty
         {
             this._selectedPiece = fieldVec;
-            this.setLayer(chessPieceUIComponents[fieldVec.r][fieldVec.c], 1);
+
+            this.setLayer(chessPieceUIComponents[fieldVec.y][fieldVec.x], 1);
+
             //this.add(chessPieceUIComponents[fieldVec.y][fieldVec.x], new Integer(1));
         }
 
@@ -238,13 +242,13 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
 
         if (_selectedPiece != null)
         {
-            this.add(chessPieceUIComponents[_selectedPiece.r][_selectedPiece.c], new Integer(1));
-            var target = vecFromPoint(e.getPoint());
-            var moves = _mechanics.getChessBoard()[_selectedPiece.r][_selectedPiece.c].getPiece().getPossibleMoves();
+            this.add(chessPieceUIComponents[_selectedPiece.y][_selectedPiece.x], new Integer(1));
+            var target = posFromPoint(e.getPoint());
+            var moves = _mechanics.getChessBoard()[_selectedPiece.y][_selectedPiece.x].getPiece().getPossibleMoves();
             for (int i = 1; i <= moves.size(); i++)
             {
                 var move = ((ChessMove) moves.get(i - 1));
-                if (move.xTarget == target.r && move.yTarget == target.c && move.event != EventID.Blocked)
+                if (move.xTarget == target.y && move.yTarget == target.x && move.event != EventID.Blocked)
                 {
                     /*
                     JOptionPane.showOptionDialog(this, "Wähle die Figur zu der befördert werden soll", "Beförderung", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, new String[]{
@@ -275,7 +279,8 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
     @Override
     public void mouseExited(MouseEvent e)
     {
-
+        _hoveringPiece = null;
+        updateSelectableHints();
     }
 
     @Override
@@ -283,21 +288,21 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
     {
         if (_selectedPiece != null)
         {
-            var piece = chessPieceUIComponents[_selectedPiece.r][_selectedPiece.c];
+            var piece = chessPieceUIComponents[_selectedPiece.y][_selectedPiece.x];
             piece.setLocation(e.getPoint());
 
         }
     }
 
 
-    private Pos vecFromPoint(Point p)
+    private Vec posFromPoint(Point p)
     {
-        return new Pos(fieldFromX(p.x), fieldFromY(p.y));
+        return new Vec(fieldFromX(p.x), fieldFromY(p.y));
     }
 
-    private Point pointFromVec(Pos v)
+    private Point pointFromVec(Vec v)
     {
-        return new Point(v.c * getWidth() / 8, v.r * getHeight() / 8);
+        return new Point(v.x * getWidth() / 8, v.y * getHeight() / 8);
     }
 
     private int fieldFromX(int x)
@@ -313,18 +318,28 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
     @Override
     public void mouseMoved(MouseEvent e)
     {
-
-        var pos =  vecFromPoint(e.getPoint());
-        if (_mechanics.getChessBoard()[pos.r][pos.c].getPiece() != null)
+        var pos = getMouseVec();
+        if (pos != null && _mechanics.getChessBoard()[pos.y][pos.x].getPiece() != null)
         {
             _hoveringPiece = pos;
-        }
-        else
+        } else
         {
             _hoveringPiece = null;
         }
 
         updateSelectableHints();
+    }
+
+    public Vec getMouseVec()
+    {
+        return getMouseVec(null);
+    }
+
+    public Vec getMouseVec(@Nullable Point p)
+    {
+        if (p == null) p = this.getMousePosition(true);
+        var vec = posFromPoint(p);
+        return (vec.y < 0 || vec.x < 0 || vec.y >= 8 || vec.x >= 8) ? null : vec;
     }
 
     public void Undo()

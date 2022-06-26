@@ -1,13 +1,13 @@
 package chess.core.move;
 
-import chess.core.Pos;
+import chess.core.common.Vec;
 
 public class BoardUpdateOperation extends BoardOperation
 {
-    public final Pos start;
-    public final Pos end;
+    public final Vec start;
+    public final Vec end;
 
-    public BoardUpdateOperation(Pos start, Pos end)
+    public BoardUpdateOperation(Vec start, Vec end)
     {
         this.start = start;
         this.end = end;

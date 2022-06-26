@@ -1,5 +1,6 @@
 package chess.core;
 
+import chess.core.common.Vec;
 import chess.core.move.BoardDeleteOperation;
 import chess.core.move.BoardInsertOperation;
 import chess.core.move.BoardOperation;
@@ -23,8 +24,8 @@ public class ChessMove// extends Dataelement
     private PlayerId player;
     public final EventID event;
 
-    public final Pos start;
-    public final Pos target;
+    public final Vec start;
+    public final Vec target;
 
     // TODO state is not used yet
     ChessMechanics game;
@@ -79,8 +80,8 @@ public class ChessMove// extends Dataelement
         this.yStart = yStart;
         this.xTarget = xTarget;
         this.yTarget = yTarget;
-        this.start = new Pos(xStart, yStart);
-        this.target = new Pos(xTarget, yTarget);
+        this.start = new Vec(xStart, yStart);
+        this.target = new Vec(xTarget, yTarget);
     }
 
 

@@ -1,13 +1,13 @@
 package chess.core.move;
 
-import chess.core.Pos;
+import chess.core.common.Vec;
 
 public class BoardDeleteOperation extends BoardOperation
 {
-    public final Pos pos;
+    public final Vec vec;
 
-    public BoardDeleteOperation(Pos pos)
+    public BoardDeleteOperation(Vec vec)
     {
-        this.pos = pos;
+        this.vec = vec;
     }
 }
