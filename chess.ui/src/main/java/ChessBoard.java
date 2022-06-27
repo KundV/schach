@@ -1,5 +1,6 @@
 import chess.core.*;
 import chess.core.common.Vec;
+import chess.core.common.VecEx;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
@@ -119,7 +120,7 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
                 if (t != null && t.getPiece() != null)
                 {
                     boolean selectable = t.getPiece().hasNonBlockedMoves() && _mechanics.getCurrentPlayer() == t.getPiece().getPlayerId();
-                    JChessPiece.State s = selectable && _hoveringPiece != null && _hoveringPiece.y == r && _hoveringPiece.x == c && _selectedPiece == null ? JChessPiece.State.Hovering : (selectable ? JChessPiece.State.Selectable : JChessPiece.State.None);
+                    JChessPiece.State s =  selectable && _hoveringPiece != null && _hoveringPiece.y == r && _hoveringPiece.x == c && _selectedPiece == null ? JChessPiece.State.Hovering : (selectable && _selectedPiece == null ? JChessPiece.State.Selectable : JChessPiece.State.None);
                     chessPieceUIComponents[r][c].setSelectable(s);
                 }
             }
@@ -225,7 +226,8 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
         if (chessPieceUIComponents[fieldVec.y][fieldVec.x] != null) // if field is empty
         {
             this._selectedPiece = fieldVec;
-
+            var upperLeft = pointFromVec(this._selectedPiece);
+            this._selectedPieceDragOffset = new Vec(e.getX() - upperLeft.x, e.getY() - upperLeft.y);
             this.setLayer(chessPieceUIComponents[fieldVec.y][fieldVec.x], 1);
 
             //this.add(chessPieceUIComponents[fieldVec.y][fieldVec.x], new Integer(1));
@@ -289,11 +291,18 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
         if (_selectedPiece != null)
         {
             var piece = chessPieceUIComponents[_selectedPiece.y][_selectedPiece.x];
-            piece.setLocation(e.getPoint());
-
+            var size = getTileSize();
+            var newSize = new Vec(size).mul(1.2);
+            var difference = newSize.sub(size.x, size.y);
+            piece.setSize(newSize.x, newSize.y);
+            piece.setLocation(new Point(e.getX() - _selectedPieceDragOffset.x - difference.x / 2, e.getY() - _selectedPieceDragOffset.y - difference.y / 2));
         }
+        updateSelectableHints();
     }
 
+    private Point getTileSize() {
+        return new Point(getWidth() / 8, getHeight() / 8);
+    }
 
     private Vec posFromPoint(Point p)
     {
