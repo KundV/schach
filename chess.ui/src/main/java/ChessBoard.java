@@ -1,6 +1,5 @@
 import chess.core.*;
 import chess.core.common.Vec;
-import chess.core.common.VecEx;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
@@ -19,7 +18,7 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
     GridLayout layout;
     private ChessMechanics _mechanics;
     private Vec _selectedPiece;
-    private Vec _hoveringPiece;
+    private Vec _hoveringField;
     private Vec _selectedPieceDragOffset;
 
     public ChessBoard(ChessMechanics _mechanics)
@@ -93,9 +92,11 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
     {
         Arrays.stream(boardFields).forEach(row -> Arrays.stream(row).forEach(JChessField::removeTarget));
 
-        if (this._selectedPiece != null)
+        Vec pieceVec = _selectedPiece == null ? _hoveringField : _selectedPiece;
+
+        if (pieceVec != null && this._mechanics.getChessBoard()[pieceVec.y][pieceVec.x].getPiece() != null )
         {
-            var moves = this._mechanics.getChessBoard()[_selectedPiece.y][_selectedPiece.x].getPiece().getPossibleMoves();
+            var moves = this._mechanics.getChessBoard()[pieceVec.y][pieceVec.x].getPiece().getPossibleMoves();
             for (var move : moves)
             {
                 if (move.event == EventID.Blocked) continue;
@@ -120,7 +121,7 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
                 if (t != null && t.getPiece() != null)
                 {
                     boolean selectable = t.getPiece().hasNonBlockedMoves() && _mechanics.getCurrentPlayer() == t.getPiece().getPlayerId();
-                    JChessPiece.State s =  selectable && _hoveringPiece != null && _hoveringPiece.y == r && _hoveringPiece.x == c && _selectedPiece == null ? JChessPiece.State.Hovering : (selectable && _selectedPiece == null ? JChessPiece.State.Selectable : JChessPiece.State.None);
+                    JChessPiece.State s =  selectable && _hoveringField != null && _hoveringField.y == r && _hoveringField.x == c && _selectedPiece == null ? JChessPiece.State.Hovering : (selectable && _selectedPiece == null ? JChessPiece.State.Selectable : JChessPiece.State.None);
                     chessPieceUIComponents[r][c].setSelectable(s);
                 }
             }
@@ -235,7 +236,6 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
 
         updateTargetHints();
 
-
     }
 
     @Override
@@ -262,6 +262,7 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
                     processMove(move);
                 }
             }
+            this._hoveringField = target;
         }
         this._selectedPiece = null;
         updatePlacement();
@@ -281,7 +282,7 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
     @Override
     public void mouseExited(MouseEvent e)
     {
-        _hoveringPiece = null;
+        _hoveringField = null;
         updateSelectableHints();
     }
 
@@ -297,7 +298,6 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
             piece.setSize(newSize.x, newSize.y);
             piece.setLocation(new Point(e.getX() - _selectedPieceDragOffset.x - difference.x / 2, e.getY() - _selectedPieceDragOffset.y - difference.y / 2));
         }
-        updateSelectableHints();
     }
 
     private Point getTileSize() {
@@ -330,13 +330,14 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
         var pos = getMouseVec();
         if (pos != null && _mechanics.getChessBoard()[pos.y][pos.x].getPiece() != null)
         {
-            _hoveringPiece = pos;
+            _hoveringField = pos;
         } else
         {
-            _hoveringPiece = null;
+            _hoveringField = null;
         }
 
         updateSelectableHints();
+        updateTargetHints();
     }
 
     public Vec getMouseVec()
@@ -347,6 +348,7 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
     public Vec getMouseVec(@Nullable Point p)
     {
         if (p == null) p = this.getMousePosition(true);
+        if (p == null) return null;
         var vec = posFromPoint(p);
         return (vec.y < 0 || vec.x < 0 || vec.y >= 8 || vec.x >= 8) ? null : vec;
     }

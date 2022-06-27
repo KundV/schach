@@ -8,7 +8,10 @@ public class JChessField extends JPanel
     public JChessField(boolean isBlack)
     {
         this.setBackground(isBlack ? darkFieldColor : lightFieldColor);
+        isDark = isBlack;
     }
+
+    private final boolean isDark;
 
     @Override
     protected void paintComponent(Graphics g)
@@ -17,7 +20,7 @@ public class JChessField extends JPanel
 
         if (!isTarget) return;
 
-        g.setColor(isCapture ? captureColor : nonCaptureColor);
+        g.setColor(isCapture ? captureColor : (isDark ? nonCaptureColorOnDark : nonCaptureColorOnLight));
         int size = (int) Math.ceil(Math.min(getWidth(), getHeight()) * 0.2);
 
         if (isOccupied) {
@@ -51,6 +54,7 @@ public class JChessField extends JPanel
 
     private final Color lightFieldColor = new Color(239, 216, 180, 255);
 
-    private final Color captureColor = new Color(192, 87, 87, 176);
-    private final Color nonCaptureColor = new Color(131, 120, 69, 127);
+    private final Color captureColor = new Color(255, 0, 0, 179);
+    private final Color nonCaptureColorOnLight = new Color(88, 122, 0, 102);
+    private final Color nonCaptureColorOnDark = new Color(201, 253, 64, 102);
 }
