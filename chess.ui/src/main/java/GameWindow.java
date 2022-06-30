@@ -18,7 +18,7 @@ public class GameWindow extends JFrame
 
     public GameWindow()
     {
-        this(new ChessMechanics());
+       this(new ChessMechanics());
     }
 
     public GameWindow(ChessMechanics mechanics)

@@ -22,7 +22,7 @@ public class ChessMove// extends Dataelement
     public final int xTarget;
     public final int yTarget;
     private PlayerId player;
-    public final EventID event;
+    public  EventID event;
 
     public final Vec start;
     public final Vec target;
@@ -100,6 +100,11 @@ public class ChessMove// extends Dataelement
     public EventID getEvent()
     {
         return event;
+    }
+
+    public void setEvent(EventID event)
+    {
+        this.event = event;
     }
 }
 
