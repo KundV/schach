@@ -12,7 +12,7 @@ public class ChessBoardTile implements Cloneable                        //Is a t
 
     public ChessBoardTile()                      //Constructor. Creates a new tile with no piece on it.
     {
-        this.TargetingMoves = new ArrayList();
+        this.TargetingMoves = new ArrayList<ChessMove>();
     }
 
 
