@@ -20,11 +20,12 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
     private Vec _selectedPiece;
     private Vec _hoveringField;
     private Vec _selectedPieceDragOffset;
+    private ChessOptionsModel _options;
 
     public ChessBoard(ChessMechanics _mechanics)
     {
         this._mechanics = _mechanics;
-
+        this._options = new ChessOptionsModel();
 
         this.setLayout(null);
 
@@ -53,6 +54,29 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
         });
 
 
+        updateSelectableHints();
+    }
+
+    public void setOptions(ChessOptionsModel options)
+    {
+        _options = options.clone();
+        updateSelectableHints();
+        updateTargetHints();
+    }
+
+    public ChessOptionsModel getOptions()
+    {
+        return _options.clone();
+    }
+
+    public void ChangeGame(ChessMechanics newGame)
+    {
+        _mechanics = newGame;
+        _selectedPiece = null;
+        _hoveringField = null;
+        _selectedPieceDragOffset = null;
+        reInitializeUiArray();
+        updatePlacement();
         updateSelectableHints();
     }
 
@@ -93,19 +117,27 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
         Arrays.stream(boardFields).forEach(row -> Arrays.stream(row).forEach(JChessField::removeTarget));
 
         Vec pieceVec = _selectedPiece == null ? _hoveringField : _selectedPiece;
-
-        if (pieceVec != null && this._mechanics.getChessBoard()[pieceVec.y][pieceVec.x].getPiece() != null )
+        var hovering = !_piecePressed;
+        if (pieceVec != null && this._mechanics.getChessBoard()[pieceVec.y][pieceVec.x].getPiece() != null)
         {
-            var moves = this._mechanics.getChessBoard()[pieceVec.y][pieceVec.x].getPiece().getPossibleMoves();
-            for (var move : moves)
-            {
-                if (move.event == EventID.Blocked) continue;
+            ChessPiece piece = this._mechanics.getChessBoard()[pieceVec.y][pieceVec.x].getPiece();
+            var isEnemy = piece.getPlayerId() != _mechanics.getCurrentPlayer();
+            var state = isEnemy ? _options.EnemyHints : _options.OwnHints;
 
-                var b = boardFields[move.xTarget][move.yTarget];
-                b.setTarget(
-                        move.event == EventID.Capture || move.event == EventID.enPassant,
-                        _mechanics.getChessBoard()[move.xTarget][move.yTarget].getPiece() != null);
+            if (state != ChessOptionsModel.TargetHintsVisibilityPreference.Disabled && (state == ChessOptionsModel.TargetHintsVisibilityPreference.OnClick) != hovering || state == ChessOptionsModel.TargetHintsVisibilityPreference.OnHover)
+            {
+                var moves = piece.getPossibleMoves();
+                for (var move : moves)
+                {
+                    if (move.event == EventID.Blocked) continue;
+
+                    var b = boardFields[move.xTarget][move.yTarget];
+                    b.setTarget(
+                            move.event == EventID.Capture || move.event == EventID.enPassant,
+                            _mechanics.getChessBoard()[move.xTarget][move.yTarget].getPiece() != null);
+                }
             }
+
         }
         repaint();
     }
@@ -121,8 +153,18 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
                 if (t != null && t.getPiece() != null)
                 {
                     boolean selectable = t.getPiece().hasNonBlockedMoves() && _mechanics.getCurrentPlayer() == t.getPiece().getPlayerId();
-                    JChessPiece.State s =  selectable && _hoveringField != null && _hoveringField.y == r && _hoveringField.x == c && _selectedPiece == null ? JChessPiece.State.Hovering : (selectable && _selectedPiece == null ? JChessPiece.State.Selectable : JChessPiece.State.None);
-                    chessPieceUIComponents[r][c].setSelectable(s);
+                    JChessPiece.State state = JChessPiece.State.Selectable;
+                    if (!selectable || _selectedPiece != null || !_options.showSelectableHints)
+                    {
+                        state = JChessPiece.State.None;
+                    } else if (_hoveringField != null && _hoveringField.equals(new Vec(c, r)))
+                    {
+                        state = JChessPiece.State.Hovering;
+                    }
+
+
+                    JChessPiece.State s = selectable && _hoveringField != null && _hoveringField.y == r && _hoveringField.x == c && _selectedPiece == null && _options.showSelectableHints ? JChessPiece.State.Hovering : (selectable && _selectedPiece == null ? JChessPiece.State.Selectable : JChessPiece.State.None);
+                    chessPieceUIComponents[r][c].setSelectable(state);
                 }
             }
         }
@@ -147,13 +189,13 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
 
     private void addFields()
     {
-        for (int r = 0; r < 8; r++)
+        for (int x = 0; x < 8; x++)
         {
-            for (int c = 0; c < 8; c++)
+            for (int y = 0; y < 8; y++)
             {
-                var p = new JChessField(!isWhite(r, c));
-                //p.setBackground(isWhite(r, c) ? Color.white : Color.black);
-                boardFields[r][c] = p;
+                var p = new JChessField(!isWhite(x, y));
+                //p.setBackground(isWhite(x, y) ? Color.white : Color.black);
+                boardFields[x][y] = p;
 
                 this.add(p, new Integer(-10));
             }
@@ -176,23 +218,23 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
      */
     private void reInitializeUiArray()
     {
-        for (int r = 0; r < 8; r++)
+        for (int x = 0; x < 8; x++)
         {
-            for (int c = 0; c < 8; c++)
+            for (int y = 0; y < 8; y++)
             {
-                var old = chessPieceUIComponents[r][c];
+                var old = chessPieceUIComponents[x][y];
                 if (old != null)
                 {
                     this.remove(old);
-                    chessPieceUIComponents[r][c] = null;
+                    chessPieceUIComponents[x][y] = null;
                 }
-                var tile = _mechanics.getChessBoard()[r][c];
+                var tile = _mechanics.getChessBoard()[x][y];
                 if (tile != null && tile.getPiece() != null)
                 {
                     var p = new JChessPiece(tile.getPiece().getChessPieceId(), tile.getPlayerId().isBlack());
                     p.setSelectable(JChessPiece.State.None);
                     this.add(p, new Integer(-9));
-                    chessPieceUIComponents[r][c] = p;
+                    chessPieceUIComponents[x][y] = p;
                 }
             }
         }
@@ -217,31 +259,33 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
             return;
         }
         var p = _mechanics.getChessBoard()[fieldVec.y][fieldVec.x].getPiece(); // current piece
-
+        if (p != null) _piecePressed = true;
         // stops if there is no piece or it
-        if (p == null || !p.hasNonBlockedMoves() || p.getPlayerId() != _mechanics.getCurrentPlayer())
+        if (p != null && p.hasNonBlockedMoves() && p.getPlayerId() == _mechanics.getCurrentPlayer())
         {
-            return;
+            if (chessPieceUIComponents[fieldVec.y][fieldVec.x] != null) // if field is empty
+            {
+                this._selectedPiece = fieldVec;
+                var upperLeft = pointFromVec(this._selectedPiece);
+                this._selectedPieceDragOffset = new Vec(e.getX() - upperLeft.x, e.getY() - upperLeft.y);
+                this.setLayer(chessPieceUIComponents[fieldVec.y][fieldVec.x], 1);
+
+                //this.add(chessPieceUIComponents[fieldVec.y][fieldVec.x], new Integer(1));
+            }
+
         }
-
-        if (chessPieceUIComponents[fieldVec.y][fieldVec.x] != null) // if field is empty
-        {
-            this._selectedPiece = fieldVec;
-            var upperLeft = pointFromVec(this._selectedPiece);
-            this._selectedPieceDragOffset = new Vec(e.getX() - upperLeft.x, e.getY() - upperLeft.y);
-            this.setLayer(chessPieceUIComponents[fieldVec.y][fieldVec.x], 1);
-
-            //this.add(chessPieceUIComponents[fieldVec.y][fieldVec.x], new Integer(1));
-        }
-
         updateTargetHints();
 
+
     }
+
+    private boolean _piecePressed = false;
 
     @Override
     public void mouseReleased(MouseEvent e)
     {
 
+        _piecePressed = false;
         if (_selectedPiece != null)
         {
             this.add(chessPieceUIComponents[_selectedPiece.y][_selectedPiece.x], new Integer(1));
@@ -284,6 +328,7 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
     {
         _hoveringField = null;
         updateSelectableHints();
+        updateTargetHints();
     }
 
     @Override
@@ -298,9 +343,19 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
             piece.setSize(newSize.x, newSize.y);
             piece.setLocation(new Point(e.getX() - _selectedPieceDragOffset.x - difference.x / 2, e.getY() - _selectedPieceDragOffset.y - difference.y / 2));
         }
+        var pos = getMouseVec();
+        if (pos != null && _mechanics.getChessBoard()[pos.y][pos.x].getPiece() != null)
+        {
+            _hoveringField = pos;
+        } else
+        {
+            _hoveringField = null;
+        }
+        updateTargetHints();
     }
 
-    private Point getTileSize() {
+    private Point getTileSize()
+    {
         return new Point(getWidth() / 8, getHeight() / 8);
     }
 

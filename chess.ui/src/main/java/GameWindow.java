@@ -44,13 +44,25 @@ public class GameWindow extends JFrame
 
         _sidebar = new JPanel();
         _sidebar.setLayout(new BoxLayout(_sidebar, BoxLayout.Y_AXIS));
-        _sidebar.add(new JLabel("Sidebar"));
-        _sidebar.add(new JLabel("Very looooong text"));
-        _sidebar.add(new JLabel("1"));
         {
-            var undoButton = new JButton("Undo");
+            var undoButton = new JButton("Rückgängig");
             undoButton.addActionListener(e -> _board.Undo());
             _sidebar.add(undoButton);
+
+            var newButton = new JButton("Neues Spiel");
+            newButton.addActionListener(e -> _board.ChangeGame(new ChessMechanics()));
+            _sidebar.add(newButton);
+
+            var preferencesButton = new JButton("Einstellungen");
+            preferencesButton.addActionListener(e -> {
+                var dialog = new JChessOptions(_board.getOptions());
+                var res = JOptionPane.showConfirmDialog(this, dialog, "Einstellungen", JOptionPane.OK_CANCEL_OPTION);
+                if (res == JOptionPane.OK_OPTION)
+                {
+                    _board.setOptions(dialog.model);
+                }
+            });
+            _sidebar.add(preferencesButton);
 
             var loadKingsSimulations = new Button("Load Kings Simulations");
             var lm = new DefaultListModel<String>();
@@ -69,6 +81,7 @@ public class GameWindow extends JFrame
                     new GameWindow(_mechanics.blackKingSimulations.get(jl.getSelectedIndex()));
                 }
             });
+
 
             _sidebar.add(loadKingsSimulations);
             _sidebar.add(jl);

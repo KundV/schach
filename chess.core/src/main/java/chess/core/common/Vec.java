@@ -11,6 +11,25 @@ public class Vec
     public final int x;
     public final int y;
 
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Vec vec = (Vec) o;
+
+        if (x != vec.x) return false;
+        return y == vec.y;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        int result = x;
+        result = 31 * result + y;
+        return result;
+    }
 
     public Vec(int x, int r)
     {
@@ -32,6 +51,7 @@ public class Vec
     {
         return new Point(x, y);
     }
+
 
 
     public Vec add(Vec other)
