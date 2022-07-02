@@ -389,31 +389,31 @@ public class ChessMechanics implements Cloneable
         TestMovePiece(x, y, x - 1, y + 1);
         TestMovePiece(x, y, x - 1, y - 1);
 
-        for(int direction = -1; direction < 2; direction += 2)
+        if(chessBoard[x][y].getPiece().isFirstMove())
         {
-            for (int i = y+direction; i < 8 && i >= 0 ; i += direction)
+            for (int direction = -1; direction < 2; direction += 2)
             {
-                if (chessBoard[x][i].hasPiece())
+                for (int i = y + direction; i < 8 && i >= 0; i += direction)
                 {
-                    if (chessBoard[x][i].getPiece().getChessPieceId() == ChessPieceId.Tower)
+                    if (chessBoard[x][i].hasPiece())
                     {
-                        chessBoard[x][y].getPiece().addPossibleMove(new ChessMove(x, y, x, i, chessBoard[x][y].getPlayerId(), EventID.Castling));
-                    }
-                    i = 99;
-                }
-                else if (chessBoard[x][i].hasTargetingMoves())
-                {
-                    for (int MovIndex = 0; MovIndex < chessBoard[x][i].getTargetingMoves().size(); MovIndex++)
-                    {
-                        if (chessBoard[x][i].getTargetingMoves().get(MovIndex).getPlayerId() == chessBoard[x][y].getPlayerId().opposite())
+                        if (chessBoard[x][i].getPiece().getChessPieceId() == ChessPieceId.Tower && chessBoard[x][i].getPiece().isFirstMove())
                         {
-                            i = 99;
+                            chessBoard[x][y].getPiece().addPossibleMove(new ChessMove(x, y, x, i, chessBoard[x][y].getPlayerId(), EventID.Castling));
+                        }
+                        i = 99;
+                    } else if (chessBoard[x][i].hasTargetingMoves())
+                    {
+                        for (int MovIndex = 0; i < 8 && MovIndex < chessBoard[x][i].getTargetingMoves().size(); MovIndex++)
+                        {
+                            if (chessBoard[x][i].getTargetingMoves().get(MovIndex).getPlayerId() == chessBoard[x][y].getPlayerId().opposite())
+                            {
+                                i = 99;
+                            }
                         }
                     }
                 }
-
             }
-
         }
     }
 
