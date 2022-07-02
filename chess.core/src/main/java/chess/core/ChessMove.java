@@ -21,6 +21,10 @@ public class ChessMove// extends Dataelement
     public final int yStart;
     public final int xTarget;
     public final int yTarget;
+    public int xSecondaryPieceStart;
+    public int ySecondaryPieceStart;
+    public int xSecondaryPieceTarget;
+    public int ySecondaryPieceTarget;
     private PlayerId player;
     public  EventID event;
 
@@ -36,6 +40,11 @@ public class ChessMove// extends Dataelement
         if (event != EventID.Promotion)
             throw new UnsupportedOperationException("Setting the promotion is only supported for users");
         this.promotion = promotion;
+    }
+
+    public ChessPieceId getPromotion()
+    {
+        return promotion;
     }
 
 
@@ -82,6 +91,23 @@ public class ChessMove// extends Dataelement
         this.yTarget = yTarget;
         this.start = new Vec(xStart, yStart);
         this.target = new Vec(xTarget, yTarget);
+    }
+
+    public ChessMove(int xStart, int yStart, int xTarget, int yTarget, PlayerId Player, EventID event, int xSecondaryPieceStart, int ySecondaryPieceStart, int xSecondaryPieceTarget, int ySecondaryPieceTarget)
+    {
+        player = Player;
+        //super(Player);
+        this.event = event;
+        this.xStart = xStart;
+        this.yStart = yStart;
+        this.xTarget = xTarget;
+        this.yTarget = yTarget;
+        this.start = new Vec(xStart, yStart);
+        this.target = new Vec(xTarget, yTarget);
+        this.xSecondaryPieceStart = xSecondaryPieceStart;
+        this.ySecondaryPieceStart = ySecondaryPieceStart;
+        this.xSecondaryPieceTarget = xSecondaryPieceTarget;
+        this.ySecondaryPieceTarget = ySecondaryPieceTarget;
     }
 
 
