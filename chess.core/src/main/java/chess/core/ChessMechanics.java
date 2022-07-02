@@ -32,6 +32,10 @@ public class ChessMechanics implements Cloneable
 
         this.targetTurn = targetTurn;
         this.player = player;
+        System.out.println(move.xStart);
+        System.out.println(move.yStart);
+        System.out.println(move.xTarget);
+        System.out.println(move.yTarget);
 
         cloneBoard(chessBoard);
         executeMove(move);
@@ -75,10 +79,7 @@ public class ChessMechanics implements Cloneable
         }
         CheckMoves(tempCoords[k-4],tempCoords[k-3]);
         CheckMoves(tempCoords[k-2],tempCoords[k-1]);
-        if(targetTurn == 0)
-        {
-            validateAllMoves();
-        }
+
     }
 
     public void removeAllMoves()
@@ -99,23 +100,26 @@ public class ChessMechanics implements Cloneable
     {
         for(int i = 0; i < 8; i++)
         {
-            for(int j = 0; j < 8 && chessBoard[i][j].hasPiece() && chessBoard[i][j].getPiece().hasPossibleMove(); j++)
+            for(int j = 0; j < 8; j++)
             {
-                ArrayList<ChessMove> illegalMoves = new ArrayList<>();
-                for(int k = 0; k < chessBoard[i][j].getPiece().getPossibleMoves().size(); k++)
+                if(chessBoard[i][j].hasPiece() && chessBoard[i][j].getPiece().hasPossibleMove())
                 {
-                    ChessMove move = chessBoard[i][j].getPiece().getPossibleMoves().get(k);
-                    ChessMechanics test = new ChessMechanics(chessBoard, deadPieces, madeMoves.size() + 1, player, move);
-                    if(!test.check(player))
+                    ArrayList<ChessMove> illegalMoves = new ArrayList<>();
+                    for (int k = 0; k < chessBoard[i][j].getPiece().getPossibleMoves().size(); k++)
                     {
-                        illegalMoves.add(move);
+                        ChessMove move = chessBoard[i][j].getPiece().getPossibleMoves().get(k);
+                        ChessMechanics test = new ChessMechanics(chessBoard, deadPieces, madeMoves.size() + 1, player, move);
+                        if (!test.check(player))
+                        {
+                            illegalMoves.add(move);
 
+                        }
                     }
-                }
-                for (ChessMove illegalMove : illegalMoves)
-                {
-                    chessBoard[i][j].getTargetingMoves().remove(illegalMove);
-                    chessBoard[i][j].getPiece().getPossibleMoves().remove(illegalMove);
+                    for (ChessMove illegalMove : illegalMoves)
+                    {
+                        chessBoard[i][j].getTargetingMoves().remove(illegalMove);
+                        chessBoard[i][j].getPiece().getPossibleMoves().remove(illegalMove);
+                    }
                 }
             }
         }
@@ -126,26 +130,26 @@ public class ChessMechanics implements Cloneable
         if(chessBoard[x][y].hasPiece())
         {
             switch (chessBoard[x][y].getPiece().getChessPieceId())                                                                      // switch statement for the piece
-        {
-            case Pawn -> {
-                RulesPawn(x, y);
+            {
+                case Pawn -> {
+                    RulesPawn(x, y);
+                }
+                case Tower -> {
+                    RulesTower(x, y);
+                }
+                case Bishop -> {
+                    RulesBishop(x, y);
+                }
+                case Horse -> {
+                    RulesHorse(x, y);
+                }
+                case King -> {
+                    RulesKing(x, y);
+                }
+                case Queen -> {
+                    RulesQueen(x, y);
+                }
             }
-            case Tower -> {
-                RulesTower(x, y);
-            }
-            case Bishop -> {
-                RulesBishop(x, y);
-            }
-            case Horse -> {
-                RulesHorse(x, y);
-            }
-            case King -> {
-                RulesKing(x, y);
-            }
-            case Queen -> {
-                RulesQueen(x, y);
-            }
-        }
         }
     }
 
@@ -384,15 +388,32 @@ public class ChessMechanics implements Cloneable
         TestMovePiece(x, y, x + 1, y - 1);
         TestMovePiece(x, y, x - 1, y + 1);
         TestMovePiece(x, y, x - 1, y - 1);
-        for(int i = 0; i < chessBoard[x][y].getPiece().getPossibleMoves().size(); i++)
+
+        for(int direction = -1; direction < 2; direction += 2)
         {
-             ChessMove KingMove = chessBoard[x][y].getPiece().getPossibleMoves().get(i);
-             ChessPiece Tower = chessBoard[KingMove.xStart][KingMove.yStart].getPiece();
-            if(Tower.getChessPieceId() == ChessPieceId.Tower && Tower.isFirstMove() && chessBoard[x][y].getPiece().isFirstMove() && KingMove.getEvent() == EventID.Blocked)  //TODO possible bug (Player)
+            for (int i = y+direction; i < 8 && i >= 0 ; i += direction)
             {
-                KingMove.setEvent(EventID.Castling);
-                chessBoard[x][y].getPiece().addPossibleMove(new ChessMove(x, y, KingMove.xTarget, KingMove.yTarget, chessBoard[x][y].getPlayerId(),EventID.Move));
+                if (chessBoard[x][i].hasPiece())
+                {
+                    if (chessBoard[x][i].getPiece().getChessPieceId() == ChessPieceId.Tower)
+                    {
+                        chessBoard[x][y].getPiece().addPossibleMove(new ChessMove(x, y, x, i, chessBoard[x][y].getPlayerId(), EventID.Castling));
+                    }
+                    i = 99;
+                }
+                else if (chessBoard[x][i].hasTargetingMoves())
+                {
+                    for (int MovIndex = 0; MovIndex < chessBoard[x][i].getTargetingMoves().size(); MovIndex++)
+                    {
+                        if (chessBoard[x][i].getTargetingMoves().get(MovIndex).getPlayerId() == chessBoard[x][y].getPlayerId().opposite())
+                        {
+                            i = 99;
+                        }
+                    }
+                }
+
             }
+
         }
     }
 
@@ -420,13 +441,13 @@ public class ChessMechanics implements Cloneable
             chessBoard[x2][y2].addTargetingMove(move);
             return false;
 
-        } else if (chessBoard[x2][y2].getPlayerId() == chessBoard[x][y].getPlayerId())                      // if the tile is occupied by a friendly piece
+        }/* else if (chessBoard[x2][y2].getPlayerId() == chessBoard[x][y].getPlayerId())                       if the tile is occupied by a friendly piece
         {
             ChessMove move = new ChessMove(x, y, x2, y2, chessBoard[x][y].getPlayerId(), EventID.Blocked);
             chessBoard[x][y].getPiece().addPossibleMove(move);
             chessBoard[x2][y2].addTargetingMove(move);
             return false;
-        }
+        }*/
         return false;
     }
 
@@ -589,9 +610,13 @@ public class ChessMechanics implements Cloneable
             blackKingSimulations = new ArrayList<>();
 
             player = player.opposite();
+
             getAllMoves();
 
-
+            if(targetTurn == 0)
+            {
+                validateAllMoves();
+            }
 
         }
     }
@@ -621,7 +646,6 @@ public class ChessMechanics implements Cloneable
                     chessBoard[move.xStart][move.yStart].getPiece().removeMoveCount();
                 }
 
-                removeAllMoves();
                 getAllMoves();
 
                 player = player.opposite();
@@ -657,18 +681,23 @@ public class ChessMechanics implements Cloneable
             {
                 if(chessBoard[i][j].hasPiece())
                 {
-                    System.out.println(chessBoard[i][j].getPiece().getChessPieceId());
+                    //System.out.println(chessBoard[i][j].getPiece().getChessPieceId());
+                    System.out.println("Has Piece");
                     if ((chessBoard[i][j].getPiece().getChessPieceId() == ChessPieceId.King))
                     {
+                        //System.out.println("Found King");
                         if((chessBoard[i][j].getPiece().getPlayerId() == player))
                         {
+                            //System.out.println("Is King of last Player" + player);
                             if(chessBoard[i][j].hasTargetingMoves())
                             {
-                                for (int k = 0; i < chessBoard[i][j].getTargetingMoves().size(); i++)
+                                //System.out.println("Has Targeting Moves");
+                                for (int k = 0; k < chessBoard[i][j].getTargetingMoves().size(); k++)
                                 {
                                     System.out.println(chessBoard[i][j].getTargetingMoves().get(k).getEvent());
-                                    if (chessBoard[i][j].getTargetingMoves().get(k).getEvent() != EventID.Blocked)
+                                    if (chessBoard[i][j].getTargetingMoves().get(k).getEvent() == EventID.Capture)
                                     {
+                                        //System.out.println("Illegal");
                                         return false;
                                     }
                                 }

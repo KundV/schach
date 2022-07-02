@@ -69,7 +69,7 @@ public class ChessBoardTile implements Cloneable                        //Is a t
 
     public boolean hasTargetingMoves()                 //Returns true if the tile has targeting moves. Used for King movement.
     {
-        return (TargetingMoves.isEmpty());
+        return (!TargetingMoves.isEmpty());
     }
 
     public ArrayList<ChessMove> getTargetingMoves()                 //Returns the targeting moves.
