@@ -45,16 +45,6 @@ public class ChessPiece
         return playerId;
     }
 
-    public int getID()
-    {
-        return ID;
-    }
-
-    public void setID(int ID)
-    {
-        this.ID = ID;
-    }
-
     public ArrayList<ChessMove> removeAllPossibleMoves()   //returns the ArrayList<ChessMove> of possible moves and deletes it
     {
         ArrayList<ChessMove> temp = possibleMoves;
@@ -142,5 +132,10 @@ public class ChessPiece
     {
 
         return new ChessPiece(this.chessPieceId, this.playerId, this.moveCount);
+    }
+
+    public void setChessPieceIdId(ChessPieceId chessPieceId)
+    {
+        this.chessPieceId = chessPieceId;
     }
 }

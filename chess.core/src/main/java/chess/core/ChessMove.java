@@ -42,6 +42,11 @@ public class ChessMove// extends Dataelement
         this.promotion = promotion;
     }
 
+    public ChessPieceId getPromotion()
+    {
+        return promotion;
+    }
+
 
     List<BoardOperation> operations = new ArrayList<>();
 

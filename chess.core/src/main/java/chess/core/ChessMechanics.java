@@ -589,7 +589,6 @@ public class ChessMechanics implements Cloneable
             if ((move.getEvent() == EventID.Capture || move.getEvent() == EventID.Move))
             {
                 chessBoard[move.xStart][move.yStart].getPiece().addMoveCount();
-
                 if (move.getEvent() == EventID.Capture)                                               // if the piece has been captured, remove the Piece on the targeted tile
                 {
                     deadPieces.add(chessBoard[move.xTarget][move.yTarget].removePiece());
@@ -604,6 +603,12 @@ public class ChessMechanics implements Cloneable
             {
                 chessBoard[move.xTarget][move.yTarget].setPiece(chessBoard[move.xStart][move.yStart].removePiece());
                 chessBoard[move.xSecondaryPieceTarget][move.ySecondaryPieceTarget].setPiece(chessBoard[move.xSecondaryPieceStart][move.ySecondaryPieceStart].removePiece());
+                madeMoves.add(move);
+            }
+            else if(move.getEvent() == EventID.Promotion)
+            {
+                chessBoard[move.xTarget][move.yTarget].setPiece(chessBoard[move.xStart][move.yStart].removePiece());
+                chessBoard[move.xTarget][move.yTarget].getPiece().setChessPieceIdId(move.getPromotion());
             }
             blackKingSimulations = new ArrayList<>();
 
