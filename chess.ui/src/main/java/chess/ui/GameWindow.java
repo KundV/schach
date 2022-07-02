@@ -1,3 +1,5 @@
+package chess.ui;
+
 import chess.core.ChessMechanics;
 
 import javax.swing.*;

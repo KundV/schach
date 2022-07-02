@@ -1,3 +1,5 @@
+package chess.ui;
+
 public class ChessOptionsModel implements Cloneable
 {
     @Override

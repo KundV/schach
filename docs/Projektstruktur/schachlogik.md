@@ -29,7 +29,7 @@ classDiagram
 
         
         
-        private ChessBoard cachedBoard
+        private chess.ui.ChessBoard cachedBoard
 
         List biszeritenMoves
     }

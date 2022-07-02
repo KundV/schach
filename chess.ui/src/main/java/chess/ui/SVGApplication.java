@@ -1,4 +1,4 @@
-// because their syntax highlighting is non-existent
+package chess.ui;// because their syntax highlighting is non-existent
 
 import java.awt.*;
 import java.awt.event.*;

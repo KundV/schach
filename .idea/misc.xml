@@ -4,9 +4,9 @@
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
-        <option value="$PROJECT_DIR$/chess.core/pom.xml" />
-        <option value="$PROJECT_DIR$/chess.ui/pom.xml" />
         <option value="$PROJECT_DIR$/../chess.ui.ressources/pom.xml" />
+        <option value="$PROJECT_DIR$/chess.core/pom.xml" />
+        <option value="$PROJECT_DIR$/pom.xml" />
       </list>
     </option>
   </component>

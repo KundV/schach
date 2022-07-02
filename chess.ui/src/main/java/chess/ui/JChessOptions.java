@@ -1,3 +1,5 @@
+package chess.ui;
+
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;

@@ -10,11 +10,13 @@
         <module name="chess-ressources" />
         <module name="chess.ui" />
         <module name="chess.core" />
+        <module name="chess-ui" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="chess-ressources" target="11" />
       <module name="chess.assets" target="17" />
+      <module name="chess.ui" target="17" />
       <module name="chess.ui.ressources" target="17" />
     </bytecodeTargetLevel>
   </component>

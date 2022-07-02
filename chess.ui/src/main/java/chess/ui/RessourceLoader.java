@@ -1,3 +1,5 @@
+package chess.ui;
+
 import chess.core.ChessPieceId;
 
 import java.net.URI;
@@ -45,7 +47,7 @@ public class RessourceLoader
 
     public static URI getRessource(WikimediaPieceColor color, WikimediaPieceType type) throws MissingResourceException
     {
-        var url = RessourceLoader.class.getResource("./wikimedia/Chess_" + type.c + color.c + "t45.svg");
+        var url = RessourceLoader.class.getResource("/wikimedia/Chess_" + type.c + color.c + "t45.svg");
         if (url == null)
             throw new MissingResourceException("Could not find a SVG-ressource for a " + color + " " + type + " color", "", "");
         // TODO Remove logging

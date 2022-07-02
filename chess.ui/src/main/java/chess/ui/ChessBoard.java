@@ -1,3 +1,5 @@
+package chess.ui;
+
 import chess.core.*;
 import chess.core.common.Vec;
 import org.jetbrains.annotations.Nullable;
@@ -10,6 +12,7 @@ import java.util.Arrays;
 @SuppressWarnings("removal")
 public class ChessBoard extends JLayeredPane implements MouseMotionListener, MouseListener
 {
+
 
 
     private final JChessPiece[][] chessPieceUIComponents = new JChessPiece[8][8];
@@ -31,9 +34,9 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
 
 
         reInitializeUiArray();
-        /*        jChessPieces[0][0] = new JChessPiece(ChessPieceId.BISHOP, false);
-        jChessPieces[0][2] = new JChessPiece(ChessPieceId.BISHOP, false);
-        jChessPieces[0][1] = new JChessPiece(ChessPieceId.BISHOP, false);*/
+        /*        jChessPieces[0][0] = new chess.ui.JChessPiece(ChessPieceId.BISHOP, false);
+        jChessPieces[0][2] = new chess.ui.JChessPiece(ChessPieceId.BISHOP, false);
+        jChessPieces[0][1] = new chess.ui.JChessPiece(ChessPieceId.BISHOP, false);*/
 
         _glassPane.addMouseListener(this);
         _glassPane.addMouseMotionListener(this);

@@ -2,7 +2,7 @@
   <configuration default="false" name="chess ui" type="Application" factoryName="Application">
     <option name="ALTERNATIVE_JRE_PATH" value="17" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
-    <option name="MAIN_CLASS_NAME" value="Main" />
+    <option name="MAIN_CLASS_NAME" value="chess.ui.Main" />
     <module name="chess.ui" />
     <method v="2">
       <option name="Make" enabled="true" />

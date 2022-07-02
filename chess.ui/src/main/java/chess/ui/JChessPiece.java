@@ -1,3 +1,5 @@
+package chess.ui;
+
 import chess.core.ChessPieceId;
 import org.apache.batik.anim.dom.SAXSVGDocumentFactory;
 import org.apache.batik.anim.dom.SVGOMDocument;
