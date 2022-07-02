@@ -684,7 +684,7 @@ public class ChessMechanics implements Cloneable
                     if ((chessBoard[i][j].getPiece().getChessPieceId() == ChessPieceId.King))
                     {
                         //System.out.println("Found King");
-                        if((chessBoard[i][j].getPiece().getPlayerId() == player))
+                        if((chessBoard[i][j].getPlayerId() == player))
                         {
                             //System.out.println("Is King of last Player" + player);
                             if(chessBoard[i][j].hasTargetingMoves())
@@ -712,13 +712,16 @@ public class ChessMechanics implements Cloneable
     {
         for (int i = 0; i < 8; i++)
         {
-            for (int j = 0; j < 8 && (chessBoard[i][j].hasPiece()) && (chessBoard[i][j].getPiece().getChessPieceId() == ChessPieceId.King) && (chessBoard[i][j].getPiece().getPlayerId() == player) && (chessBoard[i][j].getPiece().hasPossibleMove()); j++)
+            for (int j = 0; j < 8; j++)
             {
-                for (int k = chessBoard[i][j].getPiece().getPossibleMoves().size(); i > 0; i--)
+                if (chessBoard[i][j].hasPiece())
                 {
-                    if (chessBoard[i][j].getTargetingMoves().get(k - 1).getEvent() != EventID.Blocked)
+                    if ((chessBoard[i][j].getPlayerId() == player))
                     {
-                        return false;
+                        if(chessBoard[i][j].getPiece().hasPossibleMove())
+                        {
+                            return false;
+                        }
                     }
                 }
             }
