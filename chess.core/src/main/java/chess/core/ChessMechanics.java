@@ -109,7 +109,7 @@ public class ChessMechanics implements Cloneable
                     {
                         ChessMove move = chessBoard[i][j].getPiece().getPossibleMoves().get(k);
                         ChessMechanics test = new ChessMechanics(chessBoard, deadPieces, madeMoves.size() + 1, player, move);
-                        if (!test.check(player))
+                        if (!test.check(move.getPlayerId()))
                         {
                             illegalMoves.add(move);
 
@@ -388,8 +388,7 @@ public class ChessMechanics implements Cloneable
         TestMovePiece(x, y, x + 1, y - 1);
         TestMovePiece(x, y, x - 1, y + 1);
         TestMovePiece(x, y, x - 1, y - 1);
-
-        if(chessBoard[x][y].getPiece().isFirstMove())
+        if(check(chessBoard[x][y].getPlayerId()) && chessBoard[x][y].getPiece().isFirstMove())
         {
             for (int direction = -1; direction < 2; direction += 2)
             {
@@ -399,7 +398,7 @@ public class ChessMechanics implements Cloneable
                     {
                         if (chessBoard[x][i].getPiece().getChessPieceId() == ChessPieceId.Tower && chessBoard[x][i].getPiece().isFirstMove())
                         {
-                            chessBoard[x][y].getPiece().addPossibleMove(new ChessMove(x, y, x, i, chessBoard[x][y].getPlayerId(), EventID.Castling));
+                            chessBoard[x][y].getPiece().addPossibleMove(new ChessMove(x, y, x, y + (2*direction), chessBoard[x][y].getPlayerId(), EventID.Castling, x, i, x,y + direction));
                         }
                         i = 99;
                     } else if (chessBoard[x][i].hasTargetingMoves())
@@ -603,9 +602,8 @@ public class ChessMechanics implements Cloneable
             }
             else if(move.getEvent() == EventID.Castling)
             {
-                ChessPiece tempPiece = chessBoard[move.xTarget][move.yTarget].removePiece();
                 chessBoard[move.xTarget][move.yTarget].setPiece(chessBoard[move.xStart][move.yStart].removePiece());
-                chessBoard[move.xStart][move.yStart].setPiece(tempPiece);
+                chessBoard[move.xSecondaryPieceTarget][move.ySecondaryPieceTarget].setPiece(chessBoard[move.xSecondaryPieceStart][move.ySecondaryPieceStart].removePiece());
             }
             blackKingSimulations = new ArrayList<>();
 
