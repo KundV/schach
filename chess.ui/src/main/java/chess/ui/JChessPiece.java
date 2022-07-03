@@ -1,5 +1,6 @@
 package chess.ui;
 
+import chess.core.ChessPiece;
 import chess.core.ChessPieceId;
 import org.apache.batik.anim.dom.SAXSVGDocumentFactory;
 import org.apache.batik.anim.dom.SVGOMDocument;
@@ -18,37 +19,30 @@ public class JChessPiece extends JPanel
 {
 
     private final JSVGCanvas svg;
+    public final ChessPieceId id;
+    public final Boolean isBlack;
+
+    public boolean equals(ChessPiece chessPiece)
+    {
+        return chessPiece != null && chessPiece.getChessPieceId() == id && chessPiece.getPlayerId().isBlack() == isBlack;
+    }
+
 
 
     public JChessPiece(ChessPieceId id, Boolean isBlack)
     {
+        this.id = id;
+        this.isBlack = isBlack;
 
         this.setOpaque(false);
         this.setBorder(new CornerBorder());
-        URI uri;
 
-
-        SVGOMDocument doc = null;
-
-
-        uri = RessourceLoader.getRessource(isBlack ? RessourceLoader.WikimediaPieceColor.Black : RessourceLoader.WikimediaPieceColor.White, id);
-
-        try
-        {
-            String parser = XMLResourceDescriptor.getXMLParserClassName();
-            SAXSVGDocumentFactory f = new SAXSVGDocumentFactory(parser);
-            doc = (SVGOMDocument) f.createDocument(uri.toString());
-            doc.getRootElement().setAttribute("viewBox", "0 0 45 45");
-
-        } catch (IOException e)
-        {
-            throw new RuntimeException(e);
-        }
-
+        var doc = RessourceLoader.getRessourceFromCache(isBlack ? RessourceLoader.WikimediaPieceColor.Black : RessourceLoader.WikimediaPieceColor.White, id);
 
         setLayout(null);
         svg = new JSVGCanvas();
         svg.setDocumentState(JSVGCanvas.ALWAYS_DYNAMIC);
+
 
         svg.setDocument(doc);
         //svg.setURI(uri.toString());

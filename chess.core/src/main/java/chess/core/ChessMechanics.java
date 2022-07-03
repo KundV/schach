@@ -659,6 +659,10 @@ public class ChessMechanics implements Cloneable
     }
 
 
+    public ChessBoardTile get(int x, int y)
+    {
+        return chessBoard[y][x];
+    }
 
     public void cloneBoard(ChessBoardTile[][] oldBord)
     {
@@ -685,7 +689,7 @@ public class ChessMechanics implements Cloneable
                 if(chessBoard[i][j].hasPiece())
                 {
                     //System.out.println(chessBoard[i][j].getPiece().getChessPieceId());
-                    System.out.println("Has Piece");
+                    //System.out.println("Has Piece");
                     if ((chessBoard[i][j].getPiece().getChessPieceId() == ChessPieceId.King))
                     {
                         //System.out.println("Found King");
