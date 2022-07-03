@@ -312,6 +312,8 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
 
     }
 
+
+
     @Override
     public void mouseReleased(MouseEvent e)
     {
@@ -333,11 +335,11 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
                                 "Wähle die Figur zu der befördert werden soll",
                                 "Beförderung",
                                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null,
-                                ChessPieceId.values(), null);
+                                Arrays.stream(ChessPieceId.promotionValues()).map(ChessPieceId::toGermanString).toArray(), null);
 
                         if (dialog == JOptionPane.CLOSED_OPTION)
                             break;
-                        move.setPromotion(ChessPieceId.values()[dialog]);
+                        move.setPromotion(ChessPieceId.promotionValues()[dialog]);
                     }
 
                     _mechanics.executeMove(move);
