@@ -16,7 +16,6 @@
     <bytecodeTargetLevel>
       <module name="chess-ressources" target="11" />
       <module name="chess.assets" target="17" />
-      <module name="chess.ui" target="17" />
       <module name="chess.ui.ressources" target="17" />
     </bytecodeTargetLevel>
   </component>

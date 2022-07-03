@@ -14,7 +14,6 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
 {
 
 
-
     private final JChessPiece[][] chessPieceUIComponents = new JChessPiece[8][8];
     private final JChessField[][] boardFields = new JChessField[8][8];
     private final JPanel _glassPane = new JPanel();
@@ -206,7 +205,7 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
         }
     }
 
-    private void processMove(ChessMove move)
+    private void updateUiArray()
     {
         /*
         var piece = chessPieceUIComponents[move.xStart][move.yStart];
@@ -231,7 +230,8 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
                     }
                     chessPieceUIComponents[x][y] = null;
 
-                    if (piece != null) {
+                    if (piece != null)
+                    {
                         var p = new JChessPiece(tile.getPiece().getChessPieceId(), tile.getPlayerId().isBlack());
                         p.setSelectable(JChessPiece.State.None);
                         this.add(p, new Integer(-9));
@@ -327,19 +327,27 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
                 var move = ((ChessMove) moves.get(i - 1));
                 if (move.xTarget == target.y && move.yTarget == target.x && move.event != EventID.Blocked)
                 {
-                    /*
-                    JOptionPane.showOptionDialog(this, "Wähle die Figur zu der befördert werden soll", "Beförderung", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, new String[]{
-                            "Dame", "Turm", "Pferd", "Läufer"
-                    }, null);
-                    */
+                    if (move.event == EventID.Promotion)
+                    {
+                        var dialog = JOptionPane.showOptionDialog(this,
+                                "Wähle die Figur zu der befördert werden soll",
+                                "Beförderung",
+                                JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null,
+                                ChessPieceId.values(), null);
+
+                        if (dialog == JOptionPane.CLOSED_OPTION)
+                            break;
+                        move.setPromotion(ChessPieceId.values()[dialog]);
+                    }
 
                     _mechanics.executeMove(move);
-                    processMove(move);
+
                 }
             }
             this._hoveringField = target;
         }
         this._selectedPiece = null;
+        updateUiArray();
         updatePlacement();
         updateSelectableHints();
         updateTargetHints();

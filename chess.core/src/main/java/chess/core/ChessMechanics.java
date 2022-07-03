@@ -39,11 +39,12 @@ public class ChessMechanics implements Cloneable
 
         this.targetTurn = targetTurn;
         this.player = player;
+        /*
         System.out.println(move.xStart);
         System.out.println(move.yStart);
         System.out.println(move.xTarget);
         System.out.println(move.yTarget);
-
+         */
         cloneBoard(chessBoard);
         executeMove(move);
     }
@@ -712,7 +713,7 @@ public class ChessMechanics implements Cloneable
                                 //System.out.println("Has Targeting Moves");
                                 for (int k = 0; k < chessBoard[i][j].getTargetingMoves().size(); k++)
                                 {
-                                    System.out.println(chessBoard[i][j].getTargetingMoves().get(k).getEvent());
+                                    //System.out.println(chessBoard[i][j].getTargetingMoves().get(k).getEvent());
                                     if (chessBoard[i][j].getTargetingMoves().get(k).getEvent() == EventID.Capture || chessBoard[i][j].getTargetingMoves().get(k).getEvent() == EventID.Promotion)
                                     {
                                         //System.out.println("Illegal");

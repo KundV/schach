@@ -39,7 +39,6 @@ public class RessourceLoader
 
     public static SVGOMDocument getRessourceFromCache(@NotNull WikimediaPieceColor color, @NotNull WikimediaPieceType type)
     {
-        System.out.println(color +" " + type);
         var cached = cache.get(color).getOrDefault(type, null);
         if (cached == null)
         {
