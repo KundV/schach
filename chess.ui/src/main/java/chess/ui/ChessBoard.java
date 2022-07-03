@@ -60,17 +60,26 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
         updateSelectableHints();
     }
 
+    /**
+     * Gibt die Farbe für das Schachfeld an der gegebenen Position
+     */
     private static boolean isWhite(int row, int col)
     {
         //return row + (column % 2) % 2 == 0;
         return (row + col) % 2 == 0;
     }
 
+    /**
+     * Gibt eine Kopie der Optionen zurück
+     */
     public ChessOptionsModel getOptions()
     {
         return _options.clone();
     }
 
+    /**
+     * Setzt die Optionen. Werden davor kopiert
+     */
     public void setOptions(ChessOptionsModel options)
     {
         _options = options.clone();
@@ -78,6 +87,9 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
         updateTargetHints();
     }
 
+    /**
+     * Lädt das Spiel neu
+     */
     public void ChangeGame(ChessMechanics newGame)
     {
         _mechanics = newGame;
@@ -89,6 +101,9 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
         updateSelectableHints();
     }
 
+    /**
+     * Aktualisiert die Positionen der Schachfiguren anhand des UI Arrays. Hat nichts mit der Logik zu tun
+     */
     public void updatePlacement()
     {
         _glassPane.setSize(this.getWidth(), this.getHeight());
@@ -115,6 +130,9 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
         repaint();
     }
 
+    /**
+     * Aktualisiert die Zielmarkierungen der Figuren anhand der Nutzerinteraktion und den Einstellungen
+     */
     private void updateTargetHints()
     {
         Arrays.stream(boardFields).forEach(row -> Arrays.stream(row).forEach(JChessField::removeTarget));
@@ -145,6 +163,9 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
         repaint();
     }
 
+    /**
+     * Aktualisiert die Markierungen für die ziehbaren Figuren anhand der Nutzerinteraktion und den Einstellungen
+     */
     private void updateSelectableHints()
     {
         for (int r = 0; r < 8; r++)
@@ -173,23 +194,9 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
         }
     }
 
-    private void addPieces()
-    {
-
-
-        for (int r = 0; r < 8; r++)
-        {
-            for (int c = 0; c < 8; c++)
-            {
-                var p = chessPieceUIComponents[r][c];
-                if (p != null)
-                {
-                    this.add(p, new Integer(-9));
-                }
-            }
-        }
-    }
-
+    /**
+     * Initialisiert das UI Array für Spielfelder (Dunkel, Hell)
+     */
     private void addFields()
     {
         for (int x = 0; x < 8; x++)
@@ -205,16 +212,11 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
         }
     }
 
+    /**
+     * Aktualisiert das UI-Array anhand der Logik; Wird für Schnelles aktualisieren nach Zügen verwendet
+     */
     private void updateUiArray()
     {
-        /*
-        var piece = chessPieceUIComponents[move.xStart][move.yStart];
-        var captured = chessPieceUIComponents[move.xTarget][move.yTarget];
-        if (captured != null)
-            this.remove(captured);
-        chessPieceUIComponents[move.xTarget][move.yTarget] = piece;
-        chessPieceUIComponents[move.xStart][move.yStart] = null;
-        */
         for (int x = 0; x < 8; x++)
         {
             for (int y = 0; y < 8; y++)
@@ -241,13 +243,11 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
 
             }
         }
-
-
         updatePlacement();
     }
 
     /**
-     * Recreates the piece-Array. Removes all pieces from the board and adds them again.
+     * Reinitialisiert das UI-Array
      */
     private void reInitializeUiArray()
     {
@@ -277,9 +277,14 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
     public void mouseClicked(MouseEvent e)
     {
 
-        //System.out.println(e.getX() / (getWidth() / 8));
     }
 
+    /**
+     * Wird von Swing aufgerufen, wenn die Maustaste gedrückt wird.
+     * Beim Drücken auf eine Figur wird die UI für das Ziehen der Figur vorbereitet.
+     *
+     * @param e the event to be processed
+     */
     @Override
     public void mousePressed(MouseEvent e)
     {
@@ -312,12 +317,16 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
 
     }
 
-
-
+    /**
+     * Wird von Swing aufgerufen, wenn die Maustaste losgelassen wird.
+     * Führt beim Loslassen einer Figur den Zug aus oder setzt die Figur zurück, wenn der Zug nicht möglich ist.
+     *
+     * @param e the event to be processed
+     */
     @Override
     public void mouseReleased(MouseEvent e)
     {
-
+        boolean moveExecuted = false;
         _piecePressed = false;
         if (_selectedPiece != null)
         {
@@ -343,7 +352,8 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
                     }
 
                     _mechanics.executeMove(move);
-
+                    moveExecuted = true;
+                    break;
                 }
             }
             this._hoveringField = target;
@@ -353,9 +363,15 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
         updatePlacement();
         updateSelectableHints();
         updateTargetHints();
-        //recreateBoard();
-        //addPieces();
-        //onResize();
+
+        if (!moveExecuted) return;
+        if (_mechanics.checkMate())
+        {
+            JOptionPane.showMessageDialog(this, "Schachmatt! " + (_mechanics.getCurrentPlayer().isBlack() ? "Weiß" : "Schwarz") + " hat gewonnen.", "Schachmatt", JOptionPane.INFORMATION_MESSAGE);
+        } else if (_mechanics.patt())
+        {
+            JOptionPane.showMessageDialog(this, "Es sind keine Züge möglich.", "Patt", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
     @Override
@@ -364,6 +380,11 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
 
     }
 
+    /**
+     * Wird von Swing aufgerufen, wenn der Mauszeiger außerhalb des Schachbretts bewegt wird.
+     *
+     * @param e the event to be processed
+     */
     @Override
     public void mouseExited(MouseEvent e)
     {
@@ -372,6 +393,11 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
         updateTargetHints();
     }
 
+    /**
+     * Wird von Swing aufgerufen, wenn der Mauszeiger in das Schachbrett hinein bewegt wird.
+     *
+     * @param e the event to be processed
+     */
     @Override
     public void mouseDragged(MouseEvent e)
     {
@@ -395,31 +421,49 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
         updateTargetHints();
     }
 
+    /**
+     * Ruft die größe für ein einzelnes Schachfeld ab
+     */
     private Point getTileSize()
     {
         return new Point(getWidth() / 8, getHeight() / 8);
     }
 
+    /**
+     * Berechnet die Koordinaten des Felds aus den angegebenen Bildschirmkoordinaten ab
+     */
     private Vec posFromPoint(Point p)
     {
         return new Vec(fieldFromX(p.x), fieldFromY(p.y));
     }
 
+    /**
+     * Berechnet die Bildschirmkoordinaten aus den angegebenen Koordinaten eines Feldes
+     */
     private Point pointFromVec(Vec v)
     {
         return new Point(v.x * getWidth() / 8, v.y * getHeight() / 8);
     }
 
+    /*
+    * Berechnet die X-Koordinaten des Felds aus der angegebenen X-Bildschirmkoordinate
+     */
     private int fieldFromX(int x)
     {
         return x / (getWidth() / 8);
     }
-
+    /*
+     * Berechnet die Y-Koordinaten des Felds aus der angegebenen Y-Bildschirmkoordinate
+     */
     private int fieldFromY(int y)
     {
         return y / (getHeight() / 8);
     }
 
+    /**
+     * Wird von Swing aufgerufen, wenn die Maus bewegt wird ohne das eine Maustaste gedrückt wird
+     * @param e the event to be processed
+     */
     @Override
     public void mouseMoved(MouseEvent e)
     {
@@ -436,11 +480,16 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
         updateTargetHints();
     }
 
+    /**
+     * Gibt die Koordinaten des Feldes zurück, auf dem sich der Mauszeiger befindet
+     */
     public Vec getMouseVec()
     {
         return getMouseVec(null);
     }
-
+    /**
+     * Gibt die Koordinaten des Feldes zurück, dessen Bildschirmkoordinaten man gegeben hat
+     */
     public Vec getMouseVec(@Nullable Point p)
     {
         if (p == null) p = this.getMousePosition(true);
@@ -449,6 +498,9 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
         return (vec.y < 0 || vec.x < 0 || vec.y >= 8 || vec.x >= 8) ? null : vec;
     }
 
+    /**
+     * Macht den Zug rückgängig
+     */
     public void Undo()
     {
         _mechanics.reverseMove();

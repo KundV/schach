@@ -66,27 +66,6 @@ public class GameWindow extends JFrame
             });
             _sidebar.add(preferencesButton);
 
-            var loadKingsSimulations = new Button("Load Kings Simulations");
-            var lm = new DefaultListModel<String>();
-
-            var jl = new JList<String>(lm);
-            loadKingsSimulations.addActionListener(e ->
-            {
-                lm.clear();
-                _mechanics.blackKingSimulations.forEach(b -> lm.addElement(b.toString()));
-            });
-
-            jl.addListSelectionListener(e ->
-            {
-                if (!e.getValueIsAdjusting() && jl.getSelectedIndex() != -1)
-                {
-                    new GameWindow(_mechanics.blackKingSimulations.get(jl.getSelectedIndex()));
-                }
-            });
-
-
-            _sidebar.add(loadKingsSimulations);
-            _sidebar.add(jl);
         }
         c.gridx = 1;
         c.gridy = 0;
