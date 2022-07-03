@@ -551,9 +551,9 @@ public class ChessMechanics implements Cloneable
         }
     }
 
-    public PlayerId reverseMove()
+    public PlayerId reverseMove()                                           //Reverse the last Move
     {
-        if (!madeMoves.isEmpty())
+        if (!madeMoves.isEmpty())                                           //only if moves have been made
         {
             ChessMove move = madeMoves.get(madeMoves.size() - 1);
             madeMoves.remove(move);
@@ -656,7 +656,7 @@ public class ChessMechanics implements Cloneable
         return false;                                                                             //not endangered
     }
 
-    public boolean checkMate()          //if player has no possible moves
+    public boolean playerHasNoMoves()
     {
         for (int i = 0; i < 8; i++)
         {
@@ -676,9 +676,20 @@ public class ChessMechanics implements Cloneable
         }
         return true;
     }
-    public boolean patt()
+    public boolean patt()          //if player has no possible moves
     {
-        if(checkMate())
+        if(!check(player))
+        {
+            if(playerHasNoMoves())
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean checkMate()     //if player has no moves && KING
+    {
+        if(playerHasNoMoves())
         {
             if(check(player))
             {
