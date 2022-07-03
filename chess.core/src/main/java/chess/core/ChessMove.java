@@ -17,25 +17,27 @@ import java.util.List;
 
 public class ChessMove// extends Dataelement
 {
-    public final int xStart;
-    public final int yStart;
-    public final int xTarget;
-    public final int yTarget;
-    public int xSecondaryPieceStart;
+    public final int xStart;        //x start position des zuges
+    public final int yStart;        //y start position des zuges
+    public final int xTarget;       //x ziel position des zuges
+    public final int yTarget;       //y ziel position des zuges
+    public int xSecondaryPieceStart;    //Zweiter Zug bei rochade && position des enPassant
     public int ySecondaryPieceStart;
     public int xSecondaryPieceTarget;
     public int ySecondaryPieceTarget;
     private PlayerId player;
     public  EventID event;
+    private ChessPieceId promotion;
+
 
     public final Vec start;
     public final Vec target;
 
     // TODO state is not used yet
     ChessMechanics game;
-    private ChessPieceId promotion;
 
-    public void setPromotion(ChessPieceId promotion)
+
+    public void setPromotion(ChessPieceId promotion) //setzt die Promotion
     {
         if (event != EventID.Promotion)
             throw new UnsupportedOperationException("Setting the promotion is only supported for users");

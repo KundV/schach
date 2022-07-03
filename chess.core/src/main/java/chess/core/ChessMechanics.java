@@ -4,7 +4,6 @@ package chess.core;
 import chess.core.common.Vec;
 import org.jetbrains.annotations.Nullable;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import static chess.core.ChessPieceId.King;
@@ -14,29 +13,28 @@ import static chess.core.ChessPieceId.*;
 import static chess.core.ChessPieceId.Bishop;
 
 
-public class ChessMechanics implements Cloneable
+public class ChessMechanics implements Cloneable    //Klasse zum berechnen des Schachfeldes, der Möglichen Züge und Stadien
 {
-    private ChessBoardTile[][] chessBoard; // the chess board
-    private ArrayList<ChessPiece> deadPieces = new ArrayList<ChessPiece>();   // the dead pieces
-    private int targetTurn = 0;// the targeted turn of simulation
-    private PlayerId player = PlayerId.WHITE; // the current player
-    private ArrayList<ChessMove> madeMoves = new ArrayList<ChessMove>();               // the moves made
+    private ChessBoardTile[][] chessBoard;                                    // das Schachbrett   bestehend aus Schachfeldern
+    private ArrayList<ChessPiece> deadPieces = new ArrayList<ChessPiece>();   // die Toten Figuren
+    private int targetTurn = 0;                                               // abbruchfunktion für die rekursive Simulation
+    private PlayerId player = PlayerId.WHITE;                                 // der aktive Spieler
+    private ArrayList<ChessMove> madeMoves = new ArrayList<ChessMove>();      // bisher getätigte Züge
 
 
     private ChessBoardTile[][] initialBoard;
 
-    public ChessMechanics(ChessBoardTile[][] chessBoard, ArrayList<ChessPiece> deadPieces, int targetTurn, PlayerId player, ChessMove move)
+    public ChessMechanics(ChessBoardTile[][] chessBoard, ArrayList<ChessPiece> deadPieces, ArrayList<ChessMove> madeMoves,int targetTurn, PlayerId player, ChessMove move) //konstruktor für die rekursive Zug simulation
     {
 
-        for(int i = madeMoves.size(); i > 0;i--)//TODO: Possible bug.!!!
+        for(int i = madeMoves.size()-1; i > 0;i--)            //Kopieren der gemachten Züge (dereferenzieren)
         {
             this.madeMoves.add(madeMoves.get(i));
         }
-        for (int i = deadPieces.size() - 1; i > 0; i--)//TODO: Possible bug.!!!
+        /*for (int i = deadPieces.size() - 1; i > 0; i--)
         {
             this.deadPieces.add(deadPieces.get(i));
-        }
-
+        }*/
         this.targetTurn = targetTurn;
         this.player = player;
         cloneBoard(chessBoard);
@@ -47,12 +45,12 @@ public class ChessMechanics implements Cloneable
 
     public ChessMechanics()
     {
-        makeBoard();
-        StartPosition();
+        makeBoard();            //erstellung des Schachbretts
+        StartPosition();        //einfügen der Figuren in Startposition
     }
 
 
-    public void getAllMoves()
+    public void getAllMoves()   //berechnen aller Züge
     {
         removeAllMoves();
         int k = 0;
@@ -63,7 +61,7 @@ public class ChessMechanics implements Cloneable
             {
                 if (chessBoard[i][j].hasPiece())
                 {
-                    if (chessBoard[i][j].getPiece().getChessPieceId() == King)
+                    if (chessBoard[i][j].getPiece().getChessPieceId() == King)      //gesonderte Prüfung der Könige als letzte Figuren --> um verbotene Züge vorzubeugen
                     {
                         tempCoords[k] = i;
                         k++;
@@ -72,7 +70,7 @@ public class ChessMechanics implements Cloneable
                     }
                     else
                     {
-                        CheckMoves(i, j);
+                        CheckMoves(i, j); //Berechnung
                     }
                 }
             }
@@ -84,7 +82,7 @@ public class ChessMechanics implements Cloneable
 
     }
 
-    public void removeAllMoves()
+    public void removeAllMoves()  //entfernung aller Züge aus Figuren und Schachfeldern
     {
         for (int i = 0; i < 8; i++)
         {
@@ -98,7 +96,7 @@ public class ChessMechanics implements Cloneable
             }
         }
     }
-    public void validateAllMoves()
+    public void validateAllMoves()  //Überprüfung aller berechneten Züge nach Regelverstößen nach ausübung --> Simulation
     {
         for(int i = 0; i < 8; i++)
         {
@@ -122,15 +120,14 @@ public class ChessMechanics implements Cloneable
                             {
                                 move.setPromotion(ChessPieceIDs.get(promotionPossebileties));
                             }
-                            ChessMechanics test = new ChessMechanics(chessBoard, deadPieces, madeMoves.size() + 1, player, move);
-                            if (test.check(move.getPlayerId()))
+                            ChessMechanics test = new ChessMechanics(chessBoard, deadPieces, madeMoves, madeMoves.size() + 1, player, move);
+                            if (test.check(move.getPlayerId()))                                 //Falls der König in der eigne König nach dem Zug noch oder wieder bedroht ist
                             {
-                                illegalMoves.add(move);
-
+                                illegalMoves.add(move);                                         //wird er zur Löschung gespeichert
                             }
                         }
                     }
-                    for (ChessMove illegalMove : illegalMoves)
+                    for (ChessMove illegalMove : illegalMoves)                                  //löschung der verbotenen Züge
                     {
                         chessBoard[i][j].getTargetingMoves().remove(illegalMove);
                         chessBoard[i][j].getPiece().getPossibleMoves().remove(illegalMove);
@@ -140,7 +137,7 @@ public class ChessMechanics implements Cloneable
         }
     }
 
-    public void CheckMoves(int x, int y)
+    public void CheckMoves(int x, int y)   //Aufruf des zugehörigen Regelwerkes
     {
         if(chessBoard[x][y].hasPiece())
         {
@@ -180,31 +177,8 @@ public class ChessMechanics implements Cloneable
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
-    void generateImmediateMoves()
-    {
-        for (int row = 0; row < 8; row++)
-        {
-            for (int col = 0; col < 8; col++)
-            {
-                var piecePos = new Vec(col, row);
-                if (chessBoard[row][col].hasPiece())
-                {
-                    var piece = chessBoard[row][col].getPiece();
 
-                    //region PAWN
-                    if (piece.getChessPieceId() == Pawn)
-                    {
-
-                    }
-                    //endregion
-
-
-                }
-            }
-        }
-    }
-
-    public boolean RulesPawn(int x, int y)
+    public void RulesPawn(int x, int y)
     {
         int a = chessBoard[x][y].getPiece().getPlayerId() == PlayerId.BLACK ? 1 : -1;
 
@@ -310,10 +284,9 @@ public class ChessMechanics implements Cloneable
                 }
             }
         }
-        return true;
     }
 
-    public boolean RulesTower(int x, int y)
+    public void RulesTower(int x, int y)
     {
         boolean notBlocked = true;
         for (int i = x + 1; i < 8 && notBlocked; i++)
@@ -335,10 +308,9 @@ public class ChessMechanics implements Cloneable
         {
             notBlocked = TestMovePiece(x, y, x, i);
         }
-        return true;
     }
 
-    public boolean RulesBishop(int x, int y)
+    public void RulesBishop(int x, int y)
     {
         boolean notBlocked = true;
         for (int i = x + 1, j = y + 1; i < 8 && j < 8 && notBlocked; i++, j++)
@@ -360,10 +332,9 @@ public class ChessMechanics implements Cloneable
         {
             notBlocked = TestMovePiece(x, y, i, j);
         }
-        return true;
     }
 
-    public boolean RulesHorse(int x, int y)
+    public void RulesHorse(int x, int y)
     {
         TestMovePiece(x, y, x + 1, y + 2);
         TestMovePiece(x, y, x + 1, y - 2);
@@ -373,14 +344,12 @@ public class ChessMechanics implements Cloneable
         TestMovePiece(x, y, x + 2, y - 1);
         TestMovePiece(x, y, x - 2, y + 1);
         TestMovePiece(x, y, x - 2, y - 1);
-        return true;
     }
 
-    public boolean RulesQueen(int x, int y)
+    public void RulesQueen(int x, int y)
     {
         RulesBishop(x, y);
         RulesTower(x, y);
-        return true;
     }
 
     public void RulesKing(int x, int y)
@@ -429,10 +398,10 @@ public class ChessMechanics implements Cloneable
 
     public boolean TestMovePiece(int x, int y, int x2, int y2)
     {
-        if (x2 < 0 | x2 > 7 | y2 < 0 | y2 > 7)
+        if (x2 < 0 | x2 > 7 | y2 < 0 | y2 > 7)    //gibt falsch zurück, falls der Zug das Brett verlassen würde
         {
             return false;
-        } else if (!chessBoard[x2][y2].hasPiece())// if the tile is empty
+        } else if (!chessBoard[x2][y2].hasPiece())      // wenn das Zielfeld leer ist
         {
              ChessMove move = new ChessMove(x, y, x2, y2, chessBoard[x][y].getPlayerId(),EventID.Move);
 
@@ -440,9 +409,9 @@ public class ChessMechanics implements Cloneable
             chessBoard[x2][y2].addTargetingMove(move);
             return true;
         }
-        else if (chessBoard[x2][y2].getPlayerId() == chessBoard[x][y].getPlayerId().opposite())           // if the tile is occupied by an enemy piece
+        else if (chessBoard[x2][y2].getPlayerId() == chessBoard[x][y].getPlayerId().opposite())           // wenn eine generische Figur auf dem Zielfeld steht
         {
-            ChessMove move = new ChessMove(x, y, x2, y2, chessBoard[x][y].getPlayerId(),EventID.Capture);
+            ChessMove move = new ChessMove(x, y, x2, y2, chessBoard[x][y].getPlayerId(),EventID.Capture); // gefangennehmen
             chessBoard[x][y].getPiece().addPossibleMove(move);
             chessBoard[x2][y2].addTargetingMove(move);
             return false;
@@ -452,7 +421,7 @@ public class ChessMechanics implements Cloneable
     }
 
 
-    public void StartPosition()
+    public void StartPosition()     //Startaufstellung
     {
         for (int i = 0; i < 8; i++)
         {
@@ -478,7 +447,7 @@ public class ChessMechanics implements Cloneable
         getAllMoves();
     }
 
-    public void makeBoard()
+    public void makeBoard()     //Initialisierung der Schachfelder
     {
         chessBoard = new ChessBoardTile[8][8];
         for (int i = 0; i < 8; i++)
@@ -490,45 +459,45 @@ public class ChessMechanics implements Cloneable
         }
     }
 
-    public ChessBoardTile[][] getChessBoard()
+    public ChessBoardTile[][] getChessBoard()  //getter Methode
     {
         return chessBoard;
     }
 
 
 
-    public void executeMove(ChessMove move)
+    public void executeMove(ChessMove move)     //Ausführen
     {
         if (move.getPlayerId() == player)
         {
 
             if ((move.getEvent() == EventID.Capture || move.getEvent() == EventID.Move))
             {
-                if (move.getEvent() == EventID.Capture)                                               // if the piece has been captured, remove the Piece on the targeted tile
+                if (move.getEvent() == EventID.Capture)                                               // wenn die Figur gefangen wird
                 {
                     deadPieces.add(chessBoard[move.xTarget][move.yTarget].removePiece());
                     chessBoard[move.xTarget][move.yTarget].setPiece(chessBoard[move.xStart][move.yStart].removePiece());
-                } else                                                                           // if the piece has been moved, remove from start tile and add to target tile
+                } else                                                                                // wenn die Figur gefangen wird
                 {
                     chessBoard[move.xTarget][move.yTarget].setPiece(chessBoard[move.xStart][move.yStart].removePiece());
                 }
                 madeMoves.add(move);
             }
-            else if(move.getEvent() == EventID.Castling)
+            else if(move.getEvent() == EventID.Castling)                                                // wenn eine Rochade ausgeführt wird
             {
-                chessBoard[move.xTarget][move.yTarget].setPiece(chessBoard[move.xStart][move.yStart].removePiece());
-                chessBoard[move.xSecondaryPieceTarget][move.ySecondaryPieceTarget].setPiece(chessBoard[move.xSecondaryPieceStart][move.ySecondaryPieceStart].removePiece());
+                chessBoard[move.xTarget][move.yTarget].setPiece(chessBoard[move.xStart][move.yStart].removePiece());    //König verschieben
+                chessBoard[move.xSecondaryPieceTarget][move.ySecondaryPieceTarget].setPiece(chessBoard[move.xSecondaryPieceStart][move.ySecondaryPieceStart].removePiece()); //Turm verschieben
                 chessBoard[move.xSecondaryPieceTarget][move.ySecondaryPieceTarget].getPiece().addMoveCount();
                 madeMoves.add(move);
             }
-            else if(move.getEvent() == EventID.Promotion)
+            else if(move.getEvent() == EventID.Promotion)                                               //wenn eine Figur promoviert wird
             {
-                if(chessBoard[move.xTarget][move.yTarget].hasPiece())
+                if(chessBoard[move.xTarget][move.yTarget].hasPiece())                                   //falls eine Figur dabei geschlagen wird, kommt diese zu der Liste der getöteten Figuren
                 {
                     deadPieces.add(chessBoard[move.xTarget][move.yTarget].removePiece());
                 }
-                chessBoard[move.xTarget][move.yTarget].setPiece(chessBoard[move.xStart][move.yStart].removePiece());
-                chessBoard[move.xTarget][move.yTarget].getPiece().setChessPieceIdId(move.getPromotion());
+                chessBoard[move.xTarget][move.yTarget].setPiece(chessBoard[move.xStart][move.yStart].removePiece());    //Figur verschieben
+                chessBoard[move.xTarget][move.yTarget].getPiece().setChessPieceIdId(move.getPromotion());               //Neue Figur setzen
                 madeMoves.add(move);
             }
             else if(move.getEvent() == EventID.enPassant)
@@ -537,13 +506,14 @@ public class ChessMechanics implements Cloneable
                 deadPieces.add(chessBoard[move.xSecondaryPieceStart][move.ySecondaryPieceStart].removePiece());
                 madeMoves.add(move);
             }
-            blackKingSimulations = new ArrayList<>();
-            chessBoard[move.xTarget][move.yTarget].getPiece().addMoveCount();
-            player = player.opposite();
 
-            getAllMoves();
+            chessBoard[move.xTarget][move.yTarget].getPiece().addMoveCount(); //Zähler für die Anzahl der Züge einer Figur hochzählen
 
-            if(targetTurn == 0)
+            player = player.opposite();                //Spielerwechsel
+
+            getAllMoves();                          //alle Züge erneuern
+
+            if(targetTurn == 0) //wenn es keine Simulation ist, wird auf legalität überprüft
             {
                 validateAllMoves();
             }
@@ -551,9 +521,9 @@ public class ChessMechanics implements Cloneable
         }
     }
 
-    public PlayerId reverseMove()                                           //Reverse the last Move
+    public PlayerId reverseMove()                                           //macht den letzten Zug rückgängig
     {
-        if (!madeMoves.isEmpty())                                           //only if moves have been made
+        if (!madeMoves.isEmpty())                                           //nur, wenn bereits züge gemacht wurden
         {
             ChessMove move = madeMoves.get(madeMoves.size() - 1);
             madeMoves.remove(move);
@@ -581,7 +551,7 @@ public class ChessMechanics implements Cloneable
                 }
                 else if(move.getEvent() == EventID.Promotion)
                 {
-                    chessBoard[move.xTarget][move.yTarget].getPiece().setChessPieceIdId(Pawn);//move.getPromotion()
+                    chessBoard[move.xTarget][move.yTarget].getPiece().setChessPieceIdId(Pawn);          //move.getPromotion()
                     chessBoard[move.xStart][move.yStart].setPiece(chessBoard[move.xTarget][move.yTarget].removePiece());
                     if(move.yTarget != move.yStart)
                     {
@@ -611,7 +581,7 @@ public class ChessMechanics implements Cloneable
         return chessBoard[y][x];
     }
 
-    public void cloneBoard(ChessBoardTile[][] oldBord)
+    public void cloneBoard(ChessBoardTile[][] oldBord)  //kopiert das alte Brett für die Simulation mit neuen Objekten
     {
         makeBoard();
         for (int i = 0; i < 8; i++)
@@ -626,7 +596,7 @@ public class ChessMechanics implements Cloneable
         }
     }
 
-    public boolean check(PlayerId player)                                 //returns true if the king is given player is in Danger
+    public boolean check(PlayerId player)    //gibt wahr zurück, wenn der König des gegebenen Spielers bedroht ist
     {
         for (int i = 0; i < 8; i++)                                       //iterating through the ChessBoard until:
         {
@@ -656,7 +626,7 @@ public class ChessMechanics implements Cloneable
         return false;                                                                             //not endangered
     }
 
-    public boolean playerHasNoMoves()
+    public boolean playerHasNoMoves()      //wenn der aktive Spieler keine Züge mehr hat
     {
         for (int i = 0; i < 8; i++)
         {
@@ -676,7 +646,8 @@ public class ChessMechanics implements Cloneable
         }
         return true;
     }
-    public boolean patt()          //if player has no possible moves
+
+    public boolean patt()          // wenn der aktive Spieler keine Züge mehr hat aber der König nicht bedroht ist
     {
         if(!check(player))
         {
@@ -687,7 +658,8 @@ public class ChessMechanics implements Cloneable
         }
         return false;
     }
-    public boolean checkMate()     //if player has no moves && KING
+
+    public boolean checkMate()     //wenn der aktive Spieler keine Züge mehr hat und der König bedroht ist
     {
         if(playerHasNoMoves())
         {

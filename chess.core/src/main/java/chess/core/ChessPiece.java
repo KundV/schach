@@ -9,11 +9,13 @@ public class ChessPiece
 {
     //It contains the information about the chess piece.
     //after the piece is created, it is added to the board.
-    //after a move is made, all possible moves are calculated.
-    private ChessPieceId chessPieceId;
-    private PlayerId playerId;
-    private ArrayList<ChessMove> possibleMoves;
-    private int moveCount = 0;
+    //Die Klasse enthält die Informationen über das Schachfigur.
+    //nachdem die Figur erstellt wurde, wird sie zur Schachbrett hinzugefügt.
+
+    private ChessPieceId chessPieceId;      //Art der Figur
+    private PlayerId playerId;              //Spieler
+    private ArrayList<ChessMove> possibleMoves;     //Mögliche Züge der Figur
+    private int moveCount = 0;              //getätigte Züge
     private int ID;
 
 
@@ -25,7 +27,7 @@ public class ChessPiece
 
     }
 
-    public ChessPiece(ChessPieceId chessPieceId, PlayerId playerId, int moveCount)
+    public ChessPiece(ChessPieceId chessPieceId, PlayerId playerId, int moveCount) //constructor für Simulations kopie
     {
         this.moveCount = moveCount;
         this.chessPieceId = chessPieceId;
