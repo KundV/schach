@@ -151,7 +151,7 @@ public class ChessMechanics implements Cloneable
     {
         if(chessBoard[x][y].hasPiece())
         {
-            switch (chessBoard[x][y].getPiece().getChessPieceId())                                                                      // switch statement for the piece
+            switch (chessBoard[x][y].getPiece().getChessPieceId())          // switch statement for the piece
             {
                 case Pawn -> {
                     RulesPawn(x, y);
@@ -600,11 +600,11 @@ public class ChessMechanics implements Cloneable
                 {
                     deadPieces.add(chessBoard[move.xTarget][move.yTarget].removePiece());
                 }
-                ChessPieceId tmp = chessBoard[move.xStart][move.yStart].getPiece().getChessPieceId();
+                //ChessPieceId tmp = chessBoard[move.xStart][move.yStart].getPiece().getChessPieceId();
                 chessBoard[move.xTarget][move.yTarget].setPiece(chessBoard[move.xStart][move.yStart].removePiece());
                 chessBoard[move.xTarget][move.yTarget].getPiece().setChessPieceIdId(move.getPromotion());
 
-                move.setPromotion(tmp);
+                //move.setPromotion(tmp);
                 madeMoves.add(move);
             }
             blackKingSimulations = new ArrayList<>();
@@ -651,7 +651,7 @@ public class ChessMechanics implements Cloneable
                 }
                 else if(move.getEvent() == EventID.Promotion)
                 {
-                    chessBoard[move.xTarget][move.yTarget].getPiece().setChessPieceIdId(move.getPromotion());
+                    chessBoard[move.xTarget][move.yTarget].getPiece().setChessPieceIdId(Pawn);//move.getPromotion()
                     chessBoard[move.xStart][move.yStart].setPiece(chessBoard[move.xTarget][move.yTarget].removePiece());
                     if(move.yTarget != move.yStart)
                     {
@@ -747,6 +747,17 @@ public class ChessMechanics implements Cloneable
             }
         }
         return true;
+    }
+    public boolean patt()
+    {
+        if(checkMate())
+        {
+            if(check(player))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public PlayerId getCurrentPlayer()
