@@ -11,8 +11,4 @@ public enum EventID
 
     enPassant,
     Check,
-    Checkmate,
-    Stalemate;
-
-
 }

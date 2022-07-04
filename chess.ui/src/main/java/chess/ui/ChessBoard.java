@@ -180,7 +180,9 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
                     if (move.event == EventID.Blocked) continue;
 
                     var b = boardFields[move.xTarget][move.yTarget];
-                    b.setTarget(
+                    if (move.event == EventID.Promotion || move.event == EventID.Castling)
+                        b.setSpecial(_mechanics.getChessBoard()[move.xTarget][move.yTarget].getPiece() != null);
+                    else b.setTarget(
                             move.event == EventID.Capture || move.event == EventID.enPassant,
                             _mechanics.getChessBoard()[move.xTarget][move.yTarget].getPiece() != null);
                 }

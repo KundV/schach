@@ -26,10 +26,11 @@ public class JChessField extends JPanel
 
         if (!isTarget) return;
 
-        g.setColor(isCapture ? captureColor : (isDark ? nonCaptureColorOnDark : nonCaptureColorOnLight));
+        g.setColor(isSpecial ? (isDark ? specialColorOnDark : specialColorLight) : (isCapture ? captureColor : (isDark ? nonCaptureColorOnDark : nonCaptureColorOnLight)));
         int size = (int) Math.ceil(Math.min(getWidth(), getHeight()) * 0.2);
 
-        if (isOccupied) {
+        if (isOccupied)
+        {
             g.fillPolygon(new int[]{0, size, 0}, new int[]{0, 0, size}, 3);
             g.fillPolygon(new int[]{getWidth(), getWidth(), getWidth() - size}, new int[]{0, size, 0}, 3);
             g.fillPolygon(new int[]{getWidth(), getWidth() - size, getWidth()}, new int[]{getHeight(), getHeight(), getHeight() - size}, 3);
@@ -45,16 +46,26 @@ public class JChessField extends JPanel
         isTarget = true;
         this.isCapture = isCapture;
         this.isOccupied = isOccupied;
+        isSpecial = false;
+    }
+
+    public void setSpecial(boolean isOccupied)
+    {
+        this.isOccupied = isOccupied;
+        isTarget = true;
+        isSpecial = true;
     }
 
     public void removeTarget()
     {
         isTarget = false;
+        isSpecial = false;
     }
 
     private boolean isTarget = false;
     private boolean isCapture = false;
     private boolean isOccupied = false;
+    private boolean isSpecial = false;
 
     private final Color darkFieldColor = new Color(180, 135, 99, 255);
 
@@ -63,4 +74,7 @@ public class JChessField extends JPanel
     private final Color captureColor = new Color(255, 0, 0, 179);
     private final Color nonCaptureColorOnLight = new Color(88, 122, 0, 102);
     private final Color nonCaptureColorOnDark = new Color(201, 253, 64, 102);
+
+    private final Color specialColorOnDark = new Color(255, 207, 0, 255);
+    private final Color specialColorLight= new Color(255, 174, 0, 255);
 }
