@@ -14,15 +14,41 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
 {
 
 
+    /**
+     * Array mit den Schachfigur-UI-Komponenten. Wird mit der Logik synchronisiert.
+     */
     private final JChessPiece[][] chessPieceUIComponents = new JChessPiece[8][8];
+    /**
+     * Array mit den Spielfeld-UI-Komponenten.
+     */
     private final JChessField[][] boardFields = new JChessField[8][8];
+    /**
+     * Eine Unsichtbare "Glasscheibe" um Interaktionen hier abzufangen und nicht in den anderen Komponenten
+     */
     private final JPanel _glassPane = new JPanel();
-    GridLayout layout;
+    /**
+     * Die Logik, die den Zustand des Spielbretts repräsentiert.
+     */
     private ChessMechanics _mechanics;
+    /**
+     * Ausgewähltes (gezogene) Figurenkoordinaten.
+     */
     private Vec _selectedPiece;
+    /**
+     * Feld über dem die Maus ist.
+     */
     private Vec _hoveringField;
+    /**
+     * Abstand von der oberen, linken Ecke der gezogenen Figur zur Maus.
+     */
     private Vec _selectedPieceDragOffset;
+    /**
+     * Optionen des Spielers
+     */
     private ChessOptionsModel _options;
+    /**
+     * Gibt an, ob auf eine Figur gedrückt wird
+     */
     private boolean _piecePressed = false;
 
     public ChessBoard(ChessMechanics _mechanics)
@@ -117,6 +143,7 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
                 {
                     p.setSize(getWidth() / 8, getHeight() / 8);
                     p.setLocation(x * getWidth() / 8, y * getHeight() / 8);
+                    setLayer(p, -9);
                     p.revalidate();
                 }
 
@@ -288,27 +315,28 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
     @Override
     public void mousePressed(MouseEvent e)
     {
-
-
-        var fieldVec = posFromPoint(e.getPoint());
-        if (fieldVec.x < 0 || fieldVec.y < 0 // filters all points out of range
+        var fieldVec = posFromPoint(e.getPoint()); // Feld aus der Mausposition ermitteln
+        // Bricht ab, wenn out of bounds
+        if (fieldVec.x < 0 || fieldVec.y < 0
                 || fieldVec.x >= 8 || fieldVec.y >= 8)
         {
             return;
         }
+        // Ruft die potentielle Figur an der Position aus der Logik auf
         var p = _mechanics.getChessBoard()[fieldVec.y][fieldVec.x].getPiece(); // current piece
         if (p != null) _piecePressed = true;
-        // stops if there is no piece or it
+        // Prüft ob die Figur existiert, sie Züge hat und dem Spieler der am Zug ist gehört
         if (p != null && p.hasNonBlockedMoves() && p.getPlayerId() == _mechanics.getCurrentPlayer())
         {
             if (chessPieceUIComponents[fieldVec.y][fieldVec.x] != null) // if field is empty
             {
+                // Speichert die Position der Figur als ausgewählt
                 this._selectedPiece = fieldVec;
+                // Kalkulationen für die visuelle Positionierung der Figur
                 var upperLeft = pointFromVec(this._selectedPiece);
                 this._selectedPieceDragOffset = new Vec(e.getX() - upperLeft.x, e.getY() - upperLeft.y);
-                this.setLayer(chessPieceUIComponents[fieldVec.y][fieldVec.x], 1);
-
-                //this.add(chessPieceUIComponents[fieldVec.y][fieldVec.x], new Integer(1));
+                // Setzt die Figur in den Vordergrund
+                this.setLayer(chessPieceUIComponents[fieldVec.y][fieldVec.x], -2);
             }
 
         }
@@ -330,16 +358,20 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
         _piecePressed = false;
         if (_selectedPiece != null)
         {
-            this.add(chessPieceUIComponents[_selectedPiece.y][_selectedPiece.x], new Integer(1));
+            // Berechnet das Zielfeld aus der Mausposition
             var target = posFromPoint(e.getPoint());
+            // Liste aller Züge der ausgewählten Figur
             var moves = _mechanics.getChessBoard()[_selectedPiece.y][_selectedPiece.x].getPiece().getPossibleMoves();
+            // Iteriert durch alle Züge, bis es den Zug findet, der auf das Zielfeld passt
             for (int i = 1; i <= moves.size(); i++)
             {
                 var move = ((ChessMove) moves.get(i - 1));
                 if (move.xTarget == target.y && move.yTarget == target.x && move.event != EventID.Blocked)
                 {
+                    // Prüft, ob der Zug eine Promotion ist
                     if (move.event == EventID.Promotion)
                     {
+                        // Fragt die gewünschte Promotionsfigur vom Spieler ab und setzt sie im ChessMove fest. Zug kann auch abgebrochen werden
                         var dialog = JOptionPane.showOptionDialog(this,
                                 "Wähle die Figur zu der befördert werden soll",
                                 "Beförderung",
@@ -358,12 +390,15 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
             }
             this._hoveringField = target;
         }
+        // setzt das ausgewählte Feld zurück
         this._selectedPiece = null;
+        // aktualisiert UI
         updateUiArray();
         updatePlacement();
         updateSelectableHints();
         updateTargetHints();
 
+        // Zeigt einen Dialog, wenn das Spiel zu Ende
         if (!moveExecuted) return;
         if (_mechanics.checkMate())
         {
@@ -419,6 +454,7 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
             _hoveringField = null;
         }
         updateTargetHints();
+        updateSelectableHints();
     }
 
     /**
@@ -445,14 +481,15 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
         return new Point(v.x * getWidth() / 8, v.y * getHeight() / 8);
     }
 
-    /*
-    * Berechnet die X-Koordinaten des Felds aus der angegebenen X-Bildschirmkoordinate
+    /**
+     * Berechnet die X-Koordinaten des Felds aus der angegebenen X-Bildschirmkoordinate
      */
     private int fieldFromX(int x)
     {
         return x / (getWidth() / 8);
     }
-    /*
+
+    /**
      * Berechnet die Y-Koordinaten des Felds aus der angegebenen Y-Bildschirmkoordinate
      */
     private int fieldFromY(int y)
@@ -462,6 +499,7 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
 
     /**
      * Wird von Swing aufgerufen, wenn die Maus bewegt wird ohne das eine Maustaste gedrückt wird
+     *
      * @param e the event to be processed
      */
     @Override
@@ -487,6 +525,7 @@ public class ChessBoard extends JLayeredPane implements MouseMotionListener, Mou
     {
         return getMouseVec(null);
     }
+
     /**
      * Gibt die Koordinaten des Feldes zurück, dessen Bildschirmkoordinaten man gegeben hat
      */

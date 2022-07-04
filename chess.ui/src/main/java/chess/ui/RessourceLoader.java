@@ -14,6 +14,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
 
+/**
+ * Lädt SVG Dateien aus den Ressourcen
+ */
 public class RessourceLoader
 {
     public static final String Author = "By Cburnett - Own work, CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=1499811";

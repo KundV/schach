@@ -5,6 +5,10 @@ import java.awt.*;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Schachfeld UI-Komponente.
+ * Kann Visuelle hinweise für die Zielfelder der Züge anzeigen (kleinen Punkte || rote Rahmen um Figuren)
+ */
 public class JChessField extends JPanel
 {
     public JChessField(boolean isBlack)

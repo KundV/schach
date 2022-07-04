@@ -1,5 +1,8 @@
 package chess.ui;
 
+/**
+ * Datenmodel für die Optionen des Spiels.
+ */
 public class ChessOptionsModel implements Cloneable
 {
     @Override

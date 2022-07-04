@@ -67,6 +67,9 @@ public class JChessPiece extends JPanel
     }
 
 
+    /**
+     * Aktualisiert die Große des SVG-Elements
+     */
     private void updateSvg()
     {
         //svg.getSVGDocument();
@@ -77,7 +80,9 @@ public class JChessPiece extends JPanel
 
     }
 
-
+    /**
+     * Ändert den Ausgewähltenstatus der Figur
+     */
     public void setSelectable(State s)
     {
         if (s == State.None)
@@ -86,51 +91,21 @@ public class JChessPiece extends JPanel
             this.setBorder(new CornerBorder(s.c));
     }
 
+    /**
+     * Status der Auswahl der Figur
+     */
     enum State
     {
-        None(null),
-        Selectable(new Color(65, 65, 255, 255)),
-        Hovering(new Color(118, 118, 255, 255));
+        None(null), // Keine Auswahl möglich / Auswahl verstecken
+        Selectable(new Color(65, 65, 255, 255)), // Auswählbar
+        Hovering(new Color(118, 118, 255, 255)); // Auswählbar und der Mauszeiger ist über der Figur
 
-        final Color c;
+
+        final Color c; // Farbe
 
         State(Color c)
         {
             this.c = c;
-        }
-    }
-
-    public static class ResourceHelper
-    {
-        static URI loadUri(ChessPieceId id, Boolean isBlack) throws IOException
-        {
-            var c = (isBlack ? "b" : "w") + ResourceHelper.IdToKaHu(id) + ".svg";
-            var res = ClassLoader.getSystemClassLoader().getResource("./ka-hu/chess_kaneo/" + c);
-            if (res == null)
-                throw new IOException("Could not find a SVG-ressource for " + id.toString() + " in " + (isBlack ? "black" : "white") + " color");
-
-            try
-            {
-                return res.toURI();
-            } catch (URISyntaxException e)
-            {
-                throw new RuntimeException(e);
-            }
-        }
-
-        public static String IdToKaHu(ChessPieceId id)
-        {
-            // Correspond to the files in resources/ka-hu/chess_kaneo/
-            return switch (id)
-                    {
-                        case King -> "K";
-                        case Queen -> "Q";
-                        case Tower -> "R";
-
-                        case Bishop -> "B";
-                        case Horse -> "N";
-                        case Pawn -> "P";
-                    };
         }
     }
 

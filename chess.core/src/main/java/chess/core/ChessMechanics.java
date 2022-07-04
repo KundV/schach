@@ -13,7 +13,7 @@ import static chess.core.ChessPieceId.*;
 import static chess.core.ChessPieceId.Bishop;
 
 
-public class ChessMechanics implements Cloneable    //Klasse zum berechnen des Schachfeldes, der Möglichen Züge und Stadien
+public class ChessMechanics    //Klasse zum berechnen des Schachfeldes, der Möglichen Züge und Stadien
 {
     private ChessBoardTile[][] chessBoard;                                    // das Schachbrett   bestehend aus Schachfeldern
     private ArrayList<ChessPiece> deadPieces = new ArrayList<ChessPiece>();   // die Toten Figuren
@@ -163,18 +163,6 @@ public class ChessMechanics implements Cloneable    //Klasse zum berechnen des S
                 }
             }
         }
-    }
-
-    @Nullable
-    ChessMove checkFinalizeTemplate(ChessMove input, boolean areCapturesRequired)
-    {
-        var p = chessBoard[input.xStart][input.xTarget].getPiece();
-        if (p == null)
-        {
-            return null;
-        }
-
-        throw new UnsupportedOperationException("Not implemented yet");
     }
 
 
@@ -391,10 +379,6 @@ public class ChessMechanics implements Cloneable    //Klasse zum berechnen des S
             }
         }
     }
-
-    public ArrayList<ChessMechanics> blackKingSimulations = new ArrayList<ChessMechanics>();
-
-
 
     public boolean TestMovePiece(int x, int y, int x2, int y2)
     {
@@ -674,20 +658,6 @@ public class ChessMechanics implements Cloneable    //Klasse zum berechnen des S
     public PlayerId getCurrentPlayer()
     {
         return player;
-    }
-
-    @Override
-    public ChessMechanics clone()
-    {
-        try
-        {
-            ChessMechanics clone = (ChessMechanics) super.clone();
-            // TODO: copy mutable state here, so the clone can't change the internals of the original
-            return clone;
-        } catch (CloneNotSupportedException e)
-        {
-            throw new AssertionError();
-        }
     }
 }
 

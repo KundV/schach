@@ -8,6 +8,9 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.util.concurrent.Semaphore;
 
+/**
+ * Visueller Hinweise der die Auswählbarkeit einer Figur anzeigt.
+ */
 public class CornerBorder implements Border
 {
 
@@ -30,7 +33,6 @@ public class CornerBorder implements Border
 
         for (Alignment alg : Alignment.values())
         {
-            //if (alg != Alignment.TopLeft) continue;
             g.fillPolygon(generatePolygon(alg, x, y, width, height));
         }
     }
