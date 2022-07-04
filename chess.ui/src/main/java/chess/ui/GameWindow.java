@@ -7,13 +7,28 @@ import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
+/**
+ * Spielfenster
+ */
 public class GameWindow extends JFrame
 {
     @SuppressWarnings("FieldCanBeLocal")
 
+    /**
+     * Container für die Komponenten im Fenster
+     */
     private JPanel _content;
+    /**
+     * Layoutmanager von _content
+     */
     private GridBagLayout _layout;
+    /**
+     * Seitliche Leiste in welcher die Knöpfe sind
+     */
     private JPanel _sidebar;
+    /**
+     * Board-UI Komponente
+     */
     private ChessBoard _board;
     private ChessMechanics _mechanics;
 
@@ -45,6 +60,8 @@ public class GameWindow extends JFrame
         _content.add(_board, c);
 
         _sidebar = new JPanel();
+
+        // Knöpfe für die Seitenleiste
         _sidebar.setLayout(new BoxLayout(_sidebar, BoxLayout.Y_AXIS));
         {
             var undoButton = new JButton("Rückgängig");
@@ -80,7 +97,7 @@ public class GameWindow extends JFrame
                         new ComponentAdapter()
                         {
                             @Override
-                            public void componentResized(ComponentEvent e)
+                            public void componentResized(ComponentEvent e) // Aktualisiert die Größe und Position der Komponenten, wenn die Fenstergröße geändert wird
                             {
 
                                 var maxW = _content.getSize().width - _sidebar.getMinimumSize().width;
